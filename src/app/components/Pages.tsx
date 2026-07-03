@@ -1,0 +1,598 @@
+import React, { useState } from "react";
+import { Link } from "react-router";
+import SEO, { SERVICES_SEO, PROJECTS_SEO, ABOUT_SEO, TEAM_SEO, BLOG_SEO, CONTACT_SEO, getBlogPostSEO } from "./SEO";
+import FactList from "./FactList";
+import StructuredFAQ from "./StructuredFAQ";
+import { PageHero } from "./ui/PageHero";
+import { supabase } from "../supabaseClient";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  ArrowRight,
+  ClipboardList,
+  Building2,
+  HardHat,
+  Hammer,
+  Wrench,
+  Ruler,
+  Truck,
+  Layers,
+  Star,
+  Users,
+  Award,
+  Zap,
+  Play,
+  ShieldCheck,
+  TrendingUp,
+  CheckCircle
+} from "lucide-react";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SERVICES PAGE
+// ─────────────────────────────────────────────────────────────────────────────
+interface ServicesPageProps {
+  services: any[];
+}
+export function ServicesPage({ services }: ServicesPageProps) {
+  const [search, setSearch] = useState("");
+  const filtered = services.filter(s => s.title.toLowerCase().includes(search.toLowerCase()) || s.description?.toLowerCase().includes(search.toLowerCase()));
+
+  return (
+    <main id="services-page" className="py-16 bg-background">
+      <SEO {...SERVICES_SEO} />
+      <div className="max-w-7xl mx-auto px-6">
+        <p className="text-muted-foreground text-center mb-10 max-w-xl mx-auto text-sm">We provide end-to-end contracting, design-build, and consultancy services across commercial, industrial, civil, and residential projects.</p>
+        
+        {/* Search bar */}
+        <div className="max-w-md mx-auto mb-12">
+          <input
+            type="text"
+            placeholder="Search services..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className="w-full px-4 py-3 border border-border rounded-lg text-sm bg-card text-foreground focus:outline-none focus:border-accent"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filtered.map((s) => {
+            const slug = s.title.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-');
+            return (
+            <Link key={s.id} to={`/services/${slug}`} className="bg-card rounded-xl overflow-hidden shadow hover:shadow-xl transition-shadow group block no-underline text-foreground">
+              <div className="relative overflow-hidden h-52 bg-muted">
+                <img src={s.image_url || s.image} alt={s.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <span className="absolute top-4 left-4 bg-accent text-primary text-xs font-black px-3 py-1 rounded uppercase tracking-wide">{s.tag}</span>
+              </div>
+              <div className="p-5">
+                <h3 className="font-black text-primary text-base mb-3" style={{ fontFamily: "'Montserrat', sans-serif" }}>{s.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed mb-4">{s.description || s.desc}</p>
+                <div className="border-t border-border pt-4 grid grid-cols-3 gap-2 text-xs mb-4">
+                  {[
+                    { label: "Timeline", val: s.duration },
+                    { label: "Value", val: s.value },
+                    { label: "Scope", val: s.scope },
+                  ].map(({ label, val }) => (
+                    <div key={label}>
+                      <span className="text-muted-foreground block">{label}</span>
+                      <span className="font-bold text-primary">{val}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex items-center text-accent text-sm font-bold gap-1 mt-2 group-hover:gap-2 transition-all">
+                  Learn More <ArrowRight size={16} />
+                </div>
+              </div>
+            </Link>
+          )})}
+        </div>
+      </div>
+    </main>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PROJECTS PAGE
+// ─────────────────────────────────────────────────────────────────────────────
+interface ProjectsPageProps {
+  projects: any[];
+}
+export function ProjectsPage({ projects }: ProjectsPageProps) {
+  const [filter, setFilter] = useState("All");
+  const filtered = projects.filter(p => filter === "All" || p.category === filter);
+
+  return (
+    <main id="portfolio-page" className="bg-background pb-16">
+      <SEO {...PROJECTS_SEO} />
+      <PageHero 
+        title="Project Portfolio"
+        subtitle="Our Work"
+        imageUrl="https://images.unsplash.com/photo-1541888086425-d81bb19240f5?q=80&w=2000&auto=format&fit=crop"
+      />
+      <div className="max-w-7xl mx-auto px-6 mt-16">
+        <p className="text-muted-foreground text-center mb-10 max-w-xl mx-auto text-sm">Explore our completed developments, civil undertakings, and custom residential communities.</p>
+
+        {/* Filters */}
+        <div className="flex justify-center gap-3 mb-12">
+          {["All", "Commercial", "Industrial", "Residential"].map((f) => (
+            <button key={f} onClick={() => setFilter(f)} className={`px-4 py-2 rounded text-xs font-bold transition-colors ${filter === f ? "bg-accent text-primary" : "bg-muted text-muted-foreground hover:bg-accent/20"}`} style={{ fontFamily: "'Montserrat', sans-serif" }}>
+              {f}
+            </button>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {filtered.map((p) => (
+            <div key={p.id} className="bg-card rounded-xl overflow-hidden shadow hover:shadow-2xl transition-shadow group">
+              <div className="relative overflow-hidden h-64 bg-muted">
+                <img loading="lazy" src={p.image_url || p.image} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent" />
+                <span className="absolute top-4 left-4 bg-accent text-primary text-xs font-black px-3 py-1 rounded uppercase tracking-wide">{p.category}</span>
+                <div className="absolute bottom-0 left-0 right-0 p-5">
+                  <h3 className="text-white font-black text-lg mb-1" style={{ fontFamily: "'Montserrat', sans-serif" }}>{p.title}</h3>
+                  <div className="flex items-center justify-between text-white/70 text-xs">
+                    <span className="flex items-center gap-1"><MapPin size={11} />{p.location}</span>
+                    <span className="flex items-center gap-3">
+                      <span className="flex items-center gap-1"><Layers size={11} />{p.year}</span>
+                      <span className="text-accent font-bold">{p.value}</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </main>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ABOUT PAGE
+// ─────────────────────────────────────────────────────────────────────────────
+export function AboutPage() {
+  return (
+    <main id="about-page" className="bg-background pb-20">
+      <SEO {...ABOUT_SEO} />
+      <PageHero 
+        title="About BuildForce"
+        subtitle="Our Story & Vision"
+        imageUrl="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2000&auto=format&fit=crop"
+      />
+
+      {/* Main Content Area */}
+      <div className="max-w-7xl mx-auto px-6 mt-20">
+        
+        {/* Section 1: Our Story */}
+        <section className="mb-24 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <h2 className="text-3xl font-black text-primary mb-6" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+              Decades of Engineering <span className="text-accent">Excellence</span>
+            </h2>
+            <p className="text-muted-foreground leading-relaxed mb-6">
+              Founded in 1996, BuildForce began as a small regional contractor specializing in civil earthworks. Over the past twenty-eight years, we have strategically evolved into one of the nation's premier vertically integrated construction and engineering firms. Our journey is defined by a relentless pursuit of quality, an unwavering commitment to safety, and a deep-seated passion for building structures that endure for generations.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-6">
+              From our earliest days, we recognized that the traditional construction model—often plagued by fragmented communication between architects, engineers, and general contractors—was inherently flawed. In response, we built a comprehensive, in-house team of structural engineers, master architects, procurement specialists, and seasoned project managers. This unified approach eliminates silos, accelerates project timelines, and ensures that every structural detail is meticulously planned and executed under a single point of accountability.
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              Today, BuildForce boasts a delivered project portfolio exceeding $2.1 billion. We have successfully completed over 350 major developments across commercial, industrial, civil, and residential sectors. Whether we are constructing a state-of-the-art logistics hub, a towering corporate headquarters, or a complex municipal bridge, our core philosophy remains unchanged: to deliver absolute cost certainty, rigorous schedule adherence, and uncompromising structural integrity.
+            </p>
+          </div>
+          <div className="relative">
+            <img loading="lazy" src="https://images.unsplash.com/photo-1655975719898-8f3432eed322?w=600&h=800&fit=crop&auto=format" alt="Construction crane operating at a commercial building site" className="rounded-xl shadow-2xl object-cover w-full h-[600px]" />
+            <div className="absolute -bottom-8 -left-8 bg-white p-6 rounded-xl shadow-xl border border-gray-100 hidden md:block">
+              <div className="text-4xl font-black text-primary mb-1" style={{ fontFamily: "'Montserrat', sans-serif" }}>1996</div>
+              <div className="text-sm font-bold text-accent uppercase tracking-widest">Year Established</div>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 2: Mission & Values */}
+        <section className="mb-24 bg-card p-12 rounded-2xl shadow-sm border border-border">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-black text-primary mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Our Mission & Values</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">We are driven by a singular mission: to engineer and construct environments that empower businesses, support communities, and respect the natural world.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6 text-accent">
+                <ShieldCheck size={32} />
+              </div>
+              <h3 className="text-xl font-bold text-primary mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Uncompromising Safety</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">Our "Zero-Incident" culture is not just a slogan; it is the foundation of our operations. Every site is managed by a dedicated, OSHA 30-hour certified safety officer. We implement rigorous daily hazard analyses, mandatory safety briefings, and continuous training to ensure every worker returns home safely.</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6 text-accent">
+                <Award size={32} />
+              </div>
+              <h3 className="text-xl font-bold text-primary mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Certified Quality</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">As an ISO 9001:2015 certified organization, we maintain an exhaustive Quality Assurance and Quality Control (QA/QC) program. From materials procurement to final structural inspections, our proprietary auditing processes guarantee that every project meets or exceeds all local, state, and international building codes.</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6 text-accent">
+                <TrendingUp size={32} />
+              </div>
+              <h3 className="text-xl font-bold text-primary mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Transparent Integrity</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">We believe in absolute financial transparency. Our fixed-price contract models and open-book reporting systems provide our clients with total cost certainty. There are no hidden fees or unexpected overruns—just honest communication, proactive problem-solving, and reliable financial stewardship.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 3: Our Expertise & Services */}
+        <section className="mb-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="order-2 lg:order-1 relative">
+              <img loading="lazy" src="https://images.unsplash.com/photo-1541888086425-d81bb19240f5?w=600&h=800&fit=crop&auto=format" alt="Architectural blueprints and engineering tools" className="rounded-xl shadow-2xl object-cover w-full h-[600px]" />
+            </div>
+            <div className="order-1 lg:order-2">
+              <h2 className="text-3xl font-black text-primary mb-6" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                Comprehensive <span className="text-accent">Capabilities</span>
+              </h2>
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                Our in-house capabilities span the entire project lifecycle. We leverage advanced Building Information Modeling (BIM) technologies to perform complex clash detection, structural load analysis, and 3D visualization long before the first shovel hits the ground. This proactive engineering approach allows us to optimize materials, reduce waste, and identify potential challenges during the design phase rather than during active construction.
+              </p>
+              
+              <h3 className="text-xl font-bold text-primary mt-8 mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Industries We Serve</h3>
+              <ul className="space-y-4 mb-8">
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="text-accent flex-shrink-0 mt-1" size={20} />
+                  <div>
+                    <strong className="text-primary block">Commercial Real Estate</strong>
+                    <span className="text-muted-foreground text-sm">Corporate campuses, high-rise office towers, and mixed-use retail developments designed for maximum occupancy efficiency.</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="text-accent flex-shrink-0 mt-1" size={20} />
+                  <div>
+                    <strong className="text-primary block">Industrial & Logistics</strong>
+                    <span className="text-muted-foreground text-sm">Heavy manufacturing facilities, automated warehousing, and cold-storage distribution centers built to precise operational specifications.</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="text-accent flex-shrink-0 mt-1" size={20} />
+                  <div>
+                    <strong className="text-primary block">Civil Infrastructure</strong>
+                    <span className="text-muted-foreground text-sm">Municipal roadways, bridges, mass grading, and complex subterranean drainage systems engineered for public safety and longevity.</span>
+                  </div>
+                </li>
+              </ul>
+              
+              <Link to="/services" className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-bold px-8 py-4 rounded transition-colors" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                Explore All Services <ArrowRight size={18} />
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 4: Sustainability & Innovation */}
+        <section className="mb-24 bg-primary text-white p-12 rounded-2xl">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl font-black mb-6" style={{ fontFamily: "'Montserrat', sans-serif" }}>Commitment to Sustainability</h2>
+            <p className="text-white/80 leading-relaxed mb-8">
+              As leaders in the built environment, we recognize our profound responsibility to minimize our ecological footprint. BuildForce is a proud proponent of sustainable construction practices and LEED (Leadership in Energy and Environmental Design) certified development. 
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 text-left">
+              <div className="bg-white/10 p-6 rounded-xl border border-white/20">
+                <h4 className="font-bold text-accent mb-2 text-lg">Green Materials</h4>
+                <p className="text-sm text-white/70 leading-relaxed">We prioritize the procurement of locally sourced, recycled, and low-VOC (Volatile Organic Compounds) building materials to reduce transportation emissions and improve indoor air quality.</p>
+              </div>
+              <div className="bg-white/10 p-6 rounded-xl border border-white/20">
+                <h4 className="font-bold text-accent mb-2 text-lg">Energy Optimization</h4>
+                <p className="text-sm text-white/70 leading-relaxed">Our MEP (Mechanical, Electrical, and Plumbing) engineering teams specialize in integrating high-efficiency HVAC systems, smart lighting controls, and renewable energy infrastructure like solar arrays.</p>
+              </div>
+              <div className="bg-white/10 p-6 rounded-xl border border-white/20">
+                <h4 className="font-bold text-accent mb-2 text-lg">Waste Reduction</h4>
+                <p className="text-sm text-white/70 leading-relaxed">We implement aggressive on-site waste diversion programs, consistently recycling over 75% of construction debris, including concrete, steel, and timber, keeping them out of local landfills.</p>
+              </div>
+              <div className="bg-white/10 p-6 rounded-xl border border-white/20">
+                <h4 className="font-bold text-accent mb-2 text-lg">Water Conservation</h4>
+                <p className="text-sm text-white/70 leading-relaxed">From installing low-flow fixtures to engineering advanced greywater recycling systems and permeable paving solutions, we design structures that dramatically reduce water consumption.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 5: The BuildForce Process */}
+        <section className="mb-24">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-black text-primary mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Our Project Delivery Process</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">A systematic, phased approach ensuring seamless execution from initial concept to final occupancy.</p>
+          </div>
+          <div className="space-y-8 max-w-4xl mx-auto">
+            <div className="flex gap-6 items-start">
+              <div className="w-12 h-12 rounded-full bg-accent text-primary font-black flex items-center justify-center flex-shrink-0 text-xl">1</div>
+              <div>
+                <h3 className="text-xl font-bold text-primary mb-2" style={{ fontFamily: "'Montserrat', sans-serif" }}>Pre-Construction & Feasibility</h3>
+                <p className="text-muted-foreground leading-relaxed">We begin with comprehensive site analysis, geotechnical evaluations, and detailed cost modeling. Our estimating team provides highly accurate preliminary budgets while our engineers identify potential zoning, environmental, or structural constraints, allowing us to mitigate risks before significant capital is deployed.</p>
+              </div>
+            </div>
+            <div className="flex gap-6 items-start">
+              <div className="w-12 h-12 rounded-full bg-accent text-primary font-black flex items-center justify-center flex-shrink-0 text-xl">2</div>
+              <div>
+                <h3 className="text-xl font-bold text-primary mb-2" style={{ fontFamily: "'Montserrat', sans-serif" }}>Design & Engineering (BIM Integration)</h3>
+                <p className="text-muted-foreground leading-relaxed">Our in-house architectural and structural teams collaborate to produce fully coordinated 3D BIM models. This phase finalizes the aesthetic vision while simultaneously calculating precise load capacities, MEP routing, and material specifications, culminating in fully permitted, ready-to-build construction documents.</p>
+              </div>
+            </div>
+            <div className="flex gap-6 items-start">
+              <div className="w-12 h-12 rounded-full bg-accent text-primary font-black flex items-center justify-center flex-shrink-0 text-xl">3</div>
+              <div>
+                <h3 className="text-xl font-bold text-primary mb-2" style={{ fontFamily: "'Montserrat', sans-serif" }}>Procurement & Logistics</h3>
+                <p className="text-muted-foreground leading-relaxed">Leveraging our extensive network of global and regional suppliers, we secure top-tier materials at competitive pricing. Our logistics coordinators manage the complex sequencing of deliveries to ensure materials arrive precisely when needed, preventing site congestion and costly delays.</p>
+              </div>
+            </div>
+            <div className="flex gap-6 items-start">
+              <div className="w-12 h-12 rounded-full bg-accent text-primary font-black flex items-center justify-center flex-shrink-0 text-xl">4</div>
+              <div>
+                <h3 className="text-xl font-bold text-primary mb-2" style={{ fontFamily: "'Montserrat', sans-serif" }}>Active Construction & Site Management</h3>
+                <p className="text-muted-foreground leading-relaxed">Our seasoned superintendents take command of the site, orchestrating our specialized crews and vetted subcontractors. Utilizing cloud-based project management software, we track daily progress, monitor quality control metrics, and provide clients with real-time updates and transparent financial reporting.</p>
+              </div>
+            </div>
+            <div className="flex gap-6 items-start">
+              <div className="w-12 h-12 rounded-full bg-accent text-primary font-black flex items-center justify-center flex-shrink-0 text-xl">5</div>
+              <div>
+                <h3 className="text-xl font-bold text-primary mb-2" style={{ fontFamily: "'Montserrat', sans-serif" }}>Commissioning & Handover</h3>
+                <p className="text-muted-foreground leading-relaxed">As the build nears completion, our commissioning agents rigorously test all mechanical, electrical, and life-safety systems to verify operational integrity. We conduct exhaustive punch-list walkthroughs, provide comprehensive facility training to the owner's staff, and deliver a complete package of digital as-built documentation.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 6: Leadership & Experience */}
+        <section className="mb-24 bg-card p-12 rounded-2xl shadow-sm border border-border">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl font-black text-primary mb-6" style={{ fontFamily: "'Montserrat', sans-serif" }}>A Leadership Team Built on Experience</h2>
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                The success of BuildForce is directly attributable to the exceptional talent and steadfast dedication of our leadership team. Comprised of industry veterans—including licensed structural engineers, registered architects, and certified project management professionals—our executives bring decades of hands-on experience navigating the most complex construction challenges.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-8">
+                We foster a culture of continuous learning and mentorship, ensuring that our technical expertise is passed down to the next generation of builders. When you partner with us, you are gaining the collective intellectual capital of a team that has successfully managed billions of dollars in critical infrastructure and commercial development.
+              </p>
+              <Link to="/team" className="inline-flex items-center gap-2 text-accent font-bold hover:underline">
+                Meet Our Board of Directors <ArrowRight size={16} />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-6">
+               <div className="bg-background p-6 rounded-xl text-center border border-border shadow-sm">
+                 <div className="text-4xl font-black text-primary mb-2" style={{ fontFamily: "'Montserrat', sans-serif" }}>150+</div>
+                 <div className="text-xs font-bold text-muted-foreground uppercase">Full-Time Staff</div>
+               </div>
+               <div className="bg-background p-6 rounded-xl text-center border border-border shadow-sm">
+                 <div className="text-4xl font-black text-primary mb-2" style={{ fontFamily: "'Montserrat', sans-serif" }}>45</div>
+                 <div className="text-xs font-bold text-muted-foreground uppercase">Licensed Engineers</div>
+               </div>
+               <div className="bg-background p-6 rounded-xl text-center border border-border shadow-sm">
+                 <div className="text-4xl font-black text-primary mb-2" style={{ fontFamily: "'Montserrat', sans-serif" }}>0</div>
+                 <div className="text-xs font-bold text-muted-foreground uppercase">Litigation Cases</div>
+               </div>
+               <div className="bg-background p-6 rounded-xl text-center border border-border shadow-sm">
+                 <div className="text-4xl font-black text-primary mb-2" style={{ fontFamily: "'Montserrat', sans-serif" }}>92%</div>
+                 <div className="text-xs font-bold text-muted-foreground uppercase">Repeat Clients</div>
+               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 7: Final CTA */}
+        <section className="text-center pb-12">
+          <h2 className="text-3xl font-black text-primary mb-6" style={{ fontFamily: "'Montserrat', sans-serif" }}>Ready to Start Your Next Project?</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
+            Whether you are in the preliminary planning stages or ready to break ground, our team is prepared to provide the engineering expertise and construction management required to ensure your success.
+          </p>
+          <Link to="/contact" className="inline-flex items-center justify-center gap-2 bg-accent hover:bg-yellow-400 text-primary font-black px-10 py-4 rounded transition-colors text-lg" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+            <ClipboardList size={20} /> Request a Consultation
+          </Link>
+        </section>
+
+      </div>
+    </main>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TEAM PAGE
+// ─────────────────────────────────────────────────────────────────────────────
+interface TeamPageProps {
+  team: any[];
+}
+export function TeamPage({ team }: TeamPageProps) {
+  return (
+    <main id="team-page" className="bg-background pb-16">
+      <SEO {...TEAM_SEO} />
+      <PageHero 
+        title="Our Leadership"
+        subtitle="The Team Behind the Build"
+        imageUrl="https://images.unsplash.com/photo-1504307651254-35680f356f27?q=80&w=2000&auto=format&fit=crop"
+      />
+      <div className="max-w-7xl mx-auto px-6 mt-16">
+        <p className="text-muted-foreground text-center mb-12 max-w-xl mx-auto text-sm">Decades of combined engineering expertise, architectural innovation, and site contracting oversight.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {team.map((m) => (
+            <div key={m.id} className="bg-card rounded-xl overflow-hidden shadow hover:shadow-xl transition-shadow text-center">
+              <div className="relative overflow-hidden h-72 bg-muted">
+                <img loading="lazy" src={m.image_url || m.image} alt={m.name} className="w-full h-full object-cover object-top" />
+              </div>
+              <div className="p-5">
+                <h3 className="font-black text-primary text-base" style={{ fontFamily: "'Montserrat', sans-serif" }}>{m.name}</h3>
+                <p className="text-accent text-sm font-semibold mb-3">{m.title}</p>
+                <div className="flex justify-center gap-6 text-xs border-t border-border pt-3 text-gray-500">
+                  <div>
+                    <span className="font-black text-primary text-sm">{m.projects || m.projects_completed || 0}</span> Projects
+                  </div>
+                  <div>
+                    <span className="font-black text-primary text-sm">{m.years || m.years_experience || 0}</span> Yrs Exp.
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </main>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BLOG PAGE
+// ─────────────────────────────────────────────────────────────────────────────
+interface BlogPageProps {
+  blogs: any[];
+}
+export function BlogPage({ blogs }: BlogPageProps) {
+  const [selectedPost, setSelectedPost] = useState<any>(null);
+
+  if (selectedPost) {
+    const postSeo = getBlogPostSEO(selectedPost);
+    return (
+      <article id="blog-post" className="py-16 bg-background">
+        <SEO {...postSeo} />
+        <div className="max-w-3xl mx-auto px-6">
+          <button onClick={() => setSelectedPost(null)} className="text-accent font-semibold text-xs mb-6 flex items-center gap-1 hover:underline">
+            &larr; Back to all posts
+          </button>
+          <img loading="lazy" src={selectedPost.image_url} alt={selectedPost.title} className="w-full h-72 object-cover rounded-xl mb-6 shadow-md" />
+          <h1 className="text-3xl font-black text-primary mb-3" style={{ fontFamily: "'Montserrat', sans-serif" }}>{selectedPost.title}</h1>
+          <p className="text-xs text-gray-400 mb-6">Published on {new Date(selectedPost.created_at).toLocaleDateString()}</p>
+          <FactList facts={["Expert construction insights and analysis", "Industry leading safety protocols discussed", "Structural engineering best practices highlighted"]} />
+          <div className="prose max-w-none text-muted-foreground leading-relaxed text-sm" dangerouslySetInnerHTML={{ __html: selectedPost.content || "" }} />
+        </div>
+      </article>
+    );
+  }
+
+  return (
+    <main id="blog-index" className="bg-background pb-16">
+      <SEO {...BLOG_SEO} />
+      <PageHero 
+        title="News & Insights"
+        subtitle="Industry Perspectives"
+        imageUrl="https://images.unsplash.com/photo-1581094288338-2314dddb7ece?q=80&w=2000&auto=format&fit=crop"
+      />
+      <div className="max-w-7xl mx-auto px-6 mt-16">
+        <p className="text-muted-foreground text-center mb-12 max-w-xl mx-auto text-sm">Stay ahead with the latest industry updates, engineering innovations, and structural features.</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {blogs.filter(b => b.status === "published" || b.published).map((b) => (
+            <div key={b.id} onClick={() => setSelectedPost(b)} className="bg-card rounded-xl overflow-hidden shadow hover:shadow-xl transition-all cursor-pointer group">
+              <div className="h-48 bg-muted overflow-hidden">
+                <img loading="lazy" src={b.image_url || "https://images.unsplash.com/photo-1508450859948-4e04fabaa4ea?w=700&h=500&fit=crop&auto=format"} alt={b.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              </div>
+              <div className="p-5">
+                <h3 className="font-bold text-primary text-base line-clamp-2 mb-2 group-hover:text-accent transition-colors" style={{ fontFamily: "'Montserrat', sans-serif" }}>{b.title}</h3>
+                <p className="text-muted-foreground text-xs leading-relaxed line-clamp-3 mb-4">{b.excerpt || "Read full post insights."}</p>
+                <span className="text-accent text-xs font-bold flex items-center gap-1">Read Post &rarr;</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </main>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CONTACT PAGE
+// ─────────────────────────────────────────────────────────────────────────────
+interface ContactPageProps {
+  contactDetails: any;
+  companySettings: any;
+}
+export function ContactPage({ contactDetails, companySettings }: ContactPageProps) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !email || !message) {
+      alert("Please fill in name, email and message fields.");
+      return;
+    }
+    try {
+      const { error } = await supabase.from("contact_messages").insert([
+        { name, email, subject, message }
+      ]);
+      if (error) throw error;
+      alert("Your message has been sent successfully!");
+      setName("");
+      setEmail("");
+      setSubject("");
+      setMessage("");
+    } catch (err: any) {
+      alert("Failed to send message: " + err.message);
+    }
+  };
+
+  return (
+    <main id="contact-page" className="bg-background pb-16">
+      <SEO {...CONTACT_SEO} />
+      <PageHero 
+        title="Get in Touch"
+        subtitle="Start Your Project"
+        imageUrl="https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?q=80&w=2000&auto=format&fit=crop"
+      />
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 mt-16">
+        <div>
+          <p className="text-muted-foreground text-sm leading-relaxed mb-8">Have structural inquiries, bid requests, or construction projects to discuss? Send us a message and our engineering staff will get back to you promptly.</p>
+          <div className="space-y-6 text-sm">
+            <div className="flex items-start gap-4">
+              <MapPin className="text-accent mt-1 flex-shrink-0" />
+              <div>
+                <span className="font-bold block">Headquarters</span>
+                <span className="text-muted-foreground">{contactDetails.address}</span>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <Phone className="text-accent mt-1 flex-shrink-0" />
+              <div>
+                <span className="font-bold block">Office Line</span>
+                <span className="text-muted-foreground">{contactDetails.phone}</span>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <Mail className="text-accent mt-1 flex-shrink-0" />
+              <div>
+                <span className="font-bold block">Inquiries Email</span>
+                <span className="text-muted-foreground">{contactDetails.email}</span>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <Clock className="text-accent mt-1 flex-shrink-0" />
+              <div>
+                <span className="font-bold block">Office Hours</span>
+                <span className="text-muted-foreground">{companySettings.openHours}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="bg-card p-8 rounded-xl border border-border shadow-md space-y-4">
+          <h2 className="text-xl font-bold mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Send Message</h2>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Your Name</label>
+              <input required type="text" value={name} onChange={e => setName(e.target.value)} className="w-full px-3 py-2 border border-border rounded text-sm bg-background focus:outline-none focus:border-accent" />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Your Email</label>
+              <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="w-full px-3 py-2 border border-border rounded text-sm bg-background focus:outline-none focus:border-accent" />
+            </div>
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Subject</label>
+            <input type="text" value={subject} onChange={e => setSubject(e.target.value)} className="w-full px-3 py-2 border border-border rounded text-sm bg-background focus:outline-none focus:border-accent" />
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Message</label>
+            <textarea required rows={4} value={message} onChange={e => setMessage(e.target.value)} className="w-full px-3 py-2 border border-border rounded text-sm bg-background focus:outline-none focus:border-accent" />
+          </div>
+          <button type="submit" className="bg-accent text-primary font-black py-2.5 px-6 rounded flex items-center justify-center gap-2 text-sm cursor-pointer w-full" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+            Send Message &rarr;
+          </button>
+        </form>
+      </div>
+    </main>
+  );
+}

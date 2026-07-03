@@ -219,6 +219,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
     }
   };
   const formatError = (err: any): string => {
+    console.error("RAW AUTH ERROR:", err);
     if (!err) return "Unknown error occurred";
     if (typeof err === "string") return err;
     if (err.message) {
@@ -226,7 +227,13 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
       return JSON.stringify(err.message);
     }
     if (err.error_description) return err.error_description;
-    return JSON.stringify(err);
+    
+    // Attempt to stringify an Error object property names
+    try {
+      return JSON.stringify(err, Object.getOwnPropertyNames(err), 2);
+    } catch (e) {
+      return String(err);
+    }
   };
 
   const handleLogin = async (e: React.FormEvent) => {

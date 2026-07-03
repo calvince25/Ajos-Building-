@@ -36,7 +36,8 @@ import {
   HelpCircle,
   Share2,
   Phone,
-  Ruler
+  Ruler,
+  AlertCircle
 } from "lucide-react";
 
 interface AdminDashboardProps {
@@ -217,6 +218,16 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
       alert("Error updating user: " + err.message);
     }
   };
+  const formatError = (err: any): string => {
+    if (!err) return "Unknown error occurred";
+    if (typeof err === "string") return err;
+    if (err.message) {
+      if (typeof err.message === 'string') return err.message;
+      return JSON.stringify(err.message);
+    }
+    if (err.error_description) return err.error_description;
+    return JSON.stringify(err);
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -225,7 +236,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
     } catch (err: any) {
-      setAuthError(err.message || "Invalid login credentials");
+      setAuthError(formatError(err) || "Invalid login credentials");
     }
   };
 
@@ -244,7 +255,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
       alert("Sign up successful! You can now log in.");
       setIsSignUp(false);
     } catch (err: any) {
-      setAuthError(err.message || "Error signing up");
+      setAuthError(formatError(err) || "Error signing up");
     }
   };
 
@@ -437,8 +448,9 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
             </h2>
 
             {authError && (
-              <div className="bg-red-500/20 backdrop-blur-sm text-red-100 text-xs p-3 rounded mb-5 border border-red-500/50">
-                {authError}
+              <div className="mb-6 p-4 bg-red-500/10 border-l-4 border-red-500 text-red-200 text-sm flex items-start">
+                <AlertCircle className="w-5 h-5 mr-3 flex-shrink-0" />
+                <span className="break-all">{typeof authError === 'object' ? JSON.stringify(authError, null, 2) : String(authError)}</span>
               </div>
             )}
 

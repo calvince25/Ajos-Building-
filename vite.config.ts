@@ -38,4 +38,16 @@ export default defineConfig({
   server: {
     historyApiFallback: true,
   },
+
+  // ─── Vitest Configuration ───────────────────────────────────────────────────
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
+    include: ['src/**/*.{test,spec}.{ts,tsx}'],
+    coverage: {
+      reporter: ['text', 'html'],
+      exclude: ['node_modules/', 'src/test/'],
+    },
+  },
 })

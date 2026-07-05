@@ -271,13 +271,26 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
     await supabase.auth.signOut();
   };
 
+  const slugify = (text: string) =>
+    text
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, "")
+      .replace(/[\s_-]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
   const handleSave = async (table: string, id?: any) => {
     try {
+      const payload = { ...formData };
+      // Auto-generate slug if missing but title is present
+      if (!payload.slug && payload.title) {
+        payload.slug = slugify(payload.title) + "-" + Math.floor(Math.random() * 10000);
+      }
       if (id) {
-        const { error } = await supabase.from(table).update(formData).eq("id", id);
+        const { error } = await supabase.from(table).update(payload).eq("id", id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from(table).insert([formData]);
+        const { error } = await supabase.from(table).insert([payload]);
         if (error) throw error;
       }
       setIsAdding(false);
@@ -643,33 +656,79 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                   <h1 className="text-2xl font-normal mb-6">Dashboard Overview</h1>
                   
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                    <div className="bg-white p-4 shadow-sm border border-gray-200 flex justify-between items-center">
+                    <div
+                      className="bg-white p-4 shadow-sm border border-gray-200 flex justify-between items-center cursor-pointer hover:border-[#2271b1] hover:shadow-md transition-all"
+                      onClick={() => setActiveTab("services")}
+                    >
                       <div>
                         <span className="text-gray-500 text-xs block uppercase font-semibold">Services</span>
                         <span className="text-2xl font-bold text-gray-800">{services.length}</span>
                       </div>
-                      <ConciergeBell size={32} className="text-gray-300" />
+                      <ConciergeBell size={32} className="text-[#2271b1] opacity-40" />
                     </div>
-                    <div className="bg-white p-4 shadow-sm border border-gray-200 flex justify-between items-center">
+                    <div
+                      className="bg-white p-4 shadow-sm border border-gray-200 flex justify-between items-center cursor-pointer hover:border-[#2271b1] hover:shadow-md transition-all"
+                      onClick={() => setActiveTab("projects")}
+                    >
                       <div>
                         <span className="text-gray-500 text-xs block uppercase font-semibold">Projects Built</span>
                         <span className="text-2xl font-bold text-gray-800">{projects.length}</span>
                       </div>
-                      <Briefcase size={32} className="text-gray-300" />
+                      <Briefcase size={32} className="text-[#2271b1] opacity-40" />
                     </div>
-                    <div className="bg-white p-4 shadow-sm border border-gray-200 flex justify-between items-center">
+                    <div
+                      className="bg-white p-4 shadow-sm border border-gray-200 flex justify-between items-center cursor-pointer hover:border-[#2271b1] hover:shadow-md transition-all"
+                      onClick={() => setActiveTab("faqs")}
+                    >
                       <div>
                         <span className="text-gray-500 text-xs block uppercase font-semibold">FAQs</span>
                         <span className="text-2xl font-bold text-[#2271b1]">{faqs.length}</span>
                       </div>
-                      <HelpCircle size={32} className="text-gray-300" />
+                      <HelpCircle size={32} className="text-[#2271b1] opacity-40" />
                     </div>
-                    <div className="bg-white p-4 shadow-sm border border-gray-200 flex justify-between items-center">
+                    <div
+                      className="bg-white p-4 shadow-sm border border-gray-200 flex justify-between items-center cursor-pointer hover:border-[#2271b1] hover:shadow-md transition-all"
+                      onClick={() => setActiveTab("blogs")}
+                    >
                       <div>
                         <span className="text-gray-500 text-xs block uppercase font-semibold">Blog Posts</span>
                         <span className="text-2xl font-bold text-gray-800">{blogPosts.length}</span>
                       </div>
-                      <FileText size={32} className="text-gray-300" />
+                      <FileText size={32} className="text-[#2271b1] opacity-40" />
+                    </div>
+                  </div>
+
+                  {/* Extra quick-access cards row */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div
+                      className="bg-white p-4 shadow-sm border border-gray-200 flex justify-between items-center cursor-pointer hover:border-[#2271b1] hover:shadow-md transition-all"
+                      onClick={() => setActiveTab("team")}
+                    >
+                      <div>
+                        <span className="text-gray-500 text-xs block uppercase font-semibold">Team Members</span>
+                        <span className="text-2xl font-bold text-gray-800">{teamMembers.length}</span>
+                      </div>
+                      <Users size={32} className="text-[#2271b1] opacity-40" />
+                    </div>
+                    <div
+                      className="bg-white p-4 shadow-sm border border-gray-200 flex justify-between items-center cursor-pointer hover:border-[#2271b1] hover:shadow-md transition-all"
+                      onClick={() => setActiveTab("testimonials")}
+                    >
+                      <div>
+                        <span className="text-gray-500 text-xs block uppercase font-semibold">Testimonials</span>
+                        <span className="text-2xl font-bold text-gray-800">{testimonials.length}</span>
+                      </div>
+                      <MessageSquare size={32} className="text-[#2271b1] opacity-40" />
+                    </div>
+                    <div
+                      className="bg-white p-4 shadow-sm border border-gray-200 flex justify-between items-center cursor-pointer hover:border-[#2271b1] hover:shadow-md transition-all"
+                      onClick={() => setActiveTab("careers")}
+                    >
+                      <div>
+                        <span className="text-gray-500 text-xs block uppercase font-semibold">Careers</span>
+                        <span className="text-2xl font-bold text-gray-800">{careers.length}</span>
+                      </div>
+                      <Bookmark size={32} className="text-[#2271b1] opacity-40" />
                     </div>
                   </div>
 
@@ -1235,8 +1294,411 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                 </div>
               )}
 
-              {/* FALLBACK TABS FOR TEAM, TESTIMONIALS, BLOGS, CAREERS, MEDIA */}
-              {["team", "testimonials", "blogs", "careers", "media"].includes(activeTab) && (
+              {/* TAB: TEAM MEMBERS */}
+              {activeTab === "team" && (
+                <div>
+                  <div className="flex justify-between items-center mb-6">
+                    <h1 className="text-2xl font-normal">Team Members</h1>
+                    {!isAdding && !editingItem && (
+                      <button onClick={() => { setIsAdding(true); setFormData({ status: "published", projects_completed: 0, years_experience: 0, display_order: 0 }); }} className="bg-[#2271b1] hover:bg-[#135e96] text-white text-xs font-semibold px-3 py-1.5 rounded flex items-center gap-1.5">
+                        <Plus size={13} /> Add Team Member
+                      </button>
+                    )}
+                  </div>
+
+                  {isAdding || editingItem ? (
+                    <div className="bg-white p-6 shadow-sm border border-gray-200 max-w-2xl">
+                      <h2 className="text-lg font-medium mb-4">{editingItem ? "Edit Team Member" : "Add Team Member"}</h2>
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Full Name</label>
+                            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                              value={formData.name || ""} onChange={e => setFormData({...formData, name: e.target.value})} placeholder="e.g. John Doe" />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Job Title</label>
+                            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                              value={formData.title || ""} onChange={e => setFormData({...formData, title: e.target.value})} placeholder="e.g. Senior Engineer" />
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Email</label>
+                            <input type="email" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                              value={formData.email || ""} onChange={e => setFormData({...formData, email: e.target.value})} />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Status</label>
+                            <select className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                              value={formData.status || "published"} onChange={e => setFormData({...formData, status: e.target.value})}>
+                              <option value="published">Published</option>
+                              <option value="draft">Draft</option>
+                              <option value="archived">Archived</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Profile Image URL</label>
+                          <div className="flex gap-2 items-center">
+                            <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                              value={formData.image_url || ""} onChange={e => setFormData({...formData, image_url: e.target.value})} placeholder="Paste URL or upload..." />
+                            <label className="cursor-pointer bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 text-xs font-semibold px-3 py-2 rounded flex items-center gap-1.5 whitespace-nowrap">
+                              {isUploadingImage ? "Uploading..." : <><Upload size={13} /> Upload</>}
+                              <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} disabled={isUploadingImage} />
+                            </label>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-4">
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Projects Completed</label>
+                            <input type="number" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                              value={formData.projects_completed || 0} onChange={e => setFormData({...formData, projects_completed: parseInt(e.target.value) || 0})} />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Years Experience</label>
+                            <input type="number" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                              value={formData.years_experience || 0} onChange={e => setFormData({...formData, years_experience: parseInt(e.target.value) || 0})} />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Display Order</label>
+                            <input type="number" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                              value={formData.display_order || 0} onChange={e => setFormData({...formData, display_order: parseInt(e.target.value) || 0})} />
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">LinkedIn URL</label>
+                            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                              value={formData.linkedin_url || ""} onChange={e => setFormData({...formData, linkedin_url: e.target.value})} />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Twitter URL</label>
+                            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                              value={formData.twitter_url || ""} onChange={e => setFormData({...formData, twitter_url: e.target.value})} />
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <button onClick={() => handleSave("team_members", editingItem?.id)} className="bg-[#2271b1] hover:bg-[#135e96] text-white text-xs font-semibold px-4 py-2 rounded">Save Changes</button>
+                          <button onClick={() => { setIsAdding(false); setEditingItem(null); }} className="bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-semibold px-4 py-2 rounded">Cancel</button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <div className="flex gap-4 text-xs mb-4 border-b pb-2 text-gray-500">
+                        {["all", "published", "draft", "archived"].map(f => (
+                          <button key={f} onClick={() => setStatusFilter(f)} className={`capitalize ${statusFilter === f ? "text-[#2271b1] font-bold" : "hover:text-[#2271b1]"}`}>
+                            {f} ({teamMembers.filter(m => f === "all" ? m.status !== "archived" : m.status === f).length})
+                          </button>
+                        ))}
+                      </div>
+                      <div className="bg-white shadow-sm border border-gray-200 overflow-hidden">
+                        <table className="w-full text-left text-xs border-collapse">
+                          <thead>
+                            <tr className="bg-gray-100 border-b border-gray-200 font-semibold text-gray-700">
+                              <th className="p-3">Name</th>
+                              <th className="p-3">Title</th>
+                              <th className="p-3">Status</th>
+                              <th className="p-3">Experience</th>
+                              <th className="p-3 text-right">Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {getFilteredItems(teamMembers).length === 0 && (
+                              <tr><td colSpan={5} className="p-6 text-center text-gray-400 italic">No team members found. Add one above.</td></tr>
+                            )}
+                            {getFilteredItems(teamMembers).map(m => (
+                              <tr key={m.id} className="border-b hover:bg-gray-50">
+                                <td className="p-3 font-semibold text-gray-900 flex items-center gap-2">
+                                  {m.image_url && <img src={m.image_url} alt={m.name} className="w-7 h-7 rounded-full object-cover" />}
+                                  {m.name}
+                                </td>
+                                <td className="p-3 text-gray-600">{m.title}</td>
+                                <td className="p-3">
+                                  <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase ${
+                                    m.status === "published" ? "bg-green-100 text-green-800" :
+                                    m.status === "draft" ? "bg-yellow-100 text-yellow-800" : "bg-red-100 text-red-800"
+                                  }`}>{m.status}</span>
+                                </td>
+                                <td className="p-3 text-gray-600">{m.years_experience} yrs</td>
+                                <td className="p-3 text-right flex justify-end gap-3 items-center">
+                                  <button onClick={() => { setEditingItem(m); setFormData(m); }} className="text-[#2271b1] hover:text-[#135e96] flex items-center gap-0.5"><Edit3 size={13} /> Edit</button>
+                                  <button onClick={() => handleDelete("team_members", m.id)} className="text-[#d63638] hover:text-[#a01c1e]"><Trash2 size={13} /></button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* TAB: TESTIMONIALS */}
+              {activeTab === "testimonials" && (
+                <div>
+                  <div className="flex justify-between items-center mb-6">
+                    <h1 className="text-2xl font-normal">Testimonials</h1>
+                    {!isAdding && !editingItem && (
+                      <button onClick={() => { setIsAdding(true); setFormData({ status: "published", rating: 5 }); }} className="bg-[#2271b1] hover:bg-[#135e96] text-white text-xs font-semibold px-3 py-1.5 rounded flex items-center gap-1.5">
+                        <Plus size={13} /> Add Testimonial
+                      </button>
+                    )}
+                  </div>
+
+                  {isAdding || editingItem ? (
+                    <div className="bg-white p-6 shadow-sm border border-gray-200 max-w-2xl">
+                      <h2 className="text-lg font-medium mb-4">{editingItem ? "Edit Testimonial" : "Add Testimonial"}</h2>
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Client Name</label>
+                            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                              value={formData.name || ""} onChange={e => setFormData({...formData, name: e.target.value})} />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Role / Position</label>
+                            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                              value={formData.role || ""} onChange={e => setFormData({...formData, role: e.target.value})} placeholder="e.g. CEO" />
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Company</label>
+                            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                              value={formData.company || ""} onChange={e => setFormData({...formData, company: e.target.value})} />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Rating (1-5)</label>
+                            <select className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                              value={formData.rating || 5} onChange={e => setFormData({...formData, rating: parseInt(e.target.value)})}>
+                              {[5,4,3,2,1].map(r => <option key={r} value={r}>{r} Star{r !== 1 ? "s" : ""}</option>)}
+                            </select>
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Avatar Image URL</label>
+                          <div className="flex gap-2 items-center">
+                            <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                              value={formData.avatar_url || ""} onChange={e => setFormData({...formData, avatar_url: e.target.value})} placeholder="Paste URL or upload..." />
+                            <label className="cursor-pointer bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 text-xs font-semibold px-3 py-2 rounded flex items-center gap-1.5 whitespace-nowrap">
+                              {isUploadingImage ? "Uploading..." : <><Upload size={13} /> Upload</>}
+                              <input type="file" className="hidden" accept="image/*"
+                                onChange={async (e) => {
+                                  const file = e.target.files?.[0]; if (!file) return;
+                                  setIsUploadingImage(true);
+                                  const ext = file.name.split(".").pop();
+                                  const path = `uploads/${Math.random()}.${ext}`;
+                                  const { error: upErr } = await supabase.storage.from("media").upload(path, file);
+                                  if (!upErr) {
+                                    const { data: { publicUrl } } = supabase.storage.from("media").getPublicUrl(path);
+                                    setFormData((prev: any) => ({ ...prev, avatar_url: publicUrl }));
+                                  }
+                                  setIsUploadingImage(false);
+                                }}
+                                disabled={isUploadingImage} />
+                            </label>
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Review Text</label>
+                          <textarea rows={4} className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                            value={formData.text || ""} onChange={e => setFormData({...formData, text: e.target.value})} />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Status</label>
+                          <select className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                            value={formData.status || "published"} onChange={e => setFormData({...formData, status: e.target.value})}>
+                            <option value="published">Published</option>
+                            <option value="draft">Draft</option>
+                            <option value="archived">Archived</option>
+                          </select>
+                        </div>
+                        <div className="flex gap-2">
+                          <button onClick={() => handleSave("testimonials", editingItem?.id)} className="bg-[#2271b1] hover:bg-[#135e96] text-white text-xs font-semibold px-4 py-2 rounded">Save Changes</button>
+                          <button onClick={() => { setIsAdding(false); setEditingItem(null); }} className="bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-semibold px-4 py-2 rounded">Cancel</button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <div className="flex gap-4 text-xs mb-4 border-b pb-2 text-gray-500">
+                        {["all", "published", "draft", "archived"].map(f => (
+                          <button key={f} onClick={() => setStatusFilter(f)} className={`capitalize ${statusFilter === f ? "text-[#2271b1] font-bold" : "hover:text-[#2271b1]"}`}>
+                            {f} ({testimonials.filter(t => f === "all" ? t.status !== "archived" : t.status === f).length})
+                          </button>
+                        ))}
+                      </div>
+                      <div className="bg-white shadow-sm border border-gray-200 overflow-hidden">
+                        <table className="w-full text-left text-xs border-collapse">
+                          <thead>
+                            <tr className="bg-gray-100 border-b border-gray-200 font-semibold text-gray-700">
+                              <th className="p-3">Client</th>
+                              <th className="p-3">Company</th>
+                              <th className="p-3">Rating</th>
+                              <th className="p-3">Status</th>
+                              <th className="p-3 text-right">Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {getFilteredItems(testimonials).length === 0 && (
+                              <tr><td colSpan={5} className="p-6 text-center text-gray-400 italic">No testimonials yet. Add one above.</td></tr>
+                            )}
+                            {getFilteredItems(testimonials).map(t => (
+                              <tr key={t.id} className="border-b hover:bg-gray-50">
+                                <td className="p-3 font-semibold text-gray-900 flex items-center gap-2">
+                                  {t.avatar_url && <img src={t.avatar_url} alt={t.name} className="w-7 h-7 rounded-full object-cover" />}
+                                  <div>
+                                    <div>{t.name}</div>
+                                    <div className="text-gray-400 font-normal">{t.role}</div>
+                                  </div>
+                                </td>
+                                <td className="p-3 text-gray-600">{t.company}</td>
+                                <td className="p-3 text-yellow-500">{"★".repeat(t.rating || 5)}</td>
+                                <td className="p-3">
+                                  <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase ${
+                                    t.status === "published" ? "bg-green-100 text-green-800" :
+                                    t.status === "draft" ? "bg-yellow-100 text-yellow-800" : "bg-red-100 text-red-800"
+                                  }`}>{t.status}</span>
+                                </td>
+                                <td className="p-3 text-right flex justify-end gap-3 items-center">
+                                  <button onClick={() => { setEditingItem(t); setFormData(t); }} className="text-[#2271b1] hover:text-[#135e96] flex items-center gap-0.5"><Edit3 size={13} /> Edit</button>
+                                  <button onClick={() => handleDelete("testimonials", t.id)} className="text-[#d63638] hover:text-[#a01c1e]"><Trash2 size={13} /></button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* TAB: BLOG POSTS */}
+              {activeTab === "blogs" && (
+                <div>
+                  <div className="flex justify-between items-center mb-6">
+                    <h1 className="text-2xl font-normal">Blog Posts</h1>
+                    {!isAdding && !editingItem && (
+                      <button onClick={() => { setIsAdding(true); setFormData({ status: "draft" }); }} className="bg-[#2271b1] hover:bg-[#135e96] text-white text-xs font-semibold px-3 py-1.5 rounded flex items-center gap-1.5">
+                        <Plus size={13} /> Add New Post
+                      </button>
+                    )}
+                  </div>
+
+                  {isAdding || editingItem ? (
+                    <div className="bg-white p-6 shadow-sm border border-gray-200 max-w-3xl">
+                      <h2 className="text-lg font-medium mb-4">{editingItem ? "Edit Blog Post" : "Add New Blog Post"}</h2>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Post Title</label>
+                          <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                            value={formData.title || ""} onChange={e => setFormData({...formData, title: e.target.value})} />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Slug (auto-generated if empty)</label>
+                            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                              value={formData.slug || ""} onChange={e => setFormData({...formData, slug: e.target.value})} placeholder="leave-blank-to-auto-generate" />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Status</label>
+                            <select className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                              value={formData.status || "draft"} onChange={e => setFormData({...formData, status: e.target.value})}>
+                              <option value="published">Published</option>
+                              <option value="draft">Draft</option>
+                              <option value="archived">Archived</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Featured Image URL</label>
+                          <div className="flex gap-2 items-center">
+                            <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                              value={formData.image_url || ""} onChange={e => setFormData({...formData, image_url: e.target.value})} placeholder="Paste URL or upload..." />
+                            <label className="cursor-pointer bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 text-xs font-semibold px-3 py-2 rounded flex items-center gap-1.5 whitespace-nowrap">
+                              {isUploadingImage ? "Uploading..." : <><Upload size={13} /> Upload</>}
+                              <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} disabled={isUploadingImage} />
+                            </label>
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Excerpt / Short Summary</label>
+                          <textarea rows={2} className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                            value={formData.excerpt || ""} onChange={e => setFormData({...formData, excerpt: e.target.value})} />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Full Content</label>
+                          <textarea rows={10} className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1] font-mono"
+                            value={formData.content || ""} onChange={e => setFormData({...formData, content: e.target.value})} placeholder="Write your full blog post content here..." />
+                        </div>
+                        <div className="flex gap-2">
+                          <button onClick={() => handleSave("blog_posts", editingItem?.id)} className="bg-[#2271b1] hover:bg-[#135e96] text-white text-xs font-semibold px-4 py-2 rounded">Save Post</button>
+                          <button onClick={() => { setIsAdding(false); setEditingItem(null); }} className="bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-semibold px-4 py-2 rounded">Cancel</button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <div className="flex gap-4 text-xs mb-4 border-b pb-2 text-gray-500">
+                        {["all", "published", "draft", "archived"].map(f => (
+                          <button key={f} onClick={() => setStatusFilter(f)} className={`capitalize ${statusFilter === f ? "text-[#2271b1] font-bold" : "hover:text-[#2271b1]"}`}>
+                            {f} ({blogPosts.filter(b => f === "all" ? b.status !== "archived" : b.status === f).length})
+                          </button>
+                        ))}
+                      </div>
+                      <div className="bg-white shadow-sm border border-gray-200 overflow-hidden">
+                        <table className="w-full text-left text-xs border-collapse">
+                          <thead>
+                            <tr className="bg-gray-100 border-b border-gray-200 font-semibold text-gray-700">
+                              <th className="p-3">Title</th>
+                              <th className="p-3">Slug</th>
+                              <th className="p-3">Status</th>
+                              <th className="p-3">Created</th>
+                              <th className="p-3 text-right">Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {getFilteredItems(blogPosts).length === 0 && (
+                              <tr><td colSpan={5} className="p-6 text-center text-gray-400 italic">No blog posts yet. Add one above.</td></tr>
+                            )}
+                            {getFilteredItems(blogPosts).map(b => (
+                              <tr key={b.id} className="border-b hover:bg-gray-50">
+                                <td className="p-3 font-semibold text-gray-900 max-w-[200px] truncate">
+                                  {b.image_url && <img src={b.image_url} alt={b.title} className="w-8 h-8 rounded object-cover inline-block mr-2 align-middle" />}
+                                  {b.title}
+                                </td>
+                                <td className="p-3 text-gray-500 font-mono">{b.slug}</td>
+                                <td className="p-3">
+                                  <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase ${
+                                    b.status === "published" ? "bg-green-100 text-green-800" :
+                                    b.status === "draft" ? "bg-yellow-100 text-yellow-800" : "bg-red-100 text-red-800"
+                                  }`}>{b.status}</span>
+                                </td>
+                                <td className="p-3 text-gray-500">{new Date(b.created_at).toLocaleDateString()}</td>
+                                <td className="p-3 text-right flex justify-end gap-3 items-center">
+                                  <button onClick={() => { setEditingItem(b); setFormData(b); }} className="text-[#2271b1] hover:text-[#135e96] flex items-center gap-0.5"><Edit3 size={13} /> Edit</button>
+                                  <button onClick={() => handleDuplicate("blog_posts", b)} className="text-gray-600 hover:text-gray-800 flex items-center gap-0.5"><Copy size={13} /> Clone</button>
+                                  {b.status !== "archived" && (
+                                    <button onClick={() => handleStatusUpdate("blog_posts", b.id, "archived")} className="text-red-500 hover:text-red-700 flex items-center gap-0.5"><Archive size={13} /> Archive</button>
+                                  )}
+                                  <button onClick={() => handleDelete("blog_posts", b.id)} className="text-[#d63638] hover:text-[#a01c1e]"><Trash2 size={13} /></button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* FALLBACK TABS FOR CAREERS, MEDIA */}
+              {["careers", "media"].includes(activeTab) && (
                 <div className="bg-white p-6 shadow-sm border border-gray-200">
                   <h2 className="text-lg font-medium capitalize mb-4">Manage {activeTab}</h2>
                   <p className="text-sm text-gray-500">Fully loaded dashboard editor module for {activeTab}. Enable forms, uploads and list filtering on the go.</p>

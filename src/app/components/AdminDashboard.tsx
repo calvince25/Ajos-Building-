@@ -219,6 +219,17 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
       alert("Error updating user: " + err.message);
     }
   };
+  const handleDeleteUser = async (userId: string) => {
+    if (!window.confirm("Are you sure you want to delete this user profile? They will lose access.")) return;
+    try {
+      const { error } = await supabase.from("profiles").delete().eq("id", userId);
+      if (error) throw error;
+      fetchUsers();
+    } catch (err: any) {
+      alert("Error deleting user: " + err.message);
+    }
+  };
+
   const formatError = (err: any): string => {
     console.error("RAW AUTH ERROR:", err);
     if (!err) return "Unknown error occurred";
@@ -433,12 +444,12 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
     return items.filter(i => i.status === statusFilter);
   };
 
-  if (loading && !session) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-[#f0f0f1] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#2271b1] mx-auto mb-4"></div>
-          <p className="text-gray-600 text-sm">Loading WordPress Admin...</p>
+          <p className="text-gray-600 text-sm">Loading Administration...</p>
         </div>
       </div>
     );
@@ -1854,6 +1865,52 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                       </div>
                     </div>
                   )}
+                </div>
+              )}
+
+              {/* TAB: USERS */}
+              {activeTab === "users" && userRole === "super_admin" && (
+                <div>
+                  <div className="flex justify-between items-center mb-6">
+                    <h1 className="text-2xl font-normal">User Management</h1>
+                  </div>
+                  <div className="bg-white border border-gray-200 shadow-sm overflow-hidden text-sm">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-gray-50 border-b text-gray-700">
+                          <th className="p-3 font-semibold">Email</th>
+                          <th className="p-3 font-semibold">Full Name</th>
+                          <th className="p-3 font-semibold">Role</th>
+                          <th className="p-3 font-semibold">Status</th>
+                          <th className="p-3 font-semibold text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {users.map(u => (
+                          <tr key={u.id} className="border-b hover:bg-gray-50">
+                            <td className="p-3 font-semibold text-[#2271b1]">{u.email}</td>
+                            <td className="p-3 text-gray-600">{u.full_name || "-"}</td>
+                            <td className="p-3 text-gray-600">{u.role}</td>
+                            <td className="p-3">
+                              {u.is_approved ? (
+                                <span className="bg-green-100 text-green-800 text-[10px] px-2 py-0.5 rounded font-bold uppercase">Approved</span>
+                              ) : (
+                                <span className="bg-yellow-100 text-yellow-800 text-[10px] px-2 py-0.5 rounded font-bold uppercase">Pending / Suspended</span>
+                              )}
+                            </td>
+                            <td className="p-3 text-right flex justify-end gap-3 items-center">
+                              {!u.is_approved ? (
+                                <button onClick={() => handleApproveUser(u.id, true)} className="text-green-600 hover:text-green-800 flex items-center gap-0.5"><Check size={13} /> Approve</button>
+                              ) : (
+                                <button onClick={() => handleApproveUser(u.id, false)} className="text-orange-500 hover:text-orange-700 flex items-center gap-0.5"><X size={13} /> Suspend</button>
+                              )}
+                              <button onClick={() => handleDeleteUser(u.id)} className="text-[#d63638] hover:text-[#a01c1e]"><Trash2 size={13} /></button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               )}
 

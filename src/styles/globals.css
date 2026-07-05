@@ -1,0 +1,165 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   GLOBAL RESPONSIVE SAFEGUARDS
+   Ensures no horizontal overflow, safe image sizing, and touch-optimized UI
+───────────────────────────────────────────────────────────────────────────── */
+
+/* Box-model reset — prevents any element from blowing out its container */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Prevent horizontal scroll at the root level on all devices */
+html {
+  overflow-x: hidden;
+  /* Smooth scrolling for all anchor links */
+  scroll-behavior: smooth;
+  /* Prevent iOS font size inflation on orientation change */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: hidden;
+  /* Ensure the body always fills at least the viewport height */
+  min-height: 100vh;
+  /* Prevent tap highlight flickering on mobile */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ─── Safe Media Defaults ─── */
+img,
+video,
+iframe,
+embed,
+object,
+canvas,
+svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Preserve aspect ratio for replaced elements */
+img {
+  object-fit: cover;
+}
+
+/* ─── Touch Optimisation ─── */
+/* Improves button & link responsiveness on touch devices */
+button,
+a,
+[role="button"],
+select,
+input,
+textarea,
+label {
+  touch-action: manipulation;
+}
+
+/* Minimum tap target size (WCAG 2.5.5) */
+button,
+a {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Override for elements that should keep block display */
+a.block,
+a[class*="block"] {
+  display: block;
+  min-height: unset;
+  min-width: unset;
+}
+
+/* ─── Parallax Safety (iOS Safari fix) ─── */
+/* background-attachment: fixed is broken on iOS — disable it universally on touch */
+@media (hover: none) and (pointer: coarse) {
+  * {
+    background-attachment: scroll !important;
+  }
+}
+
+/* ─── Responsive Typography Scale ─── */
+/* Prevent headings from overflowing their containers */
+h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* Long words / URLs in paragraphs */
+p, li, span, td, th {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* ─── Form Elements ─── */
+input,
+select,
+textarea {
+  /* Prevent zoom on focus in iOS Safari (font-size must be ≥ 16px) */
+  font-size: max(16px, 1rem);
+  max-width: 100%;
+}
+
+/* ─── Table Overflow ─── */
+table {
+  width: 100%;
+  overflow-x: auto;
+  display: block;
+}
+
+/* ─── Utility: Visually-hidden scrollbar for internal scroll containers ─── */
+.scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.scroll-x::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─── Fluid Container Safety ─── */
+/* Stop any max-w container from exceeding viewport */
+[class*="max-w-"] {
+  max-width: min(100%, var(--container-max, 80rem));
+}
+
+/* ─── Prevent absolute elements from breaking layout ─── */
+.relative {
+  position: relative;
+}
+
+/* ─── Animation Accessibility ─── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── Print styles ─── */
+@media print {
+  nav,
+  footer,
+  .whatsapp-btn,
+  button[class*="fixed"],
+  a[class*="fixed"] {
+    display: none !important;
+  }
+
+  body {
+    font-size: 12pt;
+    color: #000;
+    background: #fff;
+  }
+}

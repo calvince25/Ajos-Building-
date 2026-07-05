@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { Link } from "react-router";
 import SEO, { SEOProps, getFAQSchema } from "../SEO";
 import { ArrowRight, CheckCircle, Hammer, Home, Users, Star, MapPin } from "lucide-react";
@@ -59,12 +59,12 @@ export default function ResidentialDevelopment() {
       <SEO {...seoConfig} />
 
       {/* Hero */}
-      <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 bg-primary overflow-hidden">
+      <section className="relative pt-20 pb-16 sm:pt-28 sm:pb-20 lg:pt-40 lg:pb-28 bg-primary overflow-hidden">
         <div className="absolute inset-0">
           <img loading="lazy" src="https://images.unsplash.com/photo-1601074231509-dce351c05199?w=1600&h=800&fit=crop&auto=format" alt="Beautiful custom residential home exterior" className="w-full h-full object-cover opacity-25" />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/70" />
         </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-6">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
           <div className="max-w-3xl">
             <div className="flex items-center gap-3 mb-6">
               <span className="w-12 h-1 bg-accent" />
@@ -77,7 +77,7 @@ export default function ResidentialDevelopment() {
               We craft custom homes, apartment communities, and residential estates with the same structural precision and safety focus we bring to our largest commercial projects — because your home deserves nothing less.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link to="/contact" className="bg-accent text-primary font-black px-8 py-4 rounded hover:bg-yellow-400 transition-colors inline-flex items-center gap-2">
+              <Link to="/contact" className="bg-accent text-primary font-black px-6 sm:px-8 py-3.5 sm:py-4 rounded hover:bg-yellow-400 transition-colors inline-flex items-center gap-2 min-h-0">
                 Start Your Home Build <ArrowRight size={18} />
               </Link>
               <Link to="/projects" className="bg-white/10 text-white font-bold border border-white/20 px-8 py-4 rounded hover:bg-white/20 transition-colors inline-block">
@@ -89,8 +89,8 @@ export default function ResidentialDevelopment() {
       </section>
 
       {/* Overview */}
-      <section className="py-20 lg:py-28">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <section className="py-14 sm:py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div className="relative">
             <img loading="lazy" src="https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=900&fit=crop&auto=format" alt="Construction crew framing a custom home" className="rounded-2xl shadow-2xl object-cover w-full h-[580px]" />
             <div className="absolute top-8 -right-6 bg-accent text-primary px-6 py-5 rounded-xl shadow-xl hidden md:block">
@@ -121,8 +121,8 @@ export default function ResidentialDevelopment() {
       </section>
 
       {/* What We Build */}
-      <section className="py-20 bg-muted">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-14 sm:py-20 bg-muted">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl lg:text-4xl font-black text-primary mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>What We Build</h2>
             <p className="text-muted-foreground">From single-family dream homes to large residential communities — each project is a reflection of our craftsmanship.</p>
@@ -147,8 +147,8 @@ export default function ResidentialDevelopment() {
       </section>
 
       {/* The Custom Home Process */}
-      <section className="py-20 lg:py-28">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-14 sm:py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="mb-16">
             <h2 className="text-3xl lg:text-4xl font-black text-primary mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>The Custom Home Process</h2>
             <p className="text-muted-foreground max-w-2xl">A structured journey from your first conversation to the moment you receive your keys.</p>
@@ -177,8 +177,8 @@ export default function ResidentialDevelopment() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 bg-primary">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-14 sm:py-20 bg-primary">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-black text-white mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>What Our Residential Clients Say</h2>
           </div>
@@ -196,7 +196,7 @@ export default function ResidentialDevelopment() {
 
       {/* CTA */}
       <section className="py-24 bg-accent text-center">
-        <div className="max-w-4xl mx-auto px-6">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <h2 className="text-3xl md:text-4xl font-black text-primary mb-6" style={{ fontFamily: "'Montserrat', sans-serif" }}>Your Dream Home Starts With a Conversation</h2>
           <p className="text-primary/80 text-lg mb-10">Tell us about your residential project and our team will contact you within one business day to arrange a free consultation.</p>
           <Link to="/contact" className="bg-primary text-white font-black px-10 py-5 rounded text-lg hover:bg-primary/85 transition-colors inline-flex items-center gap-2 shadow-xl">
@@ -207,7 +207,7 @@ export default function ResidentialDevelopment() {
 
       {/* FAQs */}
       <section className="py-20 lg:py-28 bg-background">
-        <div className="max-w-4xl mx-auto px-6">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-black text-primary mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Residential Construction FAQs</h2>
           </div>
@@ -224,7 +224,7 @@ export default function ResidentialDevelopment() {
 
       {/* Related Services */}
       <section className="py-16 bg-muted">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <h2 className="text-2xl font-black text-primary mb-8" style={{ fontFamily: "'Montserrat', sans-serif" }}>Related Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[

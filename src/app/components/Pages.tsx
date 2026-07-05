@@ -40,13 +40,18 @@ export function ServicesPage({ services }: ServicesPageProps) {
   const filtered = services.filter(s => s.title.toLowerCase().includes(search.toLowerCase()) || s.description?.toLowerCase().includes(search.toLowerCase()));
 
   return (
-    <main id="services-page" className="py-16 bg-background">
+    <main id="services-page" className="bg-background pb-16">
       <SEO {...SERVICES_SEO} />
-      <div className="max-w-7xl mx-auto px-6">
-        <p className="text-muted-foreground text-center mb-10 max-w-xl mx-auto text-sm">We provide end-to-end contracting, design-build, and consultancy services across commercial, industrial, civil, and residential projects.</p>
+      <PageHero
+        title="Our Services"
+        subtitle="What We Do"
+        imageUrl="https://images.unsplash.com/photo-1580901369227-308f6f40bdeb?q=80&w=2000&auto=format&fit=crop"
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-12 sm:mt-16">
+        <p className="text-muted-foreground text-center mb-8 sm:mb-10 max-w-xl mx-auto text-sm">We provide end-to-end contracting, design-build, and consultancy services across commercial, industrial, civil, and residential projects.</p>
         
         {/* Search bar */}
-        <div className="max-w-md mx-auto mb-12">
+        <div className="max-w-md mx-auto mb-10 sm:mb-12">
           <input
             type="text"
             placeholder="Search services..."
@@ -56,12 +61,12 @@ export function ServicesPage({ services }: ServicesPageProps) {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {filtered.map((s) => {
             const slug = s.title.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-');
             return (
             <Link key={s.id} to={`/services/${slug}`} className="bg-card rounded-xl overflow-hidden shadow hover:shadow-xl transition-shadow group block no-underline text-foreground">
-              <div className="relative overflow-hidden h-52 bg-muted">
+              <div className="relative overflow-hidden h-48 sm:h-52 bg-muted">
                 <img src={s.image_url || s.image} alt={s.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <span className="absolute top-4 left-4 bg-accent text-primary text-xs font-black px-3 py-1 rounded uppercase tracking-wide">{s.tag}</span>
               </div>
@@ -76,7 +81,7 @@ export function ServicesPage({ services }: ServicesPageProps) {
                   ].map(({ label, val }) => (
                     <div key={label}>
                       <span className="text-muted-foreground block">{label}</span>
-                      <span className="font-bold text-primary">{val}</span>
+                      <span className="font-bold text-primary text-xs leading-tight">{val}</span>
                     </div>
                   ))}
                 </div>
@@ -190,12 +195,12 @@ export function AboutPage() {
         </section>
 
         {/* Section 2: Mission & Values */}
-        <section className="mb-24 bg-card p-12 rounded-2xl shadow-sm border border-border">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-black text-primary mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Our Mission & Values</h2>
+        <section className="mb-16 sm:mb-24 bg-card p-6 sm:p-10 md:p-12 rounded-2xl shadow-sm border border-border">
+          <div className="text-center mb-10 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl font-black text-primary mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Our Mission & Values</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">We are driven by a singular mission: to engineer and construct environments that empower businesses, support communities, and respect the natural world.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10">
             <div className="text-center">
               <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6 text-accent">
                 <ShieldCheck size={32} />
@@ -267,7 +272,7 @@ export function AboutPage() {
         </section>
 
         {/* Section 4: Sustainability & Innovation */}
-        <section className="mb-24 bg-primary text-white p-12 rounded-2xl">
+        <section className="mb-16 sm:mb-24 bg-primary text-white p-6 sm:p-10 md:p-12 rounded-2xl">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-black mb-6" style={{ fontFamily: "'Montserrat', sans-serif" }}>Commitment to Sustainability</h2>
             <p className="text-white/80 leading-relaxed mb-8">
@@ -340,7 +345,7 @@ export function AboutPage() {
         </section>
 
         {/* Section 6: Leadership & Experience */}
-        <section className="mb-24 bg-card p-12 rounded-2xl shadow-sm border border-border">
+        <section className="mb-16 sm:mb-24 bg-card p-6 sm:p-10 md:p-12 rounded-2xl shadow-sm border border-border">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl font-black text-primary mb-6" style={{ fontFamily: "'Montserrat', sans-serif" }}>A Leadership Team Built on Experience</h2>
@@ -533,7 +538,7 @@ export function ContactPage({ contactDetails, companySettings }: ContactPageProp
         subtitle="Start Your Project"
         imageUrl="https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?q=80&w=2000&auto=format&fit=crop"
       />
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 mt-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 mt-12 sm:mt-16">
         <div>
           <p className="text-muted-foreground text-sm leading-relaxed mb-8">Have structural inquiries, bid requests, or construction projects to discuss? Send us a message and our engineering staff will get back to you promptly.</p>
           <div className="space-y-6 text-sm">
@@ -570,7 +575,7 @@ export function ContactPage({ contactDetails, companySettings }: ContactPageProp
 
         <form onSubmit={handleSubmit} className="bg-card p-8 rounded-xl border border-border shadow-md space-y-4">
           <h2 className="text-xl font-bold mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Send Message</h2>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Your Name</label>
               <input required type="text" value={name} onChange={e => setName(e.target.value)} className="w-full px-3 py-2 border border-border rounded text-sm bg-background focus:outline-none focus:border-accent" />

@@ -513,12 +513,12 @@ export default function App() {
       <nav className="bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           {/* Logo */}
-          <button onClick={() => setCurrentPage("home")} className="flex items-center gap-2.5 no-underline cursor-pointer border-0 bg-transparent">
-            <div className="w-10 h-10 bg-primary flex items-center justify-center rounded">
-              <HardHat size={20} className="text-accent" />
+          <button onClick={() => setCurrentPage("home")} className="flex items-center gap-2 no-underline cursor-pointer border-0 bg-transparent min-h-0 min-w-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-primary flex items-center justify-center rounded flex-shrink-0">
+              <HardHat size={18} className="text-accent" />
             </div>
             <div>
-              <span className="text-xl font-black text-primary block leading-none" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+              <span className="text-lg sm:text-xl font-black text-primary block leading-none" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                 {companySettings.companyName.toUpperCase().startsWith("BUILD") ? (
                   <>
                     BUILD<span className="text-accent">{companySettings.companyName.toUpperCase().substring(5)}</span>
@@ -527,7 +527,7 @@ export default function App() {
                   companySettings.companyName
                 )}
               </span>
-              <span className="text-xs text-muted-foreground tracking-widest uppercase">Construction & Engineering</span>
+              <span className="hidden sm:block text-xs text-muted-foreground tracking-widest uppercase">Construction & Engineering</span>
             </div>
           </button>
 
@@ -565,13 +565,13 @@ export default function App() {
 
         {menuOpen && (
           <div className="lg:hidden bg-white border-t border-border px-6 py-4">
-            <ul className="flex flex-col gap-2 list-none m-0 p-0">
+            <ul className="flex flex-col gap-1 list-none m-0 p-0 mb-4">
               {NAV_LINKS.map((link) => (
                 <li key={link}>
                   <Link
                     to={link.toLowerCase() === "home" ? "/" : `/${link.toLowerCase()}`}
                     onClick={() => setMenuOpen(false)}
-                    className={`block w-full py-2 text-sm font-semibold no-underline ${
+                    className={`flex items-center w-full py-2.5 text-sm font-semibold no-underline min-h-0 justify-start ${
                       currentPage === link.toLowerCase() ? "text-accent" : "text-primary hover:text-accent"
                     }`}
                     style={{ fontFamily: "'Montserrat', sans-serif" }}
@@ -581,6 +581,24 @@ export default function App() {
                 </li>
               ))}
             </ul>
+            <div className="border-t border-border pt-4 flex flex-col gap-3">
+              <button
+                onClick={() => { setShowAdmin(true); setMenuOpen(false); }}
+                className="w-full text-sm font-semibold text-primary hover:text-accent transition-colors cursor-pointer border border-border rounded py-2.5 px-4 bg-transparent text-left min-h-0 justify-start"
+                style={{ fontFamily: "'Montserrat', sans-serif" }}
+              >
+                Client Portal
+              </button>
+              <Link
+                to="/contact"
+                onClick={() => setMenuOpen(false)}
+                className="bg-accent text-primary text-sm font-bold px-5 py-3 rounded hover:bg-yellow-400 transition-colors cursor-pointer flex items-center justify-center gap-2 no-underline min-h-0"
+                style={{ fontFamily: "'Montserrat', sans-serif" }}
+              >
+                <ClipboardList size={15} />
+                Request a Quote
+              </Link>
+            </div>
           </div>
         )}
       </nav>
@@ -611,7 +629,7 @@ export default function App() {
 
       {/* ─── HERO ─── */}
       <section
-        className="relative min-h-[640px] md:min-h-[740px] flex items-center bg-primary"
+        className="relative flex flex-col bg-primary"
         style={{
           backgroundImage: `url(${companySettings.heroImageUrl || "https://images.unsplash.com/photo-1673978481178-b4d72cfd2fb9?w=1800&h=1000&fit=crop&auto=format"})`,
           backgroundSize: "cover",
@@ -619,39 +637,40 @@ export default function App() {
         }}
       >
         {/* Dark gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/70 to-primary/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/70 to-primary/30 pointer-events-none" />
         {/* Yellow accent bar */}
-        <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-accent" />
+        <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-accent pointer-events-none" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 w-full">
+        {/* Hero content */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20 md:py-24 md:pb-36 w-full min-h-[520px] sm:min-h-[600px] md:min-h-[680px] flex items-center">
           <div className="max-w-2xl">
-            <div className="flex items-center gap-3 mb-5">
-              <span className="w-10 h-0.5 bg-accent" />
+            <div className="flex items-center gap-3 mb-4 sm:mb-5">
+              <span className="w-8 sm:w-10 h-0.5 bg-accent" />
               <p className="text-accent text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                 Building Excellence Since 1996
               </p>
             </div>
-            <h1 className="text-white text-4xl md:text-6xl font-black mb-5 leading-tight" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+            <h1 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 sm:mb-5 leading-tight" style={{ fontFamily: "'Montserrat', sans-serif" }}>
               We Build Your <span className="text-accent">Vision</span> Into Reality
             </h1>
-            <p className="text-white/80 text-lg mb-10 leading-relaxed max-w-lg">
+            <p className="text-white/80 text-base sm:text-lg mb-8 sm:mb-10 leading-relaxed max-w-lg">
               Commercial, industrial, and residential construction delivered with precision engineering, certified safety, and on-time guarantees.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Link to="/contact" className="bg-accent hover:bg-yellow-400 text-primary font-black px-8 py-4 rounded flex items-center justify-center gap-2 transition-colors no-underline" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-12">
+              <Link to="/contact" className="bg-accent hover:bg-yellow-400 text-primary font-black px-6 sm:px-8 py-3.5 sm:py-4 rounded flex items-center justify-center gap-2 transition-colors no-underline min-h-0" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                 <ClipboardList size={18} /> Start Your Project
               </Link>
-              <button className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold px-8 py-4 rounded flex items-center justify-center gap-2 transition-colors cursor-pointer" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+              <button className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold px-6 sm:px-8 py-3.5 sm:py-4 rounded flex items-center justify-center gap-2 transition-colors cursor-pointer min-h-0" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                 <Play size={16} /> Watch Showreel
               </button>
             </div>
 
             {/* Stats bar */}
-            <div className="flex flex-wrap gap-8">
+            <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-5 sm:gap-8">
               {STATS.map((s, i) => (
                 <div key={i} className="flex flex-col">
-                  <span className="text-accent text-2xl font-black leading-none" style={{ fontFamily: "'Montserrat', sans-serif" }}>{s.value}</span>
+                  <span className="text-accent text-xl sm:text-2xl font-black leading-none" style={{ fontFamily: "'Montserrat', sans-serif" }}>{s.value}</span>
                   <span className="text-white/60 text-xs mt-1">{s.label}</span>
                 </div>
               ))}
@@ -659,10 +678,10 @@ export default function App() {
           </div>
         </div>
 
-        {/* Quick inquiry ribbon */}
-        <form onSubmit={handleGetQuote} id="quote" className="absolute bottom-0 left-0 right-0 bg-primary/95 border-t-2 border-accent">
-          <div className="max-w-7xl mx-auto px-6 py-4">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+        {/* Quick inquiry ribbon — static on mobile, absolute-bottom on md+ */}
+        <form onSubmit={handleGetQuote} id="quote" className="relative z-20 md:absolute md:bottom-0 md:left-0 md:right-0 bg-primary/95 border-t-2 border-accent">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 items-end">
               <div>
                 <label className="text-xs font-bold text-white/60 uppercase tracking-wide block mb-1.5">Service Type</label>
                 <div className="relative">
@@ -691,7 +710,7 @@ export default function App() {
                 <label className="text-xs font-bold text-white/60 uppercase tracking-wide block mb-1.5">Your Email</label>
                 <input required type="email" placeholder="you@company.com" value={email} onChange={e => setEmail(e.target.value)} className="w-full bg-white/10 border border-white/20 text-white placeholder-white/40 px-3 py-2.5 rounded text-sm focus:outline-none focus:border-accent" />
               </div>
-              <button type="submit" className="bg-accent hover:bg-yellow-400 text-primary font-black py-2.5 px-6 rounded flex items-center justify-center gap-2 transition-colors text-sm cursor-pointer" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+              <button type="submit" className="bg-accent hover:bg-yellow-400 text-primary font-black py-2.5 px-6 rounded flex items-center justify-center gap-2 transition-colors text-sm cursor-pointer min-h-0 w-full" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                 <ArrowRight size={16} /> Get Free Quote
               </button>
             </div>
@@ -701,30 +720,30 @@ export default function App() {
 
       {/* ─── SERVICES ─── */}
       {homepageSections.services && (
-        <section className="py-20 bg-background">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+        <section className="py-14 sm:py-20 bg-background">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-12 gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <span className="w-6 h-0.5 bg-accent" />
                   <p className="text-accent text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "'Montserrat', sans-serif" }}>What We Do</p>
                 </div>
-                <h2 className="text-3xl md:text-4xl font-black text-primary" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-primary" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                   Our Construction Services
                 </h2>
               </div>
-              <Link to="/services" className="flex items-center gap-2 text-accent font-bold text-sm hover:gap-3 transition-all no-underline" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+              <Link to="/services" className="flex items-center gap-2 text-accent font-bold text-sm hover:gap-3 transition-all no-underline min-h-0" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                 All Services <ArrowRight size={16} />
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {services.map((s) => {
                 const slug = s.title.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-');
                 return (
                 <Link key={s.id} to={`/services/${slug}`} className="bg-card rounded-xl overflow-hidden shadow hover:shadow-xl transition-shadow group block no-underline text-foreground">
                   {/* Image */}
-                  <div className="relative overflow-hidden h-52 bg-muted">
+                  <div className="relative overflow-hidden h-48 sm:h-52 bg-muted">
                     <img loading="lazy" src={s.image} alt={s.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     <div className="absolute inset-0 bg-primary/20 group-hover:bg-primary/0 transition-colors" />
                     <span className="absolute top-4 left-4 bg-accent text-primary text-xs font-black px-3 py-1 rounded uppercase tracking-wide">
@@ -733,17 +752,17 @@ export default function App() {
                     <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-primary/70 to-transparent" />
                   </div>
                   {/* Content */}
-                  <div className="p-5">
+                  <div className="p-4 sm:p-5">
                     <div className="flex items-center gap-2 mb-3">
-                      <div className="w-8 h-8 bg-accent/15 rounded flex items-center justify-center">
+                      <div className="w-8 h-8 bg-accent/15 rounded flex items-center justify-center flex-shrink-0">
                         <s.icon size={16} className="text-accent" />
                       </div>
-                      <h3 className="font-black text-primary text-base group-hover:text-accent transition-colors" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                      <h3 className="font-black text-primary text-sm sm:text-base group-hover:text-accent transition-colors leading-tight" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                         {s.title}
                       </h3>
                     </div>
                     <p className="text-muted-foreground text-sm leading-relaxed mb-4">{s.desc}</p>
-                    <div className="border-t border-border pt-4 grid grid-cols-3 gap-2 text-xs mb-3">
+                    <div className="border-t border-border pt-3 sm:pt-4 grid grid-cols-3 gap-1 sm:gap-2 text-xs mb-3">
                       {[
                         { label: "Timeline", val: s.duration },
                         { label: "Value", val: s.value },
@@ -751,7 +770,7 @@ export default function App() {
                       ].map(({ label, val }) => (
                         <div key={label}>
                           <span className="text-muted-foreground block">{label}</span>
-                          <span className="font-bold text-primary">{val}</span>
+                          <span className="font-bold text-primary text-xs leading-tight">{val}</span>
                         </div>
                       ))}
                     </div>
@@ -767,27 +786,27 @@ export default function App() {
       )}
 
       {/* ─── WHY CHOOSE US ─── */}
-      <section className="py-20 bg-primary">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-14">
+      <section className="py-14 sm:py-20 bg-primary">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 sm:mb-14">
             <div className="flex items-center justify-center gap-3 mb-2">
               <span className="w-6 h-0.5 bg-accent" />
               <p className="text-accent text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "'Montserrat', sans-serif" }}>Our Commitments</p>
               <span className="w-6 h-0.5 bg-accent" />
             </div>
-            <h2 className="text-3xl md:text-4xl font-black text-white" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white" style={{ fontFamily: "'Montserrat', sans-serif" }}>
               Built on Four Non-Negotiables
             </h2>
-            <p className="text-white/55 mt-3 max-w-xl mx-auto text-sm">Every project we take on is underpinned by these core standards — no exceptions.</p>
+            <p className="text-white/55 mt-3 max-w-xl mx-auto text-sm">Every project we take on is underpinned by these core standards &mdash; no exceptions.</p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
             {CORE_VALUES.map((v, i) => (
-              <div key={i} className="p-7 rounded-xl bg-white/5 border border-white/10 hover:border-accent/50 hover:bg-white/8 transition-all group text-center">
-                <div className="w-16 h-16 rounded-full bg-accent/15 group-hover:bg-accent flex items-center justify-center mx-auto mb-5 transition-colors">
-                  <v.icon size={28} className="text-accent group-hover:text-primary transition-colors" />
+              <div key={i} className="p-5 sm:p-7 rounded-xl bg-white/5 border border-white/10 hover:border-accent/50 hover:bg-white/8 transition-all group text-center">
+                <div className="w-14 sm:w-16 h-14 sm:h-16 rounded-full bg-accent/15 group-hover:bg-accent flex items-center justify-center mx-auto mb-4 sm:mb-5 transition-colors">
+                  <v.icon size={26} className="text-accent group-hover:text-primary transition-colors" />
                 </div>
-                <h3 className="text-white font-black text-base mb-3" style={{ fontFamily: "'Montserrat', sans-serif" }}>{v.title}</h3>
+                <h3 className="text-white font-black text-base mb-2 sm:mb-3" style={{ fontFamily: "'Montserrat', sans-serif" }}>{v.title}</h3>
                 <p className="text-white/55 text-sm leading-relaxed">{v.desc}</p>
               </div>
             ))}
@@ -796,16 +815,16 @@ export default function App() {
       </section>
 
       {/* ─── ABOUT SPLIT ─── */}
-      <section className="py-20 bg-card">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <section className="py-14 sm:py-20 bg-card">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 items-center">
           {/* Image grid */}
-          <div className="relative grid grid-cols-2 gap-4">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1655975719898-8f3432eed322?w=400&h=500&fit=crop&auto=format" alt="Construction crane and steelwork" className="rounded-xl object-cover w-full h-64" />
-            <img loading="lazy" src="https://images.unsplash.com/photo-1575282366139-d605e098a825?w=400&h=500&fit=crop&auto=format" alt="Engineer reviewing plans on site" className="rounded-xl object-cover w-full h-64 mt-10" />
-            {/* Badge */}
-            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-accent text-primary rounded-xl px-6 py-4 text-center shadow-xl whitespace-nowrap">
-              <span className="text-3xl font-black block" style={{ fontFamily: "'Montserrat', sans-serif" }}>28+</span>
-              <span className="text-xs font-bold uppercase tracking-wide">Years of Excellence</span>
+          <div className="relative grid grid-cols-2 gap-3 sm:gap-4">
+            <img loading="lazy" src="https://images.unsplash.com/photo-1655975719898-8f3432eed322?w=400&h=500&fit=crop&auto=format" alt="Construction crane and steelwork" className="rounded-xl object-cover w-full h-48 sm:h-64" />
+            <img loading="lazy" src="https://images.unsplash.com/photo-1575282366139-d605e098a825?w=400&h=500&fit=crop&auto=format" alt="Engineer reviewing plans on site" className="rounded-xl object-cover w-full h-48 sm:h-64 sm:mt-10" />
+            {/* Badge — sits below on mobile to avoid overflow */}
+            <div className="col-span-2 sm:col-auto sm:absolute sm:-bottom-4 sm:left-1/2 sm:-translate-x-1/2 bg-accent text-primary rounded-xl px-4 sm:px-6 py-3 sm:py-4 text-center shadow-xl mt-2 sm:mt-0">
+              <span className="text-2xl sm:text-3xl font-black block" style={{ fontFamily: "'Montserrat', sans-serif" }}>28+</span>
+              <span className="text-xs font-bold uppercase tracking-wide whitespace-nowrap">Years of Excellence</span>
             </div>
           </div>
 
@@ -850,9 +869,9 @@ export default function App() {
 
       {/* ─── FEATURED PROJECTS ─── */}
       {homepageSections.projects && (
-        <section className="py-20 bg-background">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+        <section className="py-14 sm:py-20 bg-background">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-12 gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <span className="w-6 h-0.5 bg-accent" />
@@ -903,13 +922,13 @@ export default function App() {
       )}
 
       {/* ─── CTA BANNER ─── */}
+      {/* NOTE: backgroundAttachment:fixed removed — broken on iOS Safari */}
       <section
-        className="py-24 relative bg-primary"
+        className="py-16 sm:py-24 relative bg-primary"
         style={{
           backgroundImage: `url(${companySettings.ctaImageUrl || "https://images.unsplash.com/photo-1558524845-736893ef7dd6?w=1800&h=700&fit=crop&auto=format"})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          backgroundAttachment: "fixed",
         }}
       >
         <div className="absolute inset-0 bg-primary/85" />
@@ -919,17 +938,17 @@ export default function App() {
             <p className="text-accent text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "'Montserrat', sans-serif" }}>Ready to Build?</p>
             <span className="w-6 h-0.5 bg-accent" />
           </div>
-          <h2 className="text-3xl md:text-5xl font-black text-white mb-5 leading-tight" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-white mb-5 leading-tight" style={{ fontFamily: "'Montserrat', sans-serif" }}>
             Your Next Project Starts <span className="text-accent">Here</span>
           </h2>
-          <p className="text-white/70 mb-10 text-lg">
+          <p className="text-white/70 mb-8 sm:mb-10 text-base sm:text-lg">
             From concept to completion — our team is ready to evaluate your project and provide a detailed, obligation-free proposal.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/contact" className="bg-accent hover:bg-yellow-400 text-primary font-black px-8 py-4 rounded transition-colors flex items-center justify-center gap-2 no-underline" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+            <Link to="/contact" className="bg-accent hover:bg-yellow-400 text-primary font-black px-6 sm:px-8 py-3.5 sm:py-4 rounded transition-colors flex items-center justify-center gap-2 no-underline min-h-0" style={{ fontFamily: "'Montserrat', sans-serif" }}>
               <ClipboardList size={18} /> Request Free Proposal
             </Link>
-            <a href="tel:+13125550192" className="bg-white/10 hover:bg-white/20 text-white font-bold px-8 py-4 rounded border border-white/30 transition-colors flex items-center justify-center gap-2 no-underline" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+            <a href="tel:+13125550192" className="bg-white/10 hover:bg-white/20 text-white font-bold px-6 sm:px-8 py-3.5 sm:py-4 rounded border border-white/30 transition-colors flex items-center justify-center gap-2 no-underline min-h-0" style={{ fontFamily: "'Montserrat', sans-serif" }}>
               <Phone size={18} /> Call +1 (312) 555-0192
             </a>
           </div>
@@ -938,9 +957,9 @@ export default function App() {
 
       {/* ─── TEAM ─── */}
       {homepageSections.team && (
-        <section className="py-20 bg-background">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-14">
+        <section className="py-14 sm:py-20 bg-background">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="text-center mb-10 sm:mb-14">
               <div className="flex items-center justify-center gap-3 mb-2">
                 <span className="w-6 h-0.5 bg-accent" />
                 <p className="text-accent text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "'Montserrat', sans-serif" }}>The Experts Behind the Work</p>
@@ -992,9 +1011,9 @@ export default function App() {
 
       {/* ─── TESTIMONIALS ─── */}
       {homepageSections.testimonials && (
-        <section className="py-20 bg-card">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-14">
+        <section className="py-14 sm:py-20 bg-card">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="text-center mb-10 sm:mb-14">
               <div className="flex items-center justify-center gap-3 mb-2">
                 <span className="w-6 h-0.5 bg-accent" />
                 <p className="text-accent text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "'Montserrat', sans-serif" }}>Client Testimonials</p>
@@ -1029,9 +1048,9 @@ export default function App() {
 
       {/* ─── FAQS SECTION ─── */}
       {homepageSections.faqs && (
-        <section className="py-20 bg-background border-t border-border">
-          <div className="max-w-3xl mx-auto px-6">
-            <div className="text-center mb-14">
+        <section className="py-14 sm:py-20 bg-background border-t border-border">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6">
+            <div className="text-center mb-10 sm:mb-14">
               <div className="flex items-center justify-center gap-3 mb-2">
                 <span className="w-6 h-0.5 bg-accent" />
                 <p className="text-accent text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "'Montserrat', sans-serif" }}>Got Questions?</p>
@@ -1053,8 +1072,8 @@ export default function App() {
 
       {/* ─── NEWSLETTER / UPDATES ─── */}
       {homepageSections.newsletter && (
-        <section className="py-16 bg-accent">
-          <div className="max-w-3xl mx-auto px-6 text-center">
+        <section className="py-12 sm:py-16 bg-accent">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
             <div className="flex items-center justify-center gap-2 mb-3">
               <Zap size={18} className="text-primary" />
               <h2 className="text-2xl md:text-3xl font-black text-primary" style={{ fontFamily: "'Montserrat', sans-serif" }}>
@@ -1084,7 +1103,7 @@ export default function App() {
 
       {/* ─── FOOTER ─── */}
       <footer className="bg-primary text-white">
-        <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
             {/* Brand */}
             <div>
@@ -1197,12 +1216,12 @@ export default function App() {
 
         <div className="border-t border-white/10">
           <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row justify-between items-center gap-3">
-            <p className="text-white/40 text-sm">
+            <p className="text-white/40 text-xs sm:text-sm text-center sm:text-left">
               &copy; {new Date().getFullYear()} BuildForce Construction & Engineering LLC. All rights reserved.
             </p>
-            <div className="flex gap-5">
+            <div className="flex flex-wrap justify-center sm:justify-end gap-3 sm:gap-5">
               {["Terms", "Privacy Policy", "Safety Policy", "Sitemap"].map((item) => (
-                <a key={item} href="#" className="text-white/40 hover:text-accent text-xs transition-colors no-underline">{item}</a>
+                <a key={item} href="#" className="text-white/40 hover:text-accent text-xs transition-colors no-underline min-h-0 min-w-0">{item}</a>
               ))}
             </div>
           </div>

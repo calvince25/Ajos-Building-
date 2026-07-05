@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { Link } from "react-router";
 import SEO, { SEOProps, getFAQSchema } from "../SEO";
 import { ArrowRight, CheckCircle, Truck, Layers, ShieldCheck, TrendingUp, MapPin, Zap } from "lucide-react";
@@ -63,12 +63,12 @@ export default function CivilEarthworks() {
       <SEO {...seoConfig} />
 
       {/* Hero */}
-      <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 bg-primary overflow-hidden">
+      <section className="relative pt-20 pb-16 sm:pt-28 sm:pb-20 lg:pt-40 lg:pb-28 bg-primary overflow-hidden">
         <div className="absolute inset-0">
           <img loading="lazy" src="https://images.unsplash.com/photo-1580901369227-308f6f40bdeb?w=1600&h=800&fit=crop&auto=format" alt="Heavy civil earthworks machinery grading a large site" className="w-full h-full object-cover opacity-25" />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/70" />
         </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-6">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
           <div className="max-w-3xl">
             <div className="flex items-center gap-3 mb-6">
               <span className="w-12 h-1 bg-accent" />
@@ -81,7 +81,7 @@ export default function CivilEarthworks() {
               Great structures demand perfect site conditions. Our civil and earthworks team transforms raw land into construction-ready, code-compliant building platforms — precisely, safely, and on schedule.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link to="/contact" className="bg-accent text-primary font-black px-8 py-4 rounded hover:bg-yellow-400 transition-colors inline-flex items-center gap-2">
+              <Link to="/contact" className="bg-accent text-primary font-black px-6 sm:px-8 py-3.5 sm:py-4 rounded hover:bg-yellow-400 transition-colors inline-flex items-center gap-2 min-h-0">
                 Request Site Assessment <ArrowRight size={18} />
               </Link>
               <Link to="/projects" className="bg-white/10 text-white font-bold border border-white/20 px-8 py-4 rounded hover:bg-white/20 transition-colors inline-block">
@@ -93,8 +93,8 @@ export default function CivilEarthworks() {
       </section>
 
       {/* Overview */}
-      <section className="py-20 lg:py-28">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <section className="py-14 sm:py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div className="relative">
             <img loading="lazy" src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=800&h=900&fit=crop&auto=format" alt="Civil engineers reviewing site grading plans in the field" className="rounded-2xl shadow-2xl object-cover w-full h-[580px]" />
             <div className="absolute -bottom-8 -right-8 bg-accent text-primary p-8 rounded-xl shadow-xl hidden md:block text-center">
@@ -125,8 +125,8 @@ export default function CivilEarthworks() {
       </section>
 
       {/* Core Services */}
-      <section className="py-20 bg-muted">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-14 sm:py-20 bg-muted">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl lg:text-4xl font-black text-primary mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Civil & Earthworks Services</h2>
             <p className="text-muted-foreground">End-to-end site works delivered with precision engineering and heavy equipment we own and operate.</p>
@@ -153,8 +153,8 @@ export default function CivilEarthworks() {
       </section>
 
       {/* External Works & Landscaping */}
-      <section className="py-20 bg-card">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-14 sm:py-20 bg-card">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <div className="flex items-center justify-center gap-3 mb-3">
               <span className="w-6 h-0.5 bg-accent" />
@@ -203,8 +203,8 @@ export default function CivilEarthworks() {
       </section>
 
       {/* Equipment Fleet */}
-      <section className="py-20 bg-primary">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-14 sm:py-20 bg-primary">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-black text-white mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Our Heavy Equipment Fleet</h2>
             <p className="text-white/60 max-w-2xl mx-auto">We own and operate our machinery — no equipment rental delays, no third-party scheduling conflicts.</p>
@@ -221,8 +221,8 @@ export default function CivilEarthworks() {
       </section>
 
       {/* Stats */}
-      <section className="py-20 bg-card">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-14 sm:py-20 bg-card">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
             {[{ val: "12M+", label: "Cubic Metres Earthworks" }, { val: "500+", label: "Sites Prepared" }, { val: "85km+", label: "Roads Constructed" }, { val: "28yrs", label: "Civil Experience" }].map((s, idx) => (
               <div key={idx} className="py-8">
@@ -236,7 +236,7 @@ export default function CivilEarthworks() {
 
       {/* CTA */}
       <section className="py-24 bg-accent text-center">
-        <div className="max-w-4xl mx-auto px-6">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <h2 className="text-3xl md:text-4xl font-black text-primary mb-6" style={{ fontFamily: "'Montserrat', sans-serif" }}>Your Site is Ready to Be Transformed</h2>
           <p className="text-primary/80 text-lg mb-10">Share your site address and project scope and our civil engineering team will provide a preliminary earthworks proposal within 48 hours.</p>
           <Link to="/contact" className="bg-primary text-white font-black px-10 py-5 rounded text-lg hover:bg-primary/85 transition-colors inline-flex items-center gap-2 shadow-xl">
@@ -247,7 +247,7 @@ export default function CivilEarthworks() {
 
       {/* FAQs */}
       <section className="py-20 lg:py-28 bg-background">
-        <div className="max-w-4xl mx-auto px-6">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-black text-primary mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Civil & Earthworks FAQs</h2>
           </div>
@@ -264,7 +264,7 @@ export default function CivilEarthworks() {
 
       {/* Related Services */}
       <section className="py-16 bg-muted">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <h2 className="text-2xl font-black text-primary mb-8" style={{ fontFamily: "'Montserrat', sans-serif" }}>Related Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[

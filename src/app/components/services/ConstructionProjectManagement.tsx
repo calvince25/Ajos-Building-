@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { Link } from "react-router";
 import SEO, { SEOProps, getFAQSchema } from "../SEO";
 import { ArrowRight, ClipboardList } from "lucide-react";
@@ -58,12 +58,12 @@ export default function ConstructionProjectManagement() {
       <SEO {...seoConfig} />
 
       {/* Hero */}
-      <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 bg-primary overflow-hidden">
+      <section className="relative pt-20 pb-16 sm:pt-28 sm:pb-20 lg:pt-40 lg:pb-28 bg-primary overflow-hidden">
         <div className="absolute inset-0">
           <img loading="lazy" src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1600&h=800&fit=crop&auto=format" alt="Construction project manager reviewing site plans with foreman on an active building site" className="w-full h-full object-cover opacity-25" />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/70" />
         </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-6">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
           <div className="max-w-3xl">
             <div className="flex items-center gap-3 mb-6">
               <span className="w-12 h-1 bg-accent" />
@@ -76,7 +76,7 @@ export default function ConstructionProjectManagement() {
               Expert construction project management — from site supervision and material management to scheduling, quality assurance, and full project coordination — ensuring every aspect of your build is executed with precision and accountability.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link to="/contact" className="bg-accent text-primary font-black px-8 py-4 rounded hover:bg-yellow-400 transition-colors inline-flex items-center gap-2">
+              <Link to="/contact" className="bg-accent text-primary font-black px-6 sm:px-8 py-3.5 sm:py-4 rounded hover:bg-yellow-400 transition-colors inline-flex items-center gap-2 min-h-0">
                 Start a Project Discussion <ArrowRight size={18} />
               </Link>
               <Link to="/projects" className="bg-white/10 text-white font-bold border border-white/20 px-8 py-4 rounded hover:bg-white/20 transition-colors inline-block">
@@ -88,8 +88,8 @@ export default function ConstructionProjectManagement() {
       </section>
 
       {/* Overview */}
-      <section className="py-20 lg:py-28">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <section className="py-14 sm:py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div>
             <h2 className="text-3xl lg:text-4xl font-black text-primary mb-6" style={{ fontFamily: "'Montserrat', sans-serif" }}>
               End-to-End Construction Management for Complex Projects
@@ -117,8 +117,8 @@ export default function ConstructionProjectManagement() {
       </section>
 
       {/* Sub-services Grid */}
-      <section className="py-20 bg-muted">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-14 sm:py-20 bg-muted">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
@@ -157,7 +157,7 @@ export default function ConstructionProjectManagement() {
 
       {/* Process Steps */}
       <section className="py-20 lg:py-28 relative">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl lg:text-4xl font-black text-primary mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Our Management Approach</h2>
           </div>
@@ -186,7 +186,7 @@ export default function ConstructionProjectManagement() {
       {/* CTA Banner */}
       <section className="py-24 bg-primary text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&h=600&fit=crop&auto=format')] opacity-10 bg-cover bg-center" />
-        <div className="relative z-10 max-w-4xl mx-auto px-6">
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6">
           <h2 className="text-3xl md:text-5xl font-black text-white mb-6" style={{ fontFamily: "'Montserrat', sans-serif" }}>Your Project Deserves Professional Management</h2>
           <p className="text-white/80 text-lg mb-10">Whether you need a site supervisor for a small renovation or a full project management team for a major development, we have the expertise and resources to deliver results. Contact us today.</p>
           <Link to="/contact" className="bg-accent text-primary font-black px-10 py-5 rounded text-lg hover:bg-yellow-400 transition-colors inline-block shadow-xl">
@@ -197,7 +197,7 @@ export default function ConstructionProjectManagement() {
 
       {/* FAQs */}
       <section className="py-20 lg:py-28 bg-background">
-        <div className="max-w-4xl mx-auto px-6">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-black text-primary mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Frequently Asked Questions</h2>
           </div>

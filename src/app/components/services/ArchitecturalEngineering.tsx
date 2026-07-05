@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { Link } from "react-router";
 import SEO, { SEOProps, getFAQSchema } from "../SEO";
 import { ArrowRight, CheckCircle, Ruler, Layers, Award, Star, Users, TrendingUp } from "lucide-react";
@@ -59,12 +59,12 @@ export default function ArchitecturalEngineering() {
       <SEO {...seoConfig} />
 
       {/* Hero */}
-      <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 bg-primary overflow-hidden">
+      <section className="relative pt-20 pb-16 sm:pt-28 sm:pb-20 lg:pt-40 lg:pb-28 bg-primary overflow-hidden">
         <div className="absolute inset-0">
           <img loading="lazy" src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1600&h=800&fit=crop&auto=format" alt="Architects reviewing building blueprints and 3D models" className="w-full h-full object-cover opacity-25" />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/70" />
         </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-6">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
           <div className="max-w-3xl">
             <div className="flex items-center gap-3 mb-6">
               <span className="w-12 h-1 bg-accent" />
@@ -77,7 +77,7 @@ export default function ArchitecturalEngineering() {
               Our in-house architects and structural engineers collaborate from day one to create buildings that are architecturally inspired, structurally uncompromising, and practically constructible on budget.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link to="/contact" className="bg-accent text-primary font-black px-8 py-4 rounded hover:bg-yellow-400 transition-colors inline-flex items-center gap-2">
+              <Link to="/contact" className="bg-accent text-primary font-black px-6 sm:px-8 py-3.5 sm:py-4 rounded hover:bg-yellow-400 transition-colors inline-flex items-center gap-2 min-h-0">
                 Request a Design Consultation <ArrowRight size={18} />
               </Link>
               <Link to="/team" className="bg-white/10 text-white font-bold border border-white/20 px-8 py-4 rounded hover:bg-white/20 transition-colors inline-block">
@@ -89,8 +89,8 @@ export default function ArchitecturalEngineering() {
       </section>
 
       {/* Overview */}
-      <section className="py-20 lg:py-28">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <section className="py-14 sm:py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div>
             <h2 className="text-3xl lg:text-4xl font-black text-primary mb-6" style={{ fontFamily: "'Montserrat', sans-serif" }}>
               Where Architecture Meets Structural Intelligence
@@ -121,8 +121,8 @@ export default function ArchitecturalEngineering() {
       </section>
 
       {/* Architectural Services */}
-      <section className="py-20 bg-muted">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-14 sm:py-20 bg-muted">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl lg:text-4xl font-black text-primary mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Our Design & Engineering Services</h2>
             <p className="text-muted-foreground">Integrated capabilities from concept to sealed documentation and beyond.</p>
@@ -160,7 +160,7 @@ export default function ArchitecturalEngineering() {
 
       {/* Architectural & Design Sub-Services */}
       <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <div className="flex items-center justify-center gap-3 mb-3">
               <span className="w-6 h-0.5 bg-accent" />
@@ -209,8 +209,8 @@ export default function ArchitecturalEngineering() {
       </section>
 
       {/* Meet the Leads */}
-      <section className="py-20 lg:py-28">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-14 sm:py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="mb-12">
             <h2 className="text-3xl lg:text-4xl font-black text-primary mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Lead Design Professionals</h2>
             <p className="text-muted-foreground max-w-xl">Your project will be led by some of the most experienced design professionals in the industry.</p>
@@ -237,7 +237,7 @@ export default function ArchitecturalEngineering() {
       {/* CTA */}
       <section className="py-24 bg-primary text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1462275646964-a0e3386b89fa?w=1600&h=600&fit=crop&auto=format')] opacity-10 bg-cover bg-center" />
-        <div className="relative z-10 max-w-4xl mx-auto px-6">
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6">
           <h2 className="text-3xl md:text-5xl font-black text-white mb-6" style={{ fontFamily: "'Montserrat', sans-serif" }}>Bring Your Concept to Life with Expert Design</h2>
           <p className="text-white/80 text-lg mb-10">Whether you have a napkin sketch or a detailed brief, our design team will help you develop it into a buildable, beautiful, and code-compliant structure.</p>
           <Link to="/contact" className="bg-accent text-primary font-black px-10 py-5 rounded text-lg hover:bg-yellow-400 transition-colors inline-block shadow-xl">
@@ -248,7 +248,7 @@ export default function ArchitecturalEngineering() {
 
       {/* FAQs */}
       <section className="py-20 lg:py-28 bg-background">
-        <div className="max-w-4xl mx-auto px-6">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-black text-primary mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Architectural & Engineering FAQs</h2>
           </div>
@@ -265,7 +265,7 @@ export default function ArchitecturalEngineering() {
 
       {/* Related Services */}
       <section className="py-16 bg-muted">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <h2 className="text-2xl font-black text-primary mb-8" style={{ fontFamily: "'Montserrat', sans-serif" }}>Related Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[

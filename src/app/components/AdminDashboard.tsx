@@ -210,20 +210,45 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
     }
   };
 
-  const handleApproveUser = async (userId: string, isApproved: boolean) => {
+  const handleUpdateUserStatus = async (userId: string, newStatus: string) => {
     try {
-      const { error } = await supabase.from("profiles").update({ is_approved: isApproved }).eq("id", userId);
+      const { data, error } = await supabase.rpc("update_user_status", {
+        target_user_id: userId,
+        new_status: newStatus
+      });
       if (error) throw error;
+      if (data && data.success === false) throw new Error(data.error);
       fetchUsers();
     } catch (err: any) {
-      alert("Error updating user: " + err.message);
+      alert("Error updating user status: " + err.message);
     }
   };
-  const handleDeleteUser = async (userId: string) => {
-    if (!window.confirm("Are you sure you want to delete this user profile? They will lose access.")) return;
+
+  const handleUpdateUserRole = async (userId: string, newRole: string) => {
     try {
-      const { error } = await supabase.from("profiles").delete().eq("id", userId);
+      const { data, error } = await supabase.rpc("update_user_role", {
+        target_user_id: userId,
+        new_role: newRole
+      });
       if (error) throw error;
+      if (data && data.success === false) throw new Error(data.error);
+      fetchUsers();
+    } catch (err: any) {
+      alert("Error updating user role: " + err.message);
+    }
+  };
+
+  const handleDeleteUser = async (userId: string, userEmail: string) => {
+    if (!window.confirm(
+      `PERMANENT DELETE\n\nThis will completely remove "${userEmail}" from the system including their login credentials.\n\nThey must re-register and wait for approval to regain access.\n\nThis cannot be undone. Proceed?`
+    )) return;
+    try {
+      const { data, error } = await supabase.rpc("delete_user_completely", {
+        target_user_id: userId
+      });
+      if (error) throw error;
+      if (data && data.success === false) throw new Error(data.error);
+      alert("User permanently deleted. They must re-register to request access again.");
       fetchUsers();
     } catch (err: any) {
       alert("Error deleting user: " + err.message);
@@ -263,7 +288,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
     e.preventDefault();
     setAuthError("");
     try {
-      const { error } = await supabase.auth.signUp({
+      const { data: signUpData, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -271,8 +296,14 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
         }
       });
       if (error) throw error;
-      alert("Sign up successful! You can now log in.");
+      // Immediately sign out — user must wait for admin approval before accessing anything
+      await supabase.auth.signOut();
       setIsSignUp(false);
+      setEmail("");
+      setPassword("");
+      setFullName("");
+      // Show the blocked screen message
+      setAuthError("__REGISTERED_PENDING__");
     } catch (err: any) {
       setAuthError(formatError(err) || "Error signing up");
     }
@@ -455,27 +486,30 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
     );
   }
 
-  // ──────── PENDING APPROVAL SCREEN ────────
-  if (session && profile && profile.is_approved === false) {
+  // ──────── BLOCKED ACCOUNT SCREEN (pending / rejected / suspended / deleted) ────────
+  const BLOCKED_STATUSES = ['pending', 'rejected', 'suspended', 'deleted'];
+  if (session && profile && BLOCKED_STATUSES.includes(profile.account_status)) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-6 relative" 
-        style={{ 
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 relative"
+        style={{
           fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif",
           backgroundImage: "url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000&auto=format&fit=crop')",
           backgroundSize: "cover",
           backgroundPosition: "center"
         }}>
-        <div className="absolute inset-0 bg-black/60 z-0"></div>
-        <div className="w-[400px] bg-white/10 backdrop-blur-md p-8 shadow-2xl border border-white/20 rounded-xl text-center z-10">
-          <div className="w-16 h-16 bg-[#f0c243] text-[#1d2327] rounded shadow-lg flex items-center justify-center mx-auto mb-6">
-            <Lock size={32} />
+        <div className="absolute inset-0 bg-black/70 z-0"></div>
+        <div className="w-[420px] bg-white/10 backdrop-blur-md p-10 shadow-2xl border border-white/20 rounded-xl text-center z-10">
+          <div className="w-16 h-16 bg-[#f0c243] text-[#1d2327] rounded-full shadow-lg flex items-center justify-center mx-auto mb-6">
+            <Lock size={30} />
           </div>
-          <h2 className="text-2xl font-bold text-white mb-2">Pending Authorization</h2>
-          <p className="text-gray-300 text-sm mb-8">
-            Your account has been registered successfully, but it requires authorization from a site administrator before you can access the dashboard.
+          <p className="text-white text-xl font-bold mb-2">
+            Contact admin for authorization.
           </p>
-          <button onClick={handleLogout} className="w-full bg-[#f0c243] hover:bg-yellow-400 text-[#1d2327] text-sm font-black py-3 rounded transition-colors shadow-lg">
-            Sign Out For Now
+          <button
+            onClick={handleLogout}
+            className="mt-8 w-full bg-white/10 hover:bg-white/20 border border-white/30 text-white text-sm font-semibold py-3 rounded transition-colors"
+          >
+            Sign Out
           </button>
         </div>
       </div>
@@ -484,97 +518,123 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
 
   // ──────── AUTHENTICATION SCREEN ────────
   if (!session) {
+    // Show "registered, pending" notice after successful sign-up
+    const isRegisteredPending = authError === "__REGISTERED_PENDING__";
+
     return (
-      <div 
-        className="min-h-screen flex flex-col items-center justify-center p-6 relative" 
-        style={{ 
+      <div
+        className="min-h-screen flex flex-col items-center justify-center p-6 relative"
+        style={{
           fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif",
           backgroundImage: "url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000&auto=format&fit=crop')",
           backgroundSize: "cover",
           backgroundPosition: "center"
         }}
       >
-        {/* Dark overlay for readability */}
-        <div className="absolute inset-0 bg-black/60 z-0"></div>
+        <div className="absolute inset-0 bg-black/70 z-0"></div>
 
-        <div className="w-[360px] z-10 relative">
-          <div className="flex justify-center items-center gap-2 mb-8">
-            <div className="w-12 h-12 bg-[#1d2327] flex items-center justify-center rounded shadow-lg">
-              <HardHat size={24} className="text-[#f0c243]" />
+        {isRegisteredPending ? (
+          /* ── Registration Success → Pending Screen ── */
+          <div className="w-[420px] bg-white/10 backdrop-blur-md p-10 shadow-2xl border border-white/20 rounded-xl text-center z-10">
+            <div className="w-16 h-16 bg-[#f0c243] text-[#1d2327] rounded-full shadow-lg flex items-center justify-center mx-auto mb-6">
+              <Lock size={30} />
             </div>
-            <span className="text-3xl font-black text-white tracking-wider font-mono drop-shadow-md">
-              BUILD<span className="text-[#f0c243]">FORCE</span>
-            </span>
+            <p className="text-white text-xl font-bold mb-2">
+              Contact admin for authorization.
+            </p>
+            <button
+              onClick={() => { setAuthError(""); setIsSignUp(false); }}
+              className="mt-8 w-full bg-white/10 hover:bg-white/20 border border-white/30 text-white text-sm font-semibold py-3 rounded transition-colors"
+            >
+              Back to Login
+            </button>
+            <button onClick={onClose} className="mt-3 text-white/50 hover:text-white text-xs transition-colors">
+              Back to Website
+            </button>
           </div>
-
-          {/* Glassmorphism Form Container */}
-          <form 
-            onSubmit={isSignUp ? handleSignUp : handleLogin} 
-            className="backdrop-blur-md bg-white/10 p-8 shadow-2xl border border-white/20 rounded-xl mb-6"
-          >
-            <h2 className="text-white text-center text-xl font-bold mb-6">
-              {isSignUp ? "Register Portal Access" : "Client Portal Login"}
-            </h2>
-
-            {authError && (
-              <div className="mb-6 p-4 bg-red-500/10 border-l-4 border-red-500 text-red-200 text-sm flex items-start">
-                <AlertCircle className="w-5 h-5 mr-3 flex-shrink-0" />
-                <span className="break-all">{typeof authError === 'object' ? JSON.stringify(authError, null, 2) : String(authError)}</span>
+        ) : (
+          /* ── Normal Login / Register Form ── */
+          <div className="w-[360px] z-10 relative">
+            <div className="flex justify-center items-center gap-2 mb-8">
+              <div className="w-12 h-12 bg-[#1d2327] flex items-center justify-center rounded shadow-lg">
+                <HardHat size={24} className="text-[#f0c243]" />
               </div>
-            )}
+              <span className="text-3xl font-black text-white tracking-wider font-mono drop-shadow-md">
+                BUILD<span className="text-[#f0c243]">FORCE</span>
+              </span>
+            </div>
 
-            {isSignUp && (
+            <form
+              onSubmit={isSignUp ? handleSignUp : handleLogin}
+              className="backdrop-blur-md bg-white/10 p-8 shadow-2xl border border-white/20 rounded-xl mb-6"
+            >
+              <h2 className="text-white text-center text-xl font-bold mb-6">
+                {isSignUp ? "Register Account" : "Admin Portal Login"}
+              </h2>
+
+              {authError && authError !== "__REGISTERED_PENDING__" && (
+                <div className="mb-6 p-4 bg-red-500/10 border-l-4 border-red-500 text-red-200 text-sm flex items-start">
+                  <AlertCircle className="w-5 h-5 mr-3 flex-shrink-0" />
+                  <span className="break-all">{typeof authError === 'object' ? JSON.stringify(authError, null, 2) : String(authError)}</span>
+                </div>
+              )}
+
+              {isSignUp && (
+                <div className="mb-5">
+                  <label className="block text-xs font-bold text-gray-200 uppercase mb-2 drop-shadow-sm">Full Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    className="w-full px-4 py-3 bg-white/80 border border-white/30 rounded text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#f0c243] transition-all"
+                    placeholder="Enter your full name"
+                  />
+                </div>
+              )}
+
               <div className="mb-5">
-                <label className="block text-xs font-bold text-gray-200 uppercase mb-2 drop-shadow-sm">Full Name</label>
+                <label className="block text-xs font-bold text-gray-200 uppercase mb-2 drop-shadow-sm">Email Address</label>
                 <input
-                  type="text"
+                  type="email"
                   required
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="w-full px-4 py-3 bg-white/80 border border-white/30 rounded text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#f0c243] transition-all"
-                  placeholder="Enter your name"
+                  placeholder="name@company.com"
                 />
               </div>
-            )}
 
-            <div className="mb-5">
-              <label className="block text-xs font-bold text-gray-200 uppercase mb-2 drop-shadow-sm">Email Address</label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-white/80 border border-white/30 rounded text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#f0c243] transition-all"
-                placeholder="name@company.com"
-              />
+              <div className="mb-8">
+                <label className="block text-xs font-bold text-gray-200 uppercase mb-2 drop-shadow-sm">Password</label>
+                <input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-3 bg-white/80 border border-white/30 rounded text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#f0c243] transition-all"
+                  placeholder="••••••••"
+                />
+              </div>
+
+              <button type="submit" className="w-full bg-[#f0c243] hover:bg-yellow-400 text-[#1d2327] text-sm font-black py-3 rounded transition-colors shadow-lg">
+                {isSignUp ? "Register" : "Secure Login"}
+              </button>
+            </form>
+
+            <div className="text-center text-sm flex flex-col gap-3 px-1">
+              <button
+                onClick={() => { setIsSignUp(!isSignUp); setAuthError(""); }}
+                className="text-white/80 hover:text-white transition-colors"
+              >
+                {isSignUp ? "Already have an account? Log In" : "Request access — Register"}
+              </button>
+              <button onClick={onClose} className="text-white/60 hover:text-white transition-colors flex items-center justify-center gap-1 mx-auto mt-2">
+                <ArrowRight size={14} className="rotate-180" /> Back to Website
+              </button>
             </div>
-
-            <div className="mb-8">
-              <label className="block text-xs font-bold text-gray-200 uppercase mb-2 drop-shadow-sm">Password</label>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 bg-white/80 border border-white/30 rounded text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#f0c243] transition-all"
-                placeholder="••••••••"
-              />
-            </div>
-
-            <button type="submit" className="w-full bg-[#f0c243] hover:bg-yellow-400 text-[#1d2327] text-sm font-black py-3 rounded transition-colors shadow-lg">
-              {isSignUp ? "Register Admin Account" : "Secure Login"}
-            </button>
-          </form>
-
-          <div className="text-center text-sm flex flex-col gap-3 px-1">
-            <button onClick={() => setIsSignUp(!isSignUp)} className="text-white/80 hover:text-white transition-colors">
-              {isSignUp ? "Already have an account? Log In" : "Request new admin account"}
-            </button>
-            <button onClick={onClose} className="text-white/60 hover:text-white transition-colors flex items-center justify-center gap-1 mx-auto mt-2">
-              <ArrowRight size={14} className="rotate-180" /> Back to Website
-            </button>
           </div>
-        </div>
+        )}
       </div>
     );
   }
@@ -1871,46 +1931,123 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
               {/* TAB: USERS */}
               {activeTab === "users" && userRole === "super_admin" && (
                 <div>
-                  <div className="flex justify-between items-center mb-6">
+                  <div className="flex justify-between items-center mb-2">
                     <h1 className="text-2xl font-normal">User Management</h1>
                   </div>
-                  <div className="bg-white border border-gray-200 shadow-sm overflow-hidden text-sm">
-                    <table className="w-full text-left border-collapse">
-                      <thead>
-                        <tr className="bg-gray-50 border-b text-gray-700">
-                          <th className="p-3 font-semibold">Email</th>
-                          <th className="p-3 font-semibold">Full Name</th>
-                          <th className="p-3 font-semibold">Role</th>
-                          <th className="p-3 font-semibold">Status</th>
-                          <th className="p-3 font-semibold text-right">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {users.map(u => (
-                          <tr key={u.id} className="border-b hover:bg-gray-50">
-                            <td className="p-3 font-semibold text-[#2271b1]">{u.email}</td>
-                            <td className="p-3 text-gray-600">{u.full_name || "-"}</td>
-                            <td className="p-3 text-gray-600">{u.role}</td>
-                            <td className="p-3">
-                              {u.is_approved ? (
-                                <span className="bg-green-100 text-green-800 text-[10px] px-2 py-0.5 rounded font-bold uppercase">Approved</span>
-                              ) : (
-                                <span className="bg-yellow-100 text-yellow-800 text-[10px] px-2 py-0.5 rounded font-bold uppercase">Pending / Suspended</span>
-                              )}
-                            </td>
-                            <td className="p-3 text-right flex justify-end gap-3 items-center">
-                              {!u.is_approved ? (
-                                <button onClick={() => handleApproveUser(u.id, true)} className="text-green-600 hover:text-green-800 flex items-center gap-0.5"><Check size={13} /> Approve</button>
-                              ) : (
-                                <button onClick={() => handleApproveUser(u.id, false)} className="text-orange-500 hover:text-orange-700 flex items-center gap-0.5"><X size={13} /> Suspend</button>
-                              )}
-                              <button onClick={() => handleDeleteUser(u.id)} className="text-[#d63638] hover:text-[#a01c1e]"><Trash2 size={13} /></button>
-                            </td>
+                  <p className="text-xs text-gray-500 mb-5">
+                    Only the Default Admin can approve, suspend, reject, or permanently delete users.
+                    The Default Admin account cannot be modified.
+                  </p>
+
+                  {users.length === 0 && (
+                    <div className="bg-white border border-gray-200 p-8 text-center text-gray-400 italic text-sm">
+                      No users found.
+                    </div>
+                  )}
+
+                  {users.length > 0 && (
+                    <div className="bg-white border border-gray-200 shadow-sm overflow-x-auto text-sm">
+                      <table className="w-full text-left border-collapse min-w-[700px]">
+                        <thead>
+                          <tr className="bg-gray-50 border-b text-gray-700">
+                            <th className="p-3 font-semibold">Email</th>
+                            <th className="p-3 font-semibold">Full Name</th>
+                            <th className="p-3 font-semibold">Role</th>
+                            <th className="p-3 font-semibold">Account Status</th>
+                            <th className="p-3 font-semibold text-right">Actions</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                        </thead>
+                        <tbody>
+                          {users.map(u => {
+                            const isDefaultAdmin = u.role === 'super_admin';
+                            const status = u.account_status || (u.is_approved ? 'approved' : 'pending');
+                            const statusBadge: Record<string, string> = {
+                              approved: 'bg-green-100 text-green-800',
+                              pending: 'bg-yellow-100 text-yellow-800',
+                              rejected: 'bg-red-100 text-red-800',
+                              suspended: 'bg-orange-100 text-orange-800',
+                              deleted: 'bg-gray-200 text-gray-600',
+                            };
+                            return (
+                              <tr key={u.id} className={`border-b hover:bg-gray-50 ${isDefaultAdmin ? 'bg-yellow-50' : ''}`}>
+                                <td className="p-3">
+                                  <div className="flex items-center gap-2">
+                                    {isDefaultAdmin && (
+                                      <span title="Default Admin — Protected" className="text-[10px] bg-[#1d2327] text-[#f0c243] px-1.5 py-0.5 rounded font-black uppercase select-none">ADMIN</span>
+                                    )}
+                                    <span className="font-semibold text-[#2271b1]">{u.email}</span>
+                                  </div>
+                                </td>
+                                <td className="p-3 text-gray-600">{u.full_name || "—"}</td>
+                                <td className="p-3">
+                                  {isDefaultAdmin ? (
+                                    <span className="text-xs font-bold text-gray-700 uppercase">super_admin</span>
+                                  ) : (
+                                    <select
+                                      value={u.role}
+                                      onChange={e => handleUpdateUserRole(u.id, e.target.value)}
+                                      className="border border-gray-300 rounded px-2 py-1 text-xs focus:outline-none focus:border-[#2271b1] bg-white"
+                                    >
+                                      <option value="admin">admin</option>
+                                      <option value="editor">editor</option>
+                                    </select>
+                                  )}
+                                </td>
+                                <td className="p-3">
+                                  <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase ${statusBadge[status] || 'bg-gray-100 text-gray-600'}`}>
+                                    {status}
+                                  </span>
+                                </td>
+                                <td className="p-3 text-right">
+                                  {isDefaultAdmin ? (
+                                    <span className="text-[11px] text-gray-400 italic">Protected — no actions</span>
+                                  ) : (
+                                    <div className="flex justify-end gap-2 items-center flex-wrap">
+                                      {/* Approve */}
+                                      {(status === 'pending' || status === 'suspended' || status === 'rejected') && (
+                                        <button
+                                          onClick={() => handleUpdateUserStatus(u.id, 'approved')}
+                                          className="text-green-600 hover:text-green-800 flex items-center gap-0.5 text-xs font-semibold"
+                                        >
+                                          <Check size={13} /> Approve
+                                        </button>
+                                      )}
+                                      {/* Suspend */}
+                                      {status === 'approved' && (
+                                        <button
+                                          onClick={() => handleUpdateUserStatus(u.id, 'suspended')}
+                                          className="text-orange-500 hover:text-orange-700 flex items-center gap-0.5 text-xs font-semibold"
+                                        >
+                                          <X size={13} /> Suspend
+                                        </button>
+                                      )}
+                                      {/* Reject */}
+                                      {(status === 'pending' || status === 'approved') && (
+                                        <button
+                                          onClick={() => handleUpdateUserStatus(u.id, 'rejected')}
+                                          className="text-red-400 hover:text-red-600 flex items-center gap-0.5 text-xs font-semibold"
+                                        >
+                                          <X size={13} /> Reject
+                                        </button>
+                                      )}
+                                      {/* Permanent Delete */}
+                                      <button
+                                        onClick={() => handleDeleteUser(u.id, u.email)}
+                                        className="text-[#d63638] hover:text-[#a01c1e] flex items-center gap-0.5 text-xs font-semibold"
+                                        title="Permanently delete — removes login credentials"
+                                      >
+                                        <Trash2 size={13} /> Delete
+                                      </button>
+                                    </div>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
                 </div>
               )}
 

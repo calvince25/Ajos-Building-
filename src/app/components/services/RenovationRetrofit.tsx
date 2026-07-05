@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import SEO, { SEOProps, getFAQSchema } from "../SEO";
 import { ArrowRight, CheckCircle, Wrench, ShieldCheck, Layers, TrendingUp, Star, Award } from "lucide-react";
 
-export default function RenovationRetrofit() {
+export default function RenovationRetrofit({ serviceData }: { serviceData?: any }) {
   const faqs = [
     {
       question: "Do you perform structural assessments before starting a renovation?",
@@ -56,7 +56,7 @@ export default function RenovationRetrofit() {
       {/* Hero */}
       <section className="relative pt-20 pb-16 sm:pt-28 sm:pb-20 lg:pt-40 lg:pb-28 bg-primary overflow-hidden">
         <div className="absolute inset-0">
-          <img loading="lazy" src="https://images.unsplash.com/photo-1583024011792-b165975b52f5?w=1600&h=800&fit=crop&auto=format" alt="Building renovation in progress" className="w-full h-full object-cover opacity-25" />
+          <img loading="lazy" src={serviceData?.hero_image_url || "https://images.unsplash.com/photo-1583024011792-b165975b52f5?w=1600&h=800&fit=crop&auto=format"} alt="Building renovation in progress" className="w-full h-full object-cover opacity-25" />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/70" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
@@ -111,7 +111,7 @@ export default function RenovationRetrofit() {
             </div>
           </div>
           <div className="relative">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&h=900&fit=crop&auto=format" alt="Renovated commercial building exterior with modern facade" className="rounded-2xl shadow-2xl object-cover w-full h-[580px]" />
+            <img loading="lazy" src={serviceData?.content_image_url || "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&h=900&fit=crop&auto=format"} alt="Renovated commercial building exterior with modern facade" className="rounded-2xl shadow-2xl object-cover w-full h-[580px]" />
           </div>
         </div>
       </section>

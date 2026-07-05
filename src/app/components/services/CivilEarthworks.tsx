@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import SEO, { SEOProps, getFAQSchema } from "../SEO";
 import { ArrowRight, CheckCircle, Truck, Layers, ShieldCheck, TrendingUp, MapPin, Zap } from "lucide-react";
 
-export default function CivilEarthworks() {
+export default function CivilEarthworks({ serviceData }: { serviceData?: any }) {
   const faqs = [
     {
       question: "What civil and earthworks services does BuildForce provide?",
@@ -65,7 +65,7 @@ export default function CivilEarthworks() {
       {/* Hero */}
       <section className="relative pt-20 pb-16 sm:pt-28 sm:pb-20 lg:pt-40 lg:pb-28 bg-primary overflow-hidden">
         <div className="absolute inset-0">
-          <img loading="lazy" src="https://images.unsplash.com/photo-1580901369227-308f6f40bdeb?w=1600&h=800&fit=crop&auto=format" alt="Heavy civil earthworks machinery grading a large site" className="w-full h-full object-cover opacity-25" />
+          <img loading="lazy" src={serviceData?.hero_image_url || "https://images.unsplash.com/photo-1580901369227-308f6f40bdeb?w=1600&h=800&fit=crop&auto=format"} alt="Heavy civil earthworks machinery grading a large site" className="w-full h-full object-cover opacity-25" />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/70" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
@@ -96,7 +96,7 @@ export default function CivilEarthworks() {
       <section className="py-14 sm:py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div className="relative">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=800&h=900&fit=crop&auto=format" alt="Civil engineers reviewing site grading plans in the field" className="rounded-2xl shadow-2xl object-cover w-full h-[580px]" />
+            <img loading="lazy" src={serviceData?.content_image_url || "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=800&h=900&fit=crop&auto=format"} alt="Civil engineers reviewing site grading plans in the field" className="rounded-2xl shadow-2xl object-cover w-full h-[580px]" />
             <div className="absolute -bottom-8 -right-8 bg-accent text-primary p-8 rounded-xl shadow-xl hidden md:block text-center">
               <span className="text-3xl font-black block">500+</span>
               <span className="text-sm font-bold">Sites Prepared</span>

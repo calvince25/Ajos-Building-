@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import SEO, { SEOProps, getFAQSchema } from "../SEO";
 import { ArrowRight, CheckCircle, Hammer, Home, Users, Star, MapPin } from "lucide-react";
 
-export default function ResidentialDevelopment() {
+export default function ResidentialDevelopment({ serviceData }: { serviceData?: any }) {
   const faqs = [
     {
       question: "What types of residential projects do you build?",
@@ -61,7 +61,7 @@ export default function ResidentialDevelopment() {
       {/* Hero */}
       <section className="relative pt-20 pb-16 sm:pt-28 sm:pb-20 lg:pt-40 lg:pb-28 bg-primary overflow-hidden">
         <div className="absolute inset-0">
-          <img loading="lazy" src="https://images.unsplash.com/photo-1601074231509-dce351c05199?w=1600&h=800&fit=crop&auto=format" alt="Beautiful custom residential home exterior" className="w-full h-full object-cover opacity-25" />
+          <img loading="lazy" src={serviceData?.hero_image_url || "https://images.unsplash.com/photo-1601074231509-dce351c05199?w=1600&h=800&fit=crop&auto=format"} alt="Beautiful custom residential home exterior" className="w-full h-full object-cover opacity-25" />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/70" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
@@ -92,7 +92,7 @@ export default function ResidentialDevelopment() {
       <section className="py-14 sm:py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div className="relative">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=900&fit=crop&auto=format" alt="Construction crew framing a custom home" className="rounded-2xl shadow-2xl object-cover w-full h-[580px]" />
+            <img loading="lazy" src={serviceData?.content_image_url || "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&h=900&fit=crop&auto=format"} alt="Construction crew framing a custom home" className="rounded-2xl shadow-2xl object-cover w-full h-[580px]" />
             <div className="absolute top-8 -right-6 bg-accent text-primary px-6 py-5 rounded-xl shadow-xl hidden md:block">
               <span className="text-3xl font-black block">94%</span>
               <span className="text-xs font-bold uppercase tracking-wide">Client Referral Rate</span>

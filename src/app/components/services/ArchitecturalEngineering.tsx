@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import SEO, { SEOProps, getFAQSchema } from "../SEO";
 import { ArrowRight, CheckCircle, Ruler, Layers, Award, Star, Users, TrendingUp } from "lucide-react";
 
-export default function ArchitecturalEngineering() {
+export default function ArchitecturalEngineering({ serviceData }: { serviceData?: any }) {
   const faqs = [
     {
       question: "What does your in-house architectural team provide?",
@@ -61,7 +61,7 @@ export default function ArchitecturalEngineering() {
       {/* Hero */}
       <section className="relative pt-20 pb-16 sm:pt-28 sm:pb-20 lg:pt-40 lg:pb-28 bg-primary overflow-hidden">
         <div className="absolute inset-0">
-          <img loading="lazy" src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1600&h=800&fit=crop&auto=format" alt="Architects reviewing building blueprints and 3D models" className="w-full h-full object-cover opacity-25" />
+          <img loading="lazy" src={serviceData?.hero_image_url || "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1600&h=800&fit=crop&auto=format"} alt="Architects reviewing building blueprints and 3D models" className="w-full h-full object-cover opacity-25" />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/70" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
@@ -111,7 +111,7 @@ export default function ArchitecturalEngineering() {
             </div>
           </div>
           <div className="relative">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1574691250077-03a929faece5?w=800&h=900&fit=crop&auto=format" alt="Architectural blueprints and structural engineering drawings" className="rounded-2xl shadow-2xl object-cover w-full h-[580px]" />
+            <img loading="lazy" src={serviceData?.content_image_url || "https://images.unsplash.com/photo-1574691250077-03a929faece5?w=800&h=900&fit=crop&auto=format"} alt="Architectural blueprints and structural engineering drawings" className="rounded-2xl shadow-2xl object-cover w-full h-[580px]" />
             <div className="absolute -bottom-8 -left-8 bg-accent text-primary p-6 rounded-xl shadow-xl hidden md:block">
               <span className="text-3xl font-black block">BIM</span>
               <span className="text-xs font-bold uppercase tracking-wide">Standard on All Projects</span>

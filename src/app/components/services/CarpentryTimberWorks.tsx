@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import SEO, { SEOProps, getFAQSchema } from "../SEO";
 import { ArrowRight, HardHat } from "lucide-react";
 
-export default function CarpentryTimberWorks() {
+export default function CarpentryTimberWorks({ serviceData }: { serviceData?: any }) {
   const faqs = [
     {
       question: "What timber species do you work with?",
@@ -60,7 +60,7 @@ export default function CarpentryTimberWorks() {
       {/* Hero */}
       <section className="relative pt-20 pb-16 sm:pt-28 sm:pb-20 lg:pt-40 lg:pb-28 bg-primary overflow-hidden">
         <div className="absolute inset-0">
-          <img loading="lazy" src="https://images.unsplash.com/photo-1504148455328-c376907d081c?w=1600&h=800&fit=crop&auto=format" alt="Master carpenter crafting custom timber joinery in a workshop" className="w-full h-full object-cover opacity-25" />
+          <img loading="lazy" src={serviceData?.hero_image_url || "https://images.unsplash.com/photo-1504148455328-c376907d081c?w=1600&h=800&fit=crop&auto=format"} alt="Master carpenter crafting custom timber joinery in a workshop" className="w-full h-full object-cover opacity-25" />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/70" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
@@ -107,7 +107,7 @@ export default function CarpentryTimberWorks() {
             </div>
           </div>
           <div className="relative">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1601599561213-832382fd07ba?w=800&h=1000&fit=crop&auto=format" alt="Carpenter installing a custom wooden door frame on a residential property" className="rounded-2xl shadow-2xl object-cover w-full h-[580px]" />
+            <img loading="lazy" src={serviceData?.content_image_url || "https://images.unsplash.com/photo-1601599561213-832382fd07ba?w=800&h=1000&fit=crop&auto=format"} alt="Carpenter installing a custom wooden door frame on a residential property" className="rounded-2xl shadow-2xl object-cover w-full h-[580px]" />
             <div className="absolute top-8 -right-6 bg-accent text-primary px-6 py-5 rounded-xl shadow-xl hidden md:block">
               <span className="text-3xl font-black block">20+</span>
               <span className="text-xs font-bold uppercase tracking-wide">Years Timber Expertise</span>

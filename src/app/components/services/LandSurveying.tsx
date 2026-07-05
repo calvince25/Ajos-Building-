@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import SEO, { SEOProps, getFAQSchema } from "../SEO";
 import { ArrowRight, Ruler } from "lucide-react";
 
-export default function LandSurveying() {
+export default function LandSurveying({ serviceData }: { serviceData?: any }) {
   const faqs = [
     {
       question: "What equipment do you use for land surveying?",
@@ -60,7 +60,7 @@ export default function LandSurveying() {
       {/* Hero */}
       <section className="relative pt-20 pb-16 sm:pt-28 sm:pb-20 lg:pt-40 lg:pb-28 bg-primary overflow-hidden">
         <div className="absolute inset-0">
-          <img loading="lazy" src="https://images.unsplash.com/photo-1582621404618-fc4b2e4dfc9d?w=1600&h=800&fit=crop&auto=format" alt="Land surveyor using total station equipment on a construction site" className="w-full h-full object-cover opacity-25" />
+          <img loading="lazy" src={serviceData?.hero_image_url || "https://images.unsplash.com/photo-1582621404618-fc4b2e4dfc9d?w=1600&h=800&fit=crop&auto=format"} alt="Land surveyor using total station equipment on a construction site" className="w-full h-full object-cover opacity-25" />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/70" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
@@ -107,7 +107,7 @@ export default function LandSurveying() {
             </div>
           </div>
           <div className="relative">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=1000&fit=crop&auto=format" alt="Surveyor checking instrument readings on a large development site" className="rounded-2xl shadow-2xl object-cover w-full h-[580px]" />
+            <img loading="lazy" src={serviceData?.content_image_url || "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=1000&fit=crop&auto=format"} alt="Surveyor checking instrument readings on a large development site" className="rounded-2xl shadow-2xl object-cover w-full h-[580px]" />
             <div className="absolute top-8 -right-6 bg-accent text-primary px-6 py-5 rounded-xl shadow-xl hidden md:block">
               <span className="text-3xl font-black block">±2mm</span>
               <span className="text-xs font-bold uppercase tracking-wide">Survey Accuracy</span>

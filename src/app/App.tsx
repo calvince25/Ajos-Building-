@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Routes, Route, Link, useNavigate, useLocation } from "react-router";
 import { supabase } from "./supabaseClient";
 import AdminDashboard from "./components/AdminDashboard";
-import { ServicesPage, ProjectsPage, AboutPage, TeamPage, BlogPage, ContactPage } from "./components/Pages";
+import { ServicesPage, ProjectsPage, AboutPage, TeamPage, CareersPage, BlogPage, ContactPage } from "./components/Pages";
 import CommercialConstruction from "./components/services/CommercialConstruction";
 import IndustrialInfrastructure from "./components/services/IndustrialInfrastructure";
 import ResidentialDevelopment from "./components/services/ResidentialDevelopment";
@@ -49,7 +49,7 @@ import {
   Zap,
 } from "lucide-react";
 
-const NAV_LINKS = ["Home", "Services", "Projects", "About", "Team", "Blog", "Contact"];
+const NAV_LINKS = ["Home", "Services", "Projects", "About", "Team", "Careers", "Blog", "Contact"];
 
 const DEFAULT_SERVICES = [
   {
@@ -349,6 +349,7 @@ export default function App() {
     instagram: "#"
   });
   const [blogs, setBlogs] = useState<any[]>([]);
+  const [careers, setCareers] = useState<any[]>([]);
 
   // Scroll to top on page change
   useEffect(() => {
@@ -358,14 +359,15 @@ export default function App() {
   useEffect(() => {
     async function loadDynamicContent() {
       try {
-        const [sRes, pRes, tRes, testRes, fRes, settingsRes, bRes] = await Promise.all([
+        const [sRes, pRes, tRes, testRes, fRes, settingsRes, bRes, cRes] = await Promise.all([
           supabase.from("services").select("*"),
           supabase.from("projects").select("*"),
           supabase.from("team_members").select("*"),
           supabase.from("testimonials").select("*"),
           supabase.from("faqs").select("*").order("display_order"),
           supabase.from("website_settings").select("*"),
-          supabase.from("blog_posts").select("*").order("created_at", { ascending: false })
+          supabase.from("blog_posts").select("*").order("created_at", { ascending: false }),
+          supabase.from("careers").select("*").order("created_at", { ascending: false })
         ]);
 
         if (sRes.data && sRes.data.length > 0) {
@@ -388,6 +390,7 @@ export default function App() {
         if (testRes.data && testRes.data.length > 0) setTestimonials(testRes.data);
         if (fRes.data && fRes.data.length > 0) setFaqs(fRes.data);
         if (bRes.data) setBlogs(bRes.data);
+        if (cRes.data) setCareers(cRes.data.filter((c: any) => c.status === "published"));
 
 
         if (settingsRes.data) {
@@ -606,20 +609,21 @@ export default function App() {
       {/* ─── PAGE ROUTER ─── */}
       <Routes>
         <Route path="/services" element={<ServicesPage services={services} />} />
-        <Route path="/services/commercial-construction" element={<CommercialConstruction />} />
-        <Route path="/services/industrial-infrastructure" element={<IndustrialInfrastructure />} />
-        <Route path="/services/residential-development" element={<ResidentialDevelopment />} />
-        <Route path="/services/renovation-retrofit" element={<RenovationRetrofit />} />
-        <Route path="/services/architectural-engineering" element={<ArchitecturalEngineering />} />
-        <Route path="/services/civil-earthworks" element={<CivilEarthworks />} />
-        <Route path="/services/interior-exterior-finishes" element={<InteriorExteriorFinishes />} />
-        <Route path="/services/carpentry-timber-works" element={<CarpentryTimberWorks />} />
-        <Route path="/services/masonry-building-materials" element={<MasonryBuildingMaterials />} />
-        <Route path="/services/land-surveying" element={<LandSurveying />} />
-        <Route path="/services/construction-project-management" element={<ConstructionProjectManagement />} />
+        <Route path="/services/commercial-construction" element={<CommercialConstruction serviceData={services.find(s => s.slug === "commercial-construction")} />} />
+        <Route path="/services/industrial-infrastructure" element={<IndustrialInfrastructure serviceData={services.find(s => s.slug === "industrial-infrastructure")} />} />
+        <Route path="/services/residential-development" element={<ResidentialDevelopment serviceData={services.find(s => s.slug === "residential-development")} />} />
+        <Route path="/services/renovation-retrofit" element={<RenovationRetrofit serviceData={services.find(s => s.slug === "renovation-retrofit")} />} />
+        <Route path="/services/architectural-engineering" element={<ArchitecturalEngineering serviceData={services.find(s => s.slug === "architectural-engineering")} />} />
+        <Route path="/services/civil-earthworks" element={<CivilEarthworks serviceData={services.find(s => s.slug === "civil-earthworks")} />} />
+        <Route path="/services/interior-exterior-finishes" element={<InteriorExteriorFinishes serviceData={services.find(s => s.slug === "interior-exterior-finishes")} />} />
+        <Route path="/services/carpentry-timber-works" element={<CarpentryTimberWorks serviceData={services.find(s => s.slug === "carpentry-timber-works")} />} />
+        <Route path="/services/masonry-building-materials" element={<MasonryBuildingMaterials serviceData={services.find(s => s.slug === "masonry-building-materials")} />} />
+        <Route path="/services/land-surveying" element={<LandSurveying serviceData={services.find(s => s.slug === "land-surveying")} />} />
+        <Route path="/services/construction-project-management" element={<ConstructionProjectManagement serviceData={services.find(s => s.slug === "construction-project-management")} />} />
         <Route path="/projects" element={<ProjectsPage projects={projects} />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/team" element={<TeamPage team={team} />} />
+        <Route path="/careers" element={<CareersPage careers={careers} />} />
         <Route path="/blog" element={<BlogPage blogs={blogs} />} />
         <Route path="/contact" element={<ContactPage contactDetails={contactDetails} companySettings={companySettings} />} />
         <Route path="/" element={<>

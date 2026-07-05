@@ -354,7 +354,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
     }
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, fieldName: string = "image_url") => {
     const file = e.target.files?.[0];
     if (!file) return;
     try {
@@ -373,7 +373,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
         .from("media")
         .getPublicUrl(filePath);
 
-      setFormData({ ...formData, image_url: publicUrl });
+      setFormData(prev => ({ ...prev, [fieldName]: publicUrl }));
 
       await supabase.from("media_library").insert({
         file_name: file.name,
@@ -818,13 +818,35 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                           </div>
                         </div>
                         <div>
-                          <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Image URL</label>
+                          <label className="block text-xs font-bold text-gray-700 uppercase mb-1">List Image URL (For service cards)</label>
                           <div className="flex gap-2 items-center">
                             <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
                               value={formData.image_url || ""} onChange={e => setFormData({...formData, image_url: e.target.value})} placeholder="Paste URL or upload..." />
                             <label className="cursor-pointer bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 text-xs font-semibold px-3 py-2 rounded flex items-center gap-1.5 whitespace-nowrap">
                               {isUploadingImage ? "Uploading..." : <><Upload size={13} /> Upload</>}
-                              <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} disabled={isUploadingImage} />
+                              <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e, "image_url")} disabled={isUploadingImage} />
+                            </label>
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Hero Image URL (Top banner)</label>
+                          <div className="flex gap-2 items-center">
+                            <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
+                              value={formData.hero_image_url || ""} onChange={e => setFormData({...formData, hero_image_url: e.target.value})} placeholder="Paste URL or upload..." />
+                            <label className="cursor-pointer bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 text-xs font-semibold px-3 py-2 rounded flex items-center gap-1.5 whitespace-nowrap">
+                              {isUploadingImage ? "Uploading..." : <><Upload size={13} /> Upload</>}
+                              <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e, "hero_image_url")} disabled={isUploadingImage} />
+                            </label>
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Content Image URL (Inside page)</label>
+                          <div className="flex gap-2 items-center">
+                            <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
+                              value={formData.content_image_url || ""} onChange={e => setFormData({...formData, content_image_url: e.target.value})} placeholder="Paste URL or upload..." />
+                            <label className="cursor-pointer bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 text-xs font-semibold px-3 py-2 rounded flex items-center gap-1.5 whitespace-nowrap">
+                              {isUploadingImage ? "Uploading..." : <><Upload size={13} /> Upload</>}
+                              <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e, "content_image_url")} disabled={isUploadingImage} />
                             </label>
                           </div>
                         </div>
@@ -1697,8 +1719,146 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                 </div>
               )}
 
-              {/* FALLBACK TABS FOR CAREERS, MEDIA */}
-              {["careers", "media"].includes(activeTab) && (
+              {/* TAB: CAREERS */}
+              {activeTab === "careers" && (
+                <div>
+                  <div className="flex justify-between items-center mb-6">
+                    <h1 className="text-2xl font-normal">Careers</h1>
+                    {!isAdding && !editingItem && (
+                      <button onClick={() => { setIsAdding(true); setFormData({ status: "published", type: "Full-time" }); }} className="bg-[#2271b1] hover:bg-[#135e96] text-white text-xs font-semibold px-3 py-1.5 rounded flex items-center gap-1.5">
+                        <Plus size={13} /> Add New Career
+                      </button>
+                    )}
+                  </div>
+
+                  {isAdding || editingItem ? (
+                    <div className="bg-white p-6 shadow-sm border border-gray-200 max-w-3xl">
+                      <h2 className="text-lg font-medium mb-4">{editingItem ? "Edit Career" : "Add New Career"}</h2>
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Job Title</label>
+                            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
+                              value={formData.title || ""} onChange={e => setFormData({...formData, title: e.target.value})} />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Department</label>
+                            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
+                              value={formData.department || ""} onChange={e => setFormData({...formData, department: e.target.value})} placeholder="e.g. Engineering, Site Management" />
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-4">
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Location</label>
+                            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
+                              value={formData.location || ""} onChange={e => setFormData({...formData, location: e.target.value})} />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Type</label>
+                            <select className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
+                              value={formData.type || "Full-time"} onChange={e => setFormData({...formData, type: e.target.value})}>
+                              <option value="Full-time">Full-time</option>
+                              <option value="Part-time">Part-time</option>
+                              <option value="Contract">Contract</option>
+                              <option value="Internship">Internship</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Status</label>
+                            <select className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
+                              value={formData.status || "published"} onChange={e => setFormData({...formData, status: e.target.value})}>
+                              <option value="published">Published</option>
+                              <option value="draft">Draft</option>
+                              <option value="archived">Archived</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Description</label>
+                          <textarea rows={4} className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
+                            value={formData.description || ""} onChange={e => setFormData({...formData, description: e.target.value})} />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Requirements (One per line)</label>
+                          <textarea rows={4} className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
+                            value={Array.isArray(formData.requirements) ? formData.requirements.join('\n') : (formData.requirements || "")} 
+                            onChange={e => setFormData({...formData, requirements: e.target.value.split('\n').filter(Boolean)})} 
+                            placeholder="Must have 5+ years experience..." />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Benefits (One per line)</label>
+                          <textarea rows={4} className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
+                            value={Array.isArray(formData.benefits) ? formData.benefits.join('\n') : (formData.benefits || "")} 
+                            onChange={e => setFormData({...formData, benefits: e.target.value.split('\n').filter(Boolean)})} 
+                            placeholder="Health Insurance..." />
+                        </div>
+                      </div>
+                      <div className="mt-6 flex gap-3">
+                        <button onClick={() => handleSave("careers", editingItem?.id)} className="bg-[#2271b1] hover:bg-[#135e96] text-white text-xs font-semibold px-4 py-2 rounded">
+                          {editingItem ? "Update Career" : "Publish Career"}
+                        </button>
+                        <button onClick={() => { setIsAdding(false); setEditingItem(null); setFormData({}); }} className="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold px-4 py-2 rounded">Cancel</button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      {/* Sub-navigation filters */}
+                      <div className="flex gap-4 mb-4 text-sm">
+                        <button onClick={() => setStatusFilter("all")} className={`${statusFilter === "all" ? "text-black font-bold" : "text-[#2271b1] hover:text-[#135e96]"}`}>All <span className="text-gray-400 font-normal">({careers.filter(c => c.status !== "archived").length})</span></button>
+                        <span className="text-gray-300">|</span>
+                        <button onClick={() => setStatusFilter("published")} className={`${statusFilter === "published" ? "text-black font-bold" : "text-[#2271b1] hover:text-[#135e96]"}`}>Published <span className="text-gray-400 font-normal">({careers.filter(c => c.status === "published").length})</span></button>
+                        <span className="text-gray-300">|</span>
+                        <button onClick={() => setStatusFilter("draft")} className={`${statusFilter === "draft" ? "text-black font-bold" : "text-[#2271b1] hover:text-[#135e96]"}`}>Drafts <span className="text-gray-400 font-normal">({careers.filter(c => c.status === "draft").length})</span></button>
+                        <span className="text-gray-300">|</span>
+                        <button onClick={() => setStatusFilter("archived")} className={`${statusFilter === "archived" ? "text-black font-bold" : "text-[#2271b1] hover:text-[#135e96]"}`}>Archived <span className="text-gray-400 font-normal">({careers.filter(c => c.status === "archived").length})</span></button>
+                      </div>
+
+                      <div className="bg-white border border-gray-200 shadow-sm overflow-hidden text-sm">
+                        <table className="w-full text-left border-collapse">
+                          <thead>
+                            <tr className="bg-gray-50 border-b text-gray-700">
+                              <th className="p-3 font-semibold">Job Title</th>
+                              <th className="p-3 font-semibold">Department</th>
+                              <th className="p-3 font-semibold">Location</th>
+                              <th className="p-3 font-semibold">Status</th>
+                              <th className="p-3 font-semibold text-right">Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {getFilteredItems(careers).length === 0 && (
+                              <tr><td colSpan={5} className="p-6 text-center text-gray-400 italic">No careers found.</td></tr>
+                            )}
+                            {getFilteredItems(careers).map(c => (
+                              <tr key={c.id} className="border-b hover:bg-gray-50">
+                                <td className="p-3 font-semibold text-[#2271b1]">{c.title} <span className="text-gray-400 text-xs font-normal ml-2">({c.type})</span></td>
+                                <td className="p-3 text-gray-600">{c.department}</td>
+                                <td className="p-3 text-gray-600">{c.location}</td>
+                                <td className="p-3">
+                                  <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase ${
+                                    c.status === "published" ? "bg-green-100 text-green-800" :
+                                    c.status === "draft" ? "bg-yellow-100 text-yellow-800" : "bg-red-100 text-red-800"
+                                  }`}>{c.status}</span>
+                                </td>
+                                <td className="p-3 text-right flex justify-end gap-3 items-center">
+                                  <button onClick={() => { setEditingItem(c); setFormData(c); }} className="text-[#2271b1] hover:text-[#135e96] flex items-center gap-0.5"><Edit3 size={13} /> Edit</button>
+                                  <button onClick={() => handleDuplicate("careers", c)} className="text-gray-600 hover:text-gray-800 flex items-center gap-0.5"><Copy size={13} /> Clone</button>
+                                  {c.status !== "archived" && (
+                                    <button onClick={() => handleStatusUpdate("careers", c.id, "archived")} className="text-red-500 hover:text-red-700 flex items-center gap-0.5"><Archive size={13} /> Archive</button>
+                                  )}
+                                  <button onClick={() => handleDelete("careers", c.id)} className="text-[#d63638] hover:text-[#a01c1e]"><Trash2 size={13} /></button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* FALLBACK TABS FOR MEDIA */}
+              {["media"].includes(activeTab) && (
                 <div className="bg-white p-6 shadow-sm border border-gray-200">
                   <h2 className="text-lg font-medium capitalize mb-4">Manage {activeTab}</h2>
                   <p className="text-sm text-gray-500">Fully loaded dashboard editor module for {activeTab}. Enable forms, uploads and list filtering on the go.</p>

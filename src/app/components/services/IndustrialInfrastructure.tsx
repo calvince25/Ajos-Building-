@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import SEO, { SEOProps, getFAQSchema } from "../SEO";
 import { ArrowRight, CheckCircle, HardHat, Truck, ShieldCheck, TrendingUp, Layers, Zap } from "lucide-react";
 
-export default function IndustrialInfrastructure() {
+export default function IndustrialInfrastructure({ serviceData }: { serviceData?: any }) {
   const faqs = [
     {
       question: "What kinds of industrial construction projects does BuildForce handle?",
@@ -56,7 +56,7 @@ export default function IndustrialInfrastructure() {
       {/* Hero */}
       <section className="relative pt-20 pb-16 sm:pt-28 sm:pb-20 lg:pt-40 lg:pb-28 bg-primary overflow-hidden">
         <div className="absolute inset-0">
-          <img loading="lazy" src="https://images.unsplash.com/photo-1527335988388-b40ee248d80c?w=1600&h=800&fit=crop&auto=format" alt="Industrial construction site with heavy machinery" className="w-full h-full object-cover opacity-25" />
+          <img loading="lazy" src={serviceData?.hero_image_url || "https://images.unsplash.com/photo-1527335988388-b40ee248d80c?w=1600&h=800&fit=crop&auto=format"} alt="Industrial construction site with heavy machinery" className="w-full h-full object-cover opacity-25" />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/70" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
@@ -88,7 +88,7 @@ export default function IndustrialInfrastructure() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="relative">
-              <img loading="lazy" src="https://images.unsplash.com/photo-1565008576549-57569a49371d?w=800&h=900&fit=crop&auto=format" alt="Large industrial warehouse interior" className="rounded-2xl shadow-2xl object-cover w-full h-[580px]" />
+              <img loading="lazy" src={serviceData?.content_image_url || "https://images.unsplash.com/photo-1565008576549-57569a49371d?w=800&h=900&fit=crop&auto=format"} alt="Large industrial warehouse interior" className="rounded-2xl shadow-2xl object-cover w-full h-[580px]" />
               <div className="absolute -bottom-8 -right-8 bg-accent p-8 rounded-xl shadow-xl text-primary hidden md:block">
                 <span className="text-4xl font-black block" style={{ fontFamily: "'Montserrat', sans-serif" }}>KES 2.1B+</span>
                 <span className="font-bold text-sm">Industrial Value Delivered</span>

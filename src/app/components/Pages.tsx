@@ -601,3 +601,78 @@ export function ContactPage({ contactDetails, companySettings }: ContactPageProp
     </main>
   );
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CAREERS PAGE
+// ─────────────────────────────────────────────────────────────────────────────
+interface CareersPageProps {
+  careers: any[];
+}
+export function CareersPage({ careers }: CareersPageProps) {
+  return (
+    <main id="careers-page" className="bg-background pb-16">
+      <SEO title="Careers | BuildForce" description="Join our team of dedicated professionals." keywords="careers, jobs, construction jobs" />
+      <PageHero
+        title="Careers"
+        subtitle="Join Our Team"
+        imageUrl="https://images.unsplash.com/photo-1541888086425-d81bb19240f5?q=80&w=2000&auto=format&fit=crop"
+      />
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 mt-12 sm:mt-16">
+        <p className="text-muted-foreground text-center mb-10 max-w-2xl mx-auto text-sm">
+          We are always looking for talented and passionate individuals to join our team. 
+          If you are committed to excellence and want to build a rewarding career, explore our open positions below.
+        </p>
+
+        {careers.length === 0 ? (
+          <div className="text-center p-10 bg-card border border-border rounded-lg">
+            <h3 className="text-lg font-bold text-primary mb-2">No Open Positions Currently</h3>
+            <p className="text-muted-foreground text-sm">Please check back later or send us your resume speculatively.</p>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {careers.map((career) => (
+              <div key={career.id} className="bg-card p-6 rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-4 mb-4">
+                  <div>
+                    <h3 className="text-xl font-black text-primary" style={{ fontFamily: "'Montserrat', sans-serif" }}>{career.title}</h3>
+                    <div className="flex flex-wrap gap-3 mt-2 text-sm text-muted-foreground">
+                      {career.department && <span className="flex items-center gap-1"><Users size={14} className="text-accent"/> {career.department}</span>}
+                      {career.location && <span className="flex items-center gap-1"><MapPin size={14} className="text-accent"/> {career.location}</span>}
+                      {career.type && <span className="flex items-center gap-1"><Clock size={14} className="text-accent"/> {career.type}</span>}
+                    </div>
+                  </div>
+                  <Link to="/contact" className="bg-primary text-white text-xs font-bold px-4 py-2 rounded hover:bg-primary/90 transition-colors whitespace-nowrap self-start">
+                    Apply Now
+                  </Link>
+                </div>
+                {career.description && (
+                  <p className="text-sm text-muted-foreground mb-4 whitespace-pre-line">{career.description}</p>
+                )}
+                {career.requirements && career.requirements.length > 0 && (
+                  <div className="mb-4">
+                    <h4 className="text-sm font-bold text-primary mb-2 uppercase tracking-wider">Requirements</h4>
+                    <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
+                      {career.requirements.map((req: string, i: number) => (
+                        <li key={i}>{req}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {career.benefits && career.benefits.length > 0 && (
+                  <div>
+                    <h4 className="text-sm font-bold text-primary mb-2 uppercase tracking-wider">Benefits</h4>
+                    <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
+                      {career.benefits.map((ben: string, i: number) => (
+                        <li key={i}>{ben}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </main>
+  );
+}

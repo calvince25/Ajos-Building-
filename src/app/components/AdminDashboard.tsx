@@ -113,6 +113,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
   const [isAdding, setIsAdding] = useState(false);
   const [formData, setFormData] = useState<any>({});
   const [previewItem, setPreviewItem] = useState<any>(null);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -337,6 +338,43 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
       fetchAllData();
     } catch (err: any) {
       alert("Error saving settings: " + err.message);
+    }
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      setIsUploadingImage(true);
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `uploads/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("media")
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from("media")
+        .getPublicUrl(filePath);
+
+      setFormData({ ...formData, image_url: publicUrl });
+
+      await supabase.from("media_library").insert({
+        file_name: file.name,
+        file_url: publicUrl,
+        file_type: file.type,
+        file_size: file.size,
+        uploaded_by: session.user.id
+      });
+      
+      fetchAllData();
+    } catch (err: any) {
+      alert("Error uploading image: " + err.message);
+    } finally {
+      setIsUploadingImage(false);
     }
   };
 
@@ -722,8 +760,14 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                         </div>
                         <div>
                           <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Image URL</label>
-                          <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
-                            value={formData.image_url || ""} onChange={e => setFormData({...formData, image_url: e.target.value})} />
+                          <div className="flex gap-2 items-center">
+                            <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
+                              value={formData.image_url || ""} onChange={e => setFormData({...formData, image_url: e.target.value})} placeholder="Paste URL or upload..." />
+                            <label className="cursor-pointer bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 text-xs font-semibold px-3 py-2 rounded flex items-center gap-1.5 whitespace-nowrap">
+                              {isUploadingImage ? "Uploading..." : <><Upload size={13} /> Upload</>}
+                              <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} disabled={isUploadingImage} />
+                            </label>
+                          </div>
                         </div>
                         <div>
                           <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Icon Name (e.g. Building2, Wrench, Hammer)</label>
@@ -896,8 +940,14 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                         </div>
                         <div>
                           <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Image URL</label>
-                          <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
-                            value={formData.image_url || ""} onChange={e => setFormData({...formData, image_url: e.target.value})} />
+                          <div className="flex gap-2 items-center">
+                            <input type="text" className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
+                              value={formData.image_url || ""} onChange={e => setFormData({...formData, image_url: e.target.value})} placeholder="Paste URL or upload..." />
+                            <label className="cursor-pointer bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 text-xs font-semibold px-3 py-2 rounded flex items-center gap-1.5 whitespace-nowrap">
+                              {isUploadingImage ? "Uploading..." : <><Upload size={13} /> Upload</>}
+                              <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} disabled={isUploadingImage} />
+                            </label>
+                          </div>
                         </div>
                         <div className="flex gap-2">
                           <button onClick={() => handleSave("projects", editingItem?.id)} className="bg-[#2271b1] hover:bg-[#135e96] text-white text-xs font-semibold px-4 py-2 rounded">

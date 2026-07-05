@@ -113,7 +113,7 @@ export function ProjectsPage({ projects }: ProjectsPageProps) {
       <PageHero 
         title="Project Portfolio"
         subtitle="Our Work"
-        imageUrl="https://images.unsplash.com/photo-1541888086425-d81bb19240f5?q=80&w=2000&auto=format&fit=crop"
+        imageUrl="https://images.unsplash.com/photo-1580901369227-308f6f40bdeb?q=80&w=2000&auto=format&fit=crop"
       />
       <div className="max-w-7xl mx-auto px-6 mt-16">
         <p className="text-muted-foreground text-center mb-10 max-w-xl mx-auto text-sm">Explore our completed developments, civil undertakings, and custom residential communities.</p>
@@ -182,7 +182,7 @@ export function AboutPage() {
               From our earliest days, we recognized that the traditional construction model—often plagued by fragmented communication between architects, engineers, and general contractors—was inherently flawed. In response, we built a comprehensive, in-house team of structural engineers, master architects, procurement specialists, and seasoned project managers. This unified approach eliminates silos, accelerates project timelines, and ensures that every structural detail is meticulously planned and executed under a single point of accountability.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              Today, BuildForce boasts a delivered project portfolio exceeding $2.1 billion. We have successfully completed over 350 major developments across commercial, industrial, civil, and residential sectors. Whether we are constructing a state-of-the-art logistics hub, a towering corporate headquarters, or a complex municipal bridge, our core philosophy remains unchanged: to deliver absolute cost certainty, rigorous schedule adherence, and uncompromising structural integrity.
+              Today, BuildForce boasts a delivered project portfolio exceeding KES 2.1 billion. We have successfully completed over 350 major developments across commercial, industrial, civil, and residential sectors. Whether we are constructing a state-of-the-art logistics hub, a towering corporate headquarters, or a complex municipal bridge, our core philosophy remains unchanged: to deliver absolute cost certainty, rigorous schedule adherence, and uncompromising structural integrity.
             </p>
           </div>
           <div className="relative">
@@ -353,7 +353,7 @@ export function AboutPage() {
                 The success of BuildForce is directly attributable to the exceptional talent and steadfast dedication of our leadership team. Comprised of industry veterans—including licensed structural engineers, registered architects, and certified project management professionals—our executives bring decades of hands-on experience navigating the most complex construction challenges.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-8">
-                We foster a culture of continuous learning and mentorship, ensuring that our technical expertise is passed down to the next generation of builders. When you partner with us, you are gaining the collective intellectual capital of a team that has successfully managed billions of dollars in critical infrastructure and commercial development.
+                We foster a culture of continuous learning and mentorship, ensuring that our technical expertise is passed down to the next generation of builders. When you partner with us, you are gaining the collective intellectual capital of a team that has successfully managed billions of shillings in critical infrastructure and commercial development.
               </p>
               <Link to="/team" className="inline-flex items-center gap-2 text-accent font-bold hover:underline">
                 Meet Our Board of Directors <ArrowRight size={16} />
@@ -409,7 +409,7 @@ export function TeamPage({ team }: TeamPageProps) {
       <PageHero 
         title="Our Leadership"
         subtitle="The Team Behind the Build"
-        imageUrl="https://images.unsplash.com/photo-1504307651254-35680f356f27?q=80&w=2000&auto=format&fit=crop"
+        imageUrl="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2000&auto=format&fit=crop"
       />
       <div className="max-w-7xl mx-auto px-6 mt-16">
         <p className="text-muted-foreground text-center mb-12 max-w-xl mx-auto text-sm">Decades of combined engineering expertise, architectural innovation, and site contracting oversight.</p>

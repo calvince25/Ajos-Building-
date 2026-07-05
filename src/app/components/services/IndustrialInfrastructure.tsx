@@ -19,7 +19,7 @@ export default function IndustrialInfrastructure() {
     },
     {
       question: "What is your largest completed industrial project to date?",
-      answer: "Our largest single contract was a $68M integrated logistics campus consisting of three warehouse buildings totalling 1.1 million sq ft, a vehicle marshalling yard, and a dedicated rail spur, completed 45 days ahead of schedule in Houston, TX."
+      answer: "Our largest single contract was a KES 68M integrated logistics campus consisting of three warehouse buildings totalling 1.1 million sq ft, a vehicle marshalling yard, and a dedicated rail spur, completed 45 days ahead of schedule in Houston, TX."
     },
     {
       question: "Do you provide design-build services for industrial developments?",
@@ -29,7 +29,7 @@ export default function IndustrialInfrastructure() {
 
   const seoConfig: SEOProps = {
     title: "Industrial & Infrastructure Construction | Warehouses, Bridges & Plants",
-    description: "Expert industrial construction services for warehouses, factories, bridges, and public infrastructure. Design-build delivery with proven on-time performance on projects from $1M to $100M+.",
+    description: "Expert industrial construction services for warehouses, factories, bridges, and public infrastructure. Design-build delivery with proven on-time performance on projects from KES 1M to KES 100M+.",
     canonical: "/services/industrial-infrastructure",
     keywords: "industrial construction, warehouse construction, manufacturing plant builder, infrastructure contractor, bridge construction, logistics facility, heavy industrial construction",
     structuredData: {
@@ -90,7 +90,7 @@ export default function IndustrialInfrastructure() {
             <div className="relative">
               <img loading="lazy" src="https://images.unsplash.com/photo-1565008576549-57569a49371d?w=800&h=900&fit=crop&auto=format" alt="Large industrial warehouse interior" className="rounded-2xl shadow-2xl object-cover w-full h-[580px]" />
               <div className="absolute -bottom-8 -right-8 bg-accent p-8 rounded-xl shadow-xl text-primary hidden md:block">
-                <span className="text-4xl font-black block" style={{ fontFamily: "'Montserrat', sans-serif" }}>$2.1B+</span>
+                <span className="text-4xl font-black block" style={{ fontFamily: "'Montserrat', sans-serif" }}>KES 2.1B+</span>
                 <span className="font-bold text-sm">Industrial Value Delivered</span>
               </div>
             </div>
@@ -160,10 +160,10 @@ export default function IndustrialInfrastructure() {
               <span className="text-accent font-bold text-sm uppercase tracking-widest">Featured Project</span>
               <h2 className="text-3xl font-black text-primary mt-2 mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Meridian Business Park — Houston, TX</h2>
               <p className="text-muted-foreground leading-relaxed mb-6">
-                A landmark 540,000 sq ft multi-tenant industrial park delivered for a major logistics REIT client. The Meridian Business Park project required simultaneous construction of three separate warehouse buildings, shared truck courts, a dedicated rail access spur, and all associated site utilities. Completed in 18 months — two weeks ahead of schedule — and delivered at $18M total contract value. LEED Silver certified.
+                A landmark 540,000 sq ft multi-tenant industrial park delivered for a major logistics REIT client. The Meridian Business Park project required simultaneous construction of three separate warehouse buildings, shared truck courts, a dedicated rail access spur, and all associated site utilities. Completed in 18 months — two weeks ahead of schedule — and delivered at KES 18M total contract value. LEED Silver certified.
               </p>
               <div className="grid grid-cols-3 gap-4 mb-8">
-                {[{ label: "Contract Value", val: "$18M" }, { label: "Total Sq Ft", val: "540,000" }, { label: "Timeline", val: "18 Months" }].map(s => (
+                {[{ label: "Contract Value", val: "KES 18M" }, { label: "Total Sq Ft", val: "540,000" }, { label: "Timeline", val: "18 Months" }].map(s => (
                   <div key={s.label} className="bg-card border border-border rounded-lg p-4 text-center">
                     <span className="text-2xl font-black text-accent block" style={{ fontFamily: "'Montserrat', sans-serif" }}>{s.val}</span>
                     <span className="text-xs text-muted-foreground mt-1 block">{s.label}</span>

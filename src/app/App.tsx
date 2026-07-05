@@ -60,7 +60,7 @@ const DEFAULT_SERVICES = [
     tag: "Commercial",
     desc: "Office towers, retail complexes, and mixed-use developments built to exacting standards.",
     duration: "6–18 Months",
-    value: "$500K – $50M",
+    value: "KES 500K – KES 50M",
     scope: "Full Turnkey",
   },
   {
@@ -71,7 +71,7 @@ const DEFAULT_SERVICES = [
     tag: "Industrial",
     desc: "Warehouses, factories, bridges, and infrastructure projects delivered on schedule.",
     duration: "12–36 Months",
-    value: "$1M – $100M",
+    value: "KES 1M – KES 100M",
     scope: "Design-Build",
   },
   {
@@ -82,7 +82,7 @@ const DEFAULT_SERVICES = [
     tag: "Residential",
     desc: "Custom homes, apartment blocks, and estate communities crafted with precision.",
     duration: "3–12 Months",
-    value: "$100K – $5M",
+    value: "KES 100K – KES 5M",
     scope: "Custom Build",
   },
   {
@@ -93,7 +93,7 @@ const DEFAULT_SERVICES = [
     tag: "Renovation",
     desc: "Structural upgrades, façade renovations, and full interior retrofits for existing buildings.",
     duration: "1–6 Months",
-    value: "$50K – $2M",
+    value: "KES 50K – KES 2M",
     scope: "Partial / Full",
   },
   {
@@ -115,7 +115,7 @@ const DEFAULT_SERVICES = [
     tag: "Civil",
     desc: "Site preparation, excavation, grading, drainage, and road construction services.",
     duration: "1–12 Months",
-    value: "$200K – $20M",
+    value: "KES 200K – KES 20M",
     scope: "Subcontract / Prime",
   },
   {
@@ -183,7 +183,7 @@ const DEFAULT_PROJECTS = [
     category: "Commercial",
     location: "Downtown Chicago, IL",
     year: "2024",
-    value: "$42M",
+    value: "KES 42M",
   },
   {
     id: 2,
@@ -192,7 +192,7 @@ const DEFAULT_PROJECTS = [
     category: "Industrial",
     location: "Houston, TX",
     year: "2023",
-    value: "$18M",
+    value: "KES 18M",
   },
   {
     id: 3,
@@ -201,7 +201,7 @@ const DEFAULT_PROJECTS = [
     category: "Residential",
     location: "Atlanta, GA",
     year: "2024",
-    value: "$9.5M",
+    value: "KES 9.5M",
   },
 ];
 
@@ -293,7 +293,7 @@ const CORE_VALUES = [
 
 const STATS = [
   { value: "350+", label: "Projects Delivered" },
-  { value: "$2.1B", label: "Construction Value" },
+  { value: "KES 2.1B", label: "Construction Value" },
   { value: "0.12", label: "TRIR Safety Rate" },
   { value: "28+", label: "Years in Business" },
 ];
@@ -697,11 +697,11 @@ export default function App() {
                 <div className="relative">
                   <select value={budget} onChange={(e) => setBudget(e.target.value)} className="w-full bg-white/10 border border-white/20 text-white px-3 py-2.5 rounded text-sm focus:outline-none focus:border-accent appearance-none pr-8">
                     <option value="" className="text-primary">Any Budget</option>
-                    <option className="text-primary">Under $500K</option>
-                    <option className="text-primary">$500K – $2M</option>
-                    <option className="text-primary">$2M – $10M</option>
-                    <option className="text-primary">$10M – $50M</option>
-                    <option className="text-primary">Above $50M</option>
+                    <option className="text-primary">Under KES 500K</option>
+                    <option className="text-primary">KES 500K – KES 2M</option>
+                    <option className="text-primary">KES 2M – KES 10M</option>
+                    <option className="text-primary">KES 10M – KES 50M</option>
+                    <option className="text-primary">Above KES 50M</option>
                   </select>
                   <ChevronDown size={13} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none" />
                 </div>
@@ -838,7 +838,7 @@ export default function App() {
               Engineering the Structures <span className="text-accent">That Last a Century</span>
             </h2>
             <p className="text-muted-foreground mb-5 leading-relaxed text-sm">
-              Founded in 1996, BuildForce Construction & Engineering has grown from a regional contractor into one of the Midwest's most respected full-service builders. We operate across commercial, industrial, civil, and residential sectors with a combined delivered value exceeding $2.1 billion.
+              Founded in 1996, BuildForce Construction & Engineering has grown from a regional contractor into one of the Midwest's most respected full-service builders. We operate across commercial, industrial, civil, and residential sectors with a combined delivered value exceeding KES 2.1 billion.
             </p>
             <p className="text-muted-foreground mb-8 leading-relaxed text-sm">
               Our vertically integrated model — in-house architecture, structural engineering, procurement, and site management — gives clients a single point of accountability from groundbreaking to handover.

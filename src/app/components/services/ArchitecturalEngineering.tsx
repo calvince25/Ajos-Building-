@@ -19,7 +19,7 @@ export default function ArchitecturalEngineering() {
     },
     {
       question: "Do you use Building Information Modeling (BIM)?",
-      answer: "BIM is standard practice on all BuildForce projects above $1M. Our Revit-proficient team produces integrated architectural, structural, and MEP models that coordinate all building systems in three dimensions before construction begins. This clash detection process eliminates costly field changes and improves construction accuracy."
+      answer: "BIM is standard practice on all BuildForce projects above KES 1M. Our Revit-proficient team produces integrated architectural, structural, and MEP models that coordinate all building systems in three dimensions before construction begins. This clash detection process eliminates costly field changes and improves construction accuracy."
     },
     {
       question: "What is the cost of architectural and engineering services?",

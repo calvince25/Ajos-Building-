@@ -535,12 +535,12 @@ export default function App() {
           </button>
 
           {/* Desktop Nav */}
-          <ul className="hidden lg:flex items-center gap-1 list-none m-0 p-0">
+          <ul className="hidden lg:flex items-center gap-0.5 xl:gap-1 list-none m-0 p-0">
             {NAV_LINKS.map((link) => (
               <li key={link}>
                 <Link
                   to={link.toLowerCase() === "home" ? "/" : `/${link.toLowerCase()}`}
-                  className={`block px-4 py-2 text-sm font-semibold rounded transition-colors no-underline ${
+                  className={`block px-2 xl:px-4 py-2 text-sm font-semibold rounded transition-colors no-underline whitespace-nowrap ${
                     currentPage === link.toLowerCase() ? "text-accent" : "text-primary hover:text-accent"
                   }`}
                   style={{ fontFamily: "'Montserrat', sans-serif" }}

@@ -163,3 +163,198 @@ table {
     background: #fff;
   }
 }
+
+/* ─── Header Rebuild & Reference Design Match ─── */
+.header-row {
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  height: 95px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-shrink: 0;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+  min-width: unset;
+  min-height: unset;
+}
+
+.logo-section img {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.company-name {
+  white-space: nowrap;
+  display: inline-block;
+  flex-shrink: 0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--primary);
+  font-family: 'Montserrat', sans-serif;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-left: 48px;
+  flex-grow: 1;
+  list-style: none;
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.nav-link {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  font-family: 'Montserrat', sans-serif;
+  white-space: nowrap;
+  padding: 8px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: unset;
+  min-height: unset;
+}
+
+.nav-link:hover {
+  color: var(--accent);
+}
+
+.nav-link.active {
+  color: var(--accent);
+}
+
+.client-portal-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  line-height: 1.2;
+  padding: 4px 12px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.quote-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--accent);
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1.2;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  font-family: 'Montserrat', sans-serif;
+  flex-shrink: 0;
+  min-width: unset;
+  min-height: unset;
+}
+
+.quote-btn:hover {
+  background-color: #d97706;
+}
+
+.quote-btn-text {
+  text-align: left;
+}
+
+.menu-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  padding: 8px;
+  flex-shrink: 0;
+  min-width: unset;
+  min-height: unset;
+}
+
+/* Responsive constraints to prevent horizontal layout wrapping */
+@media (max-width: 1280px) and (min-width: 1025px) {
+  .company-name {
+    font-size: 18px;
+  }
+  .header-nav {
+    gap: 14px;
+    margin-left: 24px;
+  }
+  .logo-section {
+    gap: 12px;
+  }
+  .logo-section img {
+    height: 50px;
+  }
+  .header-row {
+    padding: 0 20px;
+  }
+  .nav-link {
+    padding: 8px 8px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .header-row {
+    padding: 0 20px;
+    height: 70px;
+  }
+  .logo-section img {
+    height: 45px;
+  }
+  .company-name {
+    font-size: 18px;
+  }
+  .header-nav {
+    display: none;
+  }
+  .quote-btn {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-row {
+    padding: 0 16px;
+    height: 60px;
+  }
+  .logo-section img {
+    height: 35px;
+  }
+  .logo-section {
+    gap: 10px;
+  }
+  .company-name {
+    font-size: 15px;
+  }
+}
+

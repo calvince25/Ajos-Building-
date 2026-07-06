@@ -569,7 +569,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
               className="backdrop-blur-md bg-white/10 p-8 shadow-2xl border border-white/20 rounded-xl mb-6"
             >
               <h2 className="text-white text-center text-xl font-bold mb-6">
-                {isSignUp ? "Register Account" : "Admin Portal Login"}
+                {isSignUp ? "Register Account" : "Client Portal Login"}
               </h2>
 
               {authError && authError !== "__REGISTERED_PENDING__" && (

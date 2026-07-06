@@ -333,7 +333,7 @@ export default function App() {
     newsletter: true
   });
   const [companySettings, setCompanySettings] = useState<any>({
-    companyName: "TITAN CONSTRUCTION",
+    companyName: "Titan Constructions Ltd",
     openHours: "Mon – Fri: 7:00am – 5:00pm"
   });
   const [contactDetails, setContactDetails] = useState<any>({
@@ -513,57 +513,50 @@ export default function App() {
       </div>
 
       {/* ─── NAVBAR ─── */}
-      <nav className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <header className="bg-white shadow-sm sticky top-0 z-50">
+        <div className="header-row">
           {/* Logo */}
-          <button onClick={() => setCurrentPage("home")} className="flex items-center gap-2 no-underline cursor-pointer border-0 bg-transparent min-h-0 min-w-0">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-primary flex items-center justify-center rounded flex-shrink-0">
-              <HardHat size={18} className="text-accent" />
-            </div>
-            <div>
-              <span className="text-lg sm:text-xl font-black text-primary block leading-none" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                {companySettings.companyName.toUpperCase().startsWith("BUILD") ? (
-                  <>
-                    BUILD<span className="text-accent">{companySettings.companyName.toUpperCase().substring(5)}</span>
-                  </>
-                ) : (
-                  companySettings.companyName
-                )}
-              </span>
-              <span className="hidden sm:block text-xs text-muted-foreground tracking-widest uppercase">Construction & Engineering</span>
-            </div>
-          </button>
+          <div onClick={() => setCurrentPage("home")} className="logo-section">
+            <img src="/logo.png" alt="Titan Constructions Ltd Logo" />
+            <span className="company-name">Titan Constructions Ltd</span>
+          </div>
 
           {/* Desktop Nav */}
-          <ul className="hidden lg:flex items-center gap-0.5 xl:gap-1 list-none m-0 p-0">
+          <ul className="header-nav hidden lg:flex">
             {NAV_LINKS.map((link) => (
               <li key={link}>
                 <Link
                   to={link.toLowerCase() === "home" ? "/" : `/${link.toLowerCase()}`}
-                  className={`block px-2 xl:px-4 py-2 text-sm font-semibold rounded transition-colors no-underline whitespace-nowrap ${
-                    currentPage === link.toLowerCase() ? "text-accent" : "text-primary hover:text-accent"
+                  className={`nav-link ${
+                    link.toLowerCase() === "services" || currentPage === link.toLowerCase() ? "active" : ""
                   }`}
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
                   {link}
                 </Link>
               </li>
             ))}
+            <li>
+              <button
+                onClick={() => setShowAdmin(true)}
+                className="nav-link client-portal-btn"
+              >
+                Client<br />Portal
+              </button>
+            </li>
           </ul>
 
-          <div className="hidden lg:flex items-center gap-3">
-            <button onClick={() => setShowAdmin(true)} className="text-sm font-semibold text-primary hover:text-accent transition-colors cursor-pointer border-0 bg-transparent" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-              Client Portal
-            </button>
-            <Link to="/contact" className="bg-accent text-primary text-sm font-bold px-5 py-2.5 rounded hover:bg-yellow-400 transition-colors cursor-pointer flex items-center gap-2 no-underline" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-              <ClipboardList size={15} />
-              Request a Quote
+          <div className="header-actions">
+            <Link to="/contact" className="quote-btn hidden lg:inline-flex">
+              <ClipboardList size={18} />
+              <span className="quote-btn-text">
+                Request a<br />Quote
+              </span>
             </Link>
-          </div>
 
-          <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden p-2 text-primary">
-            {menuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
+            <button onClick={() => setMenuOpen(!menuOpen)} className="menu-btn">
+              {menuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {menuOpen && (
@@ -575,7 +568,7 @@ export default function App() {
                     to={link.toLowerCase() === "home" ? "/" : `/${link.toLowerCase()}`}
                     onClick={() => setMenuOpen(false)}
                     className={`flex items-center w-full py-2.5 text-sm font-semibold no-underline min-h-0 justify-start ${
-                      currentPage === link.toLowerCase() ? "text-accent" : "text-primary hover:text-accent"
+                      link.toLowerCase() === "services" || currentPage === link.toLowerCase() ? "text-accent" : "text-primary hover:text-accent"
                     }`}
                     style={{ fontFamily: "'Montserrat', sans-serif" }}
                   >
@@ -604,7 +597,7 @@ export default function App() {
             </div>
           </div>
         )}
-      </nav>
+      </header>
 
       {/* ─── PAGE ROUTER ─── */}
       <Routes>

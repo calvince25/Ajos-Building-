@@ -528,7 +528,7 @@ export default function App() {
                 <Link
                   to={link.toLowerCase() === "home" ? "/" : `/${link.toLowerCase()}`}
                   className={`nav-link ${
-                    link.toLowerCase() === "services" || currentPage === link.toLowerCase() ? "active" : ""
+                    currentPage === link.toLowerCase() ? "active" : ""
                   }`}
                 >
                   {link}
@@ -568,7 +568,7 @@ export default function App() {
                     to={link.toLowerCase() === "home" ? "/" : `/${link.toLowerCase()}`}
                     onClick={() => setMenuOpen(false)}
                     className={`flex items-center w-full py-2.5 text-sm font-semibold no-underline min-h-0 justify-start ${
-                      link.toLowerCase() === "services" || currentPage === link.toLowerCase() ? "text-accent" : "text-primary hover:text-accent"
+                      currentPage === link.toLowerCase() ? "text-accent" : "text-primary hover:text-accent"
                     }`}
                     style={{ fontFamily: "'Montserrat', sans-serif" }}
                   >

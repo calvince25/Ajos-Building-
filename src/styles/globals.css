@@ -301,7 +301,13 @@ table {
 }
 
 /* Responsive constraints to prevent horizontal layout wrapping */
-@media (max-width: 1280px) and (min-width: 1025px) {
+@media (min-width: 1024px) {
+  .menu-btn {
+    display: none;
+  }
+}
+
+@media (max-width: 1279px) and (min-width: 1024px) {
   .company-name {
     font-size: 18px;
   }
@@ -323,7 +329,7 @@ table {
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   .header-row {
     padding: 0 20px;
     height: 70px;

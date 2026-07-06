@@ -646,22 +646,23 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
     <div className="min-h-screen bg-[#f0f0f1] text-[#1d2327] flex flex-col" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif" }}>
       
       {/* 1. TOP WP BAR */}
-      <header className="bg-[#1d2327] text-white h-8 px-4 flex justify-between items-center text-xs z-30 sticky top-0">
-        <div className="flex items-center gap-4">
+      <header className="bg-[#1d2327] text-white h-auto md:h-8 py-1.5 md:py-0 px-4 flex flex-col md:flex-row justify-between items-center text-xs z-30 sticky top-0 gap-2 md:gap-4">
+        <div className="flex items-center justify-between w-full md:w-auto gap-4">
           <div className="font-bold flex items-center gap-1.5 cursor-pointer" onClick={onClose}>
             <HardHat size={13} className="text-[#f0c243]" />
-            Titan Construction Site Administration
+            <span className="hidden sm:inline">Titan Construction Site Administration</span>
+            <span className="sm:hidden">Titan Admin</span>
           </div>
-          <span className="text-gray-500">|</span>
-          <div className="text-gray-400 hover:text-white cursor-pointer flex items-center gap-1" onClick={onClose}>
+          <span className="text-gray-500 hidden md:inline">|</span>
+          <div className="text-gray-400 hover:text-white cursor-pointer flex items-center gap-1 text-[11px] md:text-xs" onClick={onClose}>
             <Globe size={11} /> Visit Site
           </div>
         </div>
-        <div className="flex items-center gap-4">
-          <span className="bg-gray-700 px-2 py-0.5 rounded text-[10px] uppercase font-bold flex items-center gap-1">
+        <div className="flex items-center justify-between w-full md:w-auto gap-3 md:gap-4 border-t border-gray-800 md:border-t-0 pt-1.5 md:pt-0">
+          <span className="bg-gray-700 px-2 py-0.5 rounded text-[9px] uppercase font-bold flex items-center gap-1">
             <Shield size={10} className="text-[#f0c243]" /> {userRole}
           </span>
-          <span className="text-gray-300">Howdy, {profile?.full_name || profile?.email}</span>
+          <span className="text-gray-300 text-[11px] md:text-xs truncate max-w-[120px] sm:max-w-none">Howdy, {profile?.full_name || profile?.email}</span>
           <button onClick={handleLogout} className="text-gray-400 hover:text-white flex items-center gap-1">
             <LogOut size={11} /> Log Out
           </button>
@@ -669,11 +670,11 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
       </header>
 
       {/* 2. BODY LAYOUT */}
-      <div className="flex-1 flex flex-row">
+      <div className="flex-1 flex flex-col md:flex-row min-h-0">
         
         {/* LEFT SIDEBAR (WordPress Admin Nav) */}
-        <aside className="w-56 bg-[#1d2327] text-gray-300 select-none flex flex-col">
-          <nav className="flex-1 pt-3 text-[13px]">
+        <aside className="w-full md:w-56 bg-[#1d2327] text-gray-300 select-none flex flex-row md:flex-col overflow-x-auto md:overflow-x-visible flex-shrink-0 border-b border-gray-800 md:border-b-0 scrollbar-thin">
+          <nav className="flex flex-row md:flex-col pt-0 md:pt-3 text-[13px] w-full">
             {[
               { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
               { id: "homepage_sections", label: "Homepage Sections", icon: Globe },
@@ -697,10 +698,10 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                   setFormData({});
                   setStatusFilter("all");
                 }}
-                className={`w-full text-left px-4 py-2 flex items-center justify-between border-l-4 transition-colors ${
+                className={`flex-shrink-0 px-4 py-2.5 md:py-2 flex items-center justify-center md:justify-between border-b-2 md:border-b-0 md:border-l-4 transition-colors whitespace-nowrap ${
                   activeTab === item.id 
-                    ? "bg-[#2271b1] text-white border-l-[#f0c243]" 
-                    : "border-l-transparent hover:bg-[#2c3338] hover:text-[#72aee6]"
+                    ? "bg-[#2271b1] text-white border-b-[#f0c243] md:border-b-transparent md:border-l-[#f0c243]" 
+                    : "border-b-transparent md:border-l-transparent hover:bg-[#2c3338] hover:text-[#72aee6]"
                 }`}
               >
                 <span className="flex items-center gap-2.5">
@@ -991,7 +992,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                         ))}
                       </div>
 
-                      <div className="bg-white shadow-sm border border-gray-200 overflow-hidden">
+                      <div className="bg-white shadow-sm border border-gray-200 overflow-x-auto">
                         <table className="w-full text-left text-xs border-collapse">
                           <thead>
                             <tr className="bg-gray-100 border-b border-gray-200 font-semibold text-gray-700">
@@ -1122,7 +1123,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                         ))}
                       </div>
 
-                      <div className="bg-white shadow-sm border border-gray-200 overflow-hidden">
+                      <div className="bg-white shadow-sm border border-gray-200 overflow-x-auto">
                         <table className="w-full text-left text-xs border-collapse">
                           <thead>
                             <tr className="bg-gray-100 border-b border-gray-200 font-semibold text-gray-700">
@@ -1207,7 +1208,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                       </div>
                     </div>
                   ) : (
-                    <div className="bg-white shadow-sm border border-gray-200 overflow-hidden">
+                    <div className="bg-white shadow-sm border border-gray-200 overflow-x-auto">
                       <table className="w-full text-left text-xs border-collapse">
                         <thead>
                           <tr className="bg-gray-100 border-b border-gray-200 font-semibold text-gray-700">
@@ -1347,7 +1348,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                   <div className="flex justify-between items-center mb-6">
                     <h1 className="text-2xl font-normal">User Management</h1>
                   </div>
-                  <div className="bg-white shadow-sm border border-gray-200 overflow-hidden">
+                  <div className="bg-white shadow-sm border border-gray-200 overflow-x-auto">
                     <table className="w-full text-left text-xs border-collapse">
                       <thead>
                         <tr className="bg-gray-100 border-b border-gray-200 font-semibold text-gray-700">
@@ -1486,7 +1487,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                           </button>
                         ))}
                       </div>
-                      <div className="bg-white shadow-sm border border-gray-200 overflow-hidden">
+                      <div className="bg-white shadow-sm border border-gray-200 overflow-x-auto">
                         <table className="w-full text-left text-xs border-collapse">
                           <thead>
                             <tr className="bg-gray-100 border-b border-gray-200 font-semibold text-gray-700">
@@ -1624,7 +1625,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                           </button>
                         ))}
                       </div>
-                      <div className="bg-white shadow-sm border border-gray-200 overflow-hidden">
+                      <div className="bg-white shadow-sm border border-gray-200 overflow-x-auto">
                         <table className="w-full text-left text-xs border-collapse">
                           <thead>
                             <tr className="bg-gray-100 border-b border-gray-200 font-semibold text-gray-700">
@@ -1743,7 +1744,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                           </button>
                         ))}
                       </div>
-                      <div className="bg-white shadow-sm border border-gray-200 overflow-hidden">
+                      <div className="bg-white shadow-sm border border-gray-200 overflow-x-auto">
                         <table className="w-full text-left text-xs border-collapse">
                           <thead>
                             <tr className="bg-gray-100 border-b border-gray-200 font-semibold text-gray-700">

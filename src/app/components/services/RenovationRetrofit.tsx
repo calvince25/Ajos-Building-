@@ -15,7 +15,7 @@ export default function RenovationRetrofit({ serviceData }: { serviceData?: any 
     },
     {
       question: "What is the difference between a renovation and a retrofit?",
-      answer: "A renovation typically refers to aesthetic and functional upgrades — new finishes, layouts, or updated building systems. A retrofit is more structural in nature, addressing code compliance, seismic strengthening, energy performance upgrades, or adapting a building for a different use. BuildForce is equally capable in both, often combining renovation and retrofit scope on the same project."
+      answer: "A renovation typically refers to aesthetic and functional upgrades — new finishes, layouts, or updated building systems. A retrofit is more structural in nature, addressing code compliance, seismic strengthening, energy performance upgrades, or adapting a building for a different use. Titan Construction is equally capable in both, often combining renovation and retrofit scope on the same project."
     },
     {
       question: "Can you renovate buildings to meet current seismic or energy codes?",
@@ -37,11 +37,11 @@ export default function RenovationRetrofit({ serviceData }: { serviceData?: any 
       "@graph": [
         {
           "@type": "Service",
-          "@id": "https://buildforce.com/services/renovation-retrofit#service",
+          "@id": "https://titanconstructions.co.ke/services/renovation-retrofit#service",
           name: "Renovation & Retrofit",
           serviceType: "Building Renovation and Structural Retrofit",
           description: "Comprehensive renovation and structural retrofit services transforming existing buildings through structural upgrades, façade renovations, and full interior overhauls.",
-          provider: { "@type": "Organization", name: "BuildForce Construction & Engineering", url: "https://buildforce.com" },
+          provider: { "@type": "Organization", name: "Titan Constructions Ltd", url: "https://titanconstructions.co.ke" },
           areaServed: "US"
         },
         getFAQSchema(faqs)
@@ -69,7 +69,7 @@ export default function RenovationRetrofit({ serviceData }: { serviceData?: any 
               Transform Aging Structures into <span className="text-accent">High-Performance Assets</span>
             </h1>
             <p className="text-white/80 text-lg md:text-xl mb-10 leading-relaxed">
-              Whether it's a façade that no longer reflects your brand or a structure that needs seismic strengthening, BuildForce delivers renovations that add decades of productive life to your most valuable assets.
+              Whether it's a façade that no longer reflects your brand or a structure that needs seismic strengthening, Titan Construction delivers renovations that add decades of productive life to your most valuable assets.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link to="/contact" className="bg-accent text-primary font-black px-6 sm:px-8 py-3.5 sm:py-4 rounded hover:bg-yellow-400 transition-colors inline-flex items-center gap-2 min-h-0">
@@ -92,13 +92,13 @@ export default function RenovationRetrofit({ serviceData }: { serviceData?: any 
             </h2>
             <div className="space-y-5 text-muted-foreground leading-relaxed text-sm">
               <p>
-                Not every great building needs to be demolished and replaced. In many cases, the most sustainable, cost-effective, and commercially intelligent decision is to transform, upgrade, and reposition an existing structure. BuildForce's renovation and retrofit division brings licensed structural engineering, architectural design, and experienced site execution together to breathe new life into older buildings while maintaining operational continuity wherever possible.
+                Not every great building needs to be demolished and replaced. In many cases, the most sustainable, cost-effective, and commercially intelligent decision is to transform, upgrade, and reposition an existing structure. Titan Construction's renovation and retrofit division brings licensed structural engineering, architectural design, and experienced site execution together to breathe new life into older buildings while maintaining operational continuity wherever possible.
               </p>
               <p>
                 Our renovation services cover the full spectrum, from cosmetic interior upgrades and complete lobby transformations to structural interventions that bring buildings into compliance with modern seismic codes. We work on commercial office buildings, retail properties, residential apartment blocks, industrial facilities, and heritage-listed structures that require a particularly sensitive and skilled approach.
               </p>
               <p>
-                What distinguishes BuildForce in the renovation market is our insistence on structural integrity first. Before any cosmetic work begins, our licensed structural engineers assess the condition of the existing frame, foundations, and load-bearing systems. This approach protects our clients from costly mid-project surprises and ensures that every renovation we deliver is not just beautiful, but structurally sound for decades to come.
+                What distinguishes Titan Construction in the renovation market is our insistence on structural integrity first. Before any cosmetic work begins, our licensed structural engineers assess the condition of the existing frame, foundations, and load-bearing systems. This approach protects our clients from costly mid-project surprises and ensures that every renovation we deliver is not just beautiful, but structurally sound for decades to come.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4 mt-8">
@@ -158,7 +158,7 @@ export default function RenovationRetrofit({ serviceData }: { serviceData?: any 
                   From a sustainability perspective, renovation preserves the embodied energy locked in the existing structure and dramatically reduces construction waste. Many municipalities now incentivize adaptive reuse and deep retrofits through expedited permitting, tax credits, and density bonuses.
                 </p>
                 <p>
-                  BuildForce conducts a rigorous cost-benefit analysis for every renovation inquiry, giving you an honest, engineer-led assessment of whether renovation or reconstruction better serves your long-term goals. We are not financially motivated to push you toward a new build — our reputation depends on giving you the right advice.
+                  Titan Construction conducts a rigorous cost-benefit analysis for every renovation inquiry, giving you an honest, engineer-led assessment of whether renovation or reconstruction better serves your long-term goals. We are not financially motivated to push you toward a new build — our reputation depends on giving you the right advice.
                 </p>
               </div>
             </div>

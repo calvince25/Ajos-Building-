@@ -37,14 +37,14 @@ export default function CarpentryTimberWorks({ serviceData }: { serviceData?: an
       "@graph": [
         {
           "@type": "Service",
-          "@id": "https://buildforce.com/services/carpentry-timber-works#service",
+          "@id": "https://titanconstructions.co.ke/services/carpentry-timber-works#service",
           name: "Carpentry & Timber Works",
           serviceType: "Carpentry Services",
           description: "Expert carpentry and timber works services including wooden window and door installation, timber framing, custom woodwork, and interior joinery.",
           provider: {
             "@type": "Organization",
-            name: "BuildForce Construction & Engineering",
-            url: "https://buildforce.com"
+            name: "Titan Constructions Ltd",
+            url: "https://titanconstructions.co.ke"
           },
           areaServed: "US"
         },

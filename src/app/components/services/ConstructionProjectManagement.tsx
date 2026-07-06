@@ -37,14 +37,14 @@ export default function ConstructionProjectManagement({ serviceData }: { service
       "@graph": [
         {
           "@type": "Service",
-          "@id": "https://buildforce.com/services/construction-project-management#service",
+          "@id": "https://titanconstructions.co.ke/services/construction-project-management#service",
           name: "Construction Project Management",
           serviceType: "Construction Project Management Services",
           description: "Professional construction project management services including site supervision, material management, store keeping, site record keeping, scheduling, quality assurance, and project coordination.",
           provider: {
             "@type": "Organization",
-            name: "BuildForce Construction & Engineering",
-            url: "https://buildforce.com"
+            name: "Titan Constructions Ltd",
+            url: "https://titanconstructions.co.ke"
           },
           areaServed: "US"
         },
@@ -96,7 +96,7 @@ export default function ConstructionProjectManagement({ serviceData }: { service
             </h2>
             <div className="space-y-5 text-muted-foreground leading-relaxed text-sm">
               <p>
-                Effective construction project management is the discipline that transforms an architectural vision into a completed building without the chaos of uncontrolled costs, schedule drift, and quality failures. At BuildForce, our project management division provides the structured oversight, proactive coordination, and experienced leadership that keeps every project running with precision — from the first shovel in the ground to the final handover inspection.
+                Effective construction project management is the discipline that transforms an architectural vision into a completed building without the chaos of uncontrolled costs, schedule drift, and quality failures. At Titan Construction, our project management division provides the structured oversight, proactive coordination, and experienced leadership that keeps every project running with precision — from the first shovel in the ground to the final handover inspection.
               </p>
               <p>
                 Our project management services cover every dimension of site operations. Our experienced site supervisors and foremen maintain daily control over works, workforce, and sub-trades. Our material managers ensure the right materials are available at the right time, preventing costly delays from supply chain disruptions. Our store keepers maintain accurate inventory records and prevent material losses and theft on site. Our document controllers maintain the full paper trail of site instructions, variations, and compliance records throughout the project lifecycle.

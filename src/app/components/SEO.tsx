@@ -33,10 +33,10 @@ export interface SEOProps {
 }
 
 // ─── Defaults ─────────────────────────────────────────────────────────────────
-const SITE_NAME = "BuildForce Construction & Engineering";
-const SITE_URL = "https://buildforce.com";
+const SITE_NAME = "Titan Constructions Ltd";
+const SITE_URL = "https://titanconstructions.co.ke";
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.jpg`;
-const TWITTER_HANDLE = "@BuildForce";
+const TWITTER_HANDLE = "@Titan Construction";
 
 /**
  * Enterprise-level SEO component.
@@ -71,7 +71,7 @@ export default function SEO({
       <link rel="canonical" href={canonicalFull} />
 
       {/* ── MetadataBase equivalent ───────────────────────── */}
-      <meta name="generator" content="BuildForce CMS" />
+      <meta name="generator" content="Titan Construction CMS" />
       <meta name="application-name" content={SITE_NAME} />
       <meta name="author" content={articleAuthor || SITE_NAME} />
 
@@ -131,7 +131,7 @@ const BASE = SITE_URL;
 export const HOME_SEO: SEOProps = {
   title: "Full-Service Construction & Engineering Firm",
   description:
-    "BuildForce delivers commercial, industrial, and residential construction with decades of structural engineering expertise. ISO 9001:2015 certified. Request a free proposal today.",
+    "Titan Construction delivers commercial, industrial, and residential construction with decades of structural engineering expertise. ISO 9001:2015 certified. Request a free proposal today.",
   canonical: `${BASE}/`,
   ogImage: `${BASE}/og-home.jpg`,
   ogType: "website",
@@ -154,10 +154,10 @@ export const HOME_SEO: SEOProps = {
           availableLanguage: "English",
         },
         sameAs: [
-          "https://facebook.com/buildforce",
-          "https://twitter.com/buildforce",
-          "https://linkedin.com/company/buildforce",
-          "https://instagram.com/buildforce",
+          "https://facebook.com/titanconstructions",
+          "https://twitter.com/titanconstructions",
+          "https://linkedin.com/company/titanconstructions",
+          "https://instagram.com/titanconstructions",
         ],
       },
       {
@@ -195,7 +195,7 @@ export const HOME_SEO: SEOProps = {
 export const SERVICES_SEO: SEOProps = {
   title: "Construction Services — Commercial, Industrial & Residential",
   description:
-    "Explore BuildForce's full range of construction services: commercial builds, industrial infrastructure, residential development, civil earthworks, renovation, and design-build engineering.",
+    "Explore Titan Construction's full range of construction services: commercial builds, industrial infrastructure, residential development, civil earthworks, renovation, and design-build engineering.",
   canonical: `${BASE}/services`,
   ogImage: `${BASE}/og-services.jpg`,
   ogType: "website",
@@ -252,7 +252,7 @@ export const SERVICES_SEO: SEOProps = {
 export const PROJECTS_SEO: SEOProps = {
   title: "Project Portfolio — Completed Construction Projects",
   description:
-    "Browse BuildForce's portfolio of completed construction projects spanning commercial towers, industrial warehouses, civic infrastructure, and luxury residential communities.",
+    "Browse Titan Construction's portfolio of completed construction projects spanning commercial towers, industrial warehouses, civic infrastructure, and luxury residential communities.",
   canonical: `${BASE}/projects`,
   ogImage: `${BASE}/og-projects.jpg`,
   ogType: "website",
@@ -270,8 +270,8 @@ export const PROJECTS_SEO: SEOProps = {
       {
         "@type": "CollectionPage",
         "@id": `${BASE}/projects#collection`,
-        name: "BuildForce Project Portfolio",
-        description: "A collection of completed construction and engineering projects by BuildForce.",
+        name: "Titan Construction Project Portfolio",
+        description: "A collection of completed construction and engineering projects by Titan Construction.",
         url: `${BASE}/projects`,
         provider: {
           "@type": "Organization",
@@ -305,12 +305,12 @@ export const PROJECTS_SEO: SEOProps = {
 export const ABOUT_SEO: SEOProps = {
   title: "About Us — Our Story, Mission & Core Values",
   description:
-    "Established in 1996, BuildForce is an ISO 9001:2015 certified construction firm specializing in cost-certain delivery, in-house engineering, and OSHA-compliant site management across the United States.",
+    "Established in 1996, Titan Construction is an ISO 9001:2015 certified construction firm specializing in cost-certain delivery, in-house engineering, and OSHA-compliant site management across the United States.",
   canonical: `${BASE}/about`,
   ogImage: `${BASE}/og-about.jpg`,
   ogType: "website",
   keywords:
-    "about BuildForce, construction company history, ISO certified contractor, OSHA compliant construction, engineering firm Chicago, construction mission values",
+    "about Titan Construction, construction company history, ISO certified contractor, OSHA compliant construction, engineering firm Chicago, construction mission values",
   robots:
     "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
   alternateUrls: {
@@ -323,9 +323,9 @@ export const ABOUT_SEO: SEOProps = {
       {
         "@type": "AboutPage",
         "@id": `${BASE}/about#webpage`,
-        name: "About BuildForce",
+        name: "About Titan Construction",
         url: `${BASE}/about`,
-        description: "The story and values behind BuildForce Construction & Engineering LLC.",
+        description: "The story and values behind Titan Constructions Ltd.",
         mainEntity: {
           "@type": "Organization",
           "@id": `${BASE}/#organization`,
@@ -366,10 +366,10 @@ export const ABOUT_SEO: SEOProps = {
         mainEntity: [
           {
             "@type": "Question",
-            name: "When was BuildForce established?",
+            name: "When was Titan Construction established?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "BuildForce was founded in 1996 and has grown into a premier vertically integrated construction and engineering firm."
+              text: "Titan Construction was founded in 1996 and has grown into a premier vertically integrated construction and engineering firm."
             }
           },
           {
@@ -389,12 +389,12 @@ export const ABOUT_SEO: SEOProps = {
 export const TEAM_SEO: SEOProps = {
   title: "Leadership Team — Engineers, Architects & Project Managers",
   description:
-    "Meet BuildForce's leadership team: experienced civil engineers, licensed architects, and certified project managers with decades of combined expertise delivering complex construction projects.",
+    "Meet Titan Construction's leadership team: experienced civil engineers, licensed architects, and certified project managers with decades of combined expertise delivering complex construction projects.",
   canonical: `${BASE}/team`,
   ogImage: `${BASE}/og-team.jpg`,
   ogType: "website",
   keywords:
-    "construction leadership team, civil engineers, licensed architects, project managers, BuildForce team, construction experts, engineering staff",
+    "construction leadership team, civil engineers, licensed architects, project managers, Titan Construction team, construction experts, engineering staff",
   robots:
     "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
   alternateUrls: {
@@ -404,17 +404,17 @@ export const TEAM_SEO: SEOProps = {
   structuredData: {
     "@context": "https://schema.org",
     "@type": "AboutPage",
-    name: "BuildForce Leadership Team",
+    name: "Titan Construction Leadership Team",
     url: `${BASE}/team`,
     description:
-      "Profiles of the engineering and construction management leadership at BuildForce.",
+      "Profiles of the engineering and construction management leadership at Titan Construction.",
   },
 };
 
 export const BLOG_SEO: SEOProps = {
   title: "News & Insights — Construction Industry Blog",
   description:
-    "Stay ahead with the latest construction industry news, structural engineering innovations, safety practices, project spotlights, and expert insights from the BuildForce editorial team.",
+    "Stay ahead with the latest construction industry news, structural engineering innovations, safety practices, project spotlights, and expert insights from the Titan Construction editorial team.",
   canonical: `${BASE}/blog`,
   ogImage: `${BASE}/og-blog.jpg`,
   ogType: "website",
@@ -429,10 +429,10 @@ export const BLOG_SEO: SEOProps = {
   structuredData: {
     "@context": "https://schema.org",
     "@type": "Blog",
-    name: "BuildForce News & Insights",
+    name: "Titan Construction News & Insights",
     url: `${BASE}/blog`,
     description:
-      "Construction industry articles, engineering guides, and project spotlights by BuildForce.",
+      "Construction industry articles, engineering guides, and project spotlights by Titan Construction.",
     publisher: {
       "@type": "Organization",
       name: SITE_NAME,
@@ -444,12 +444,12 @@ export const BLOG_SEO: SEOProps = {
 export const CONTACT_SEO: SEOProps = {
   title: "Contact Us — Get a Free Construction Proposal",
   description:
-    "Contact BuildForce's construction experts for project inquiries, bid requests, structural consultations, or emergency site support. We respond within one business day.",
+    "Contact Titan Construction's construction experts for project inquiries, bid requests, structural consultations, or emergency site support. We respond within one business day.",
   canonical: `${BASE}/contact`,
   ogImage: `${BASE}/og-contact.jpg`,
   ogType: "website",
   keywords:
-    "contact BuildForce, construction inquiry, get a quote, building proposal, construction consultation, contractor contact, site assessment",
+    "contact Titan Construction, construction inquiry, get a quote, building proposal, construction consultation, contractor contact, site assessment",
   robots:
     "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
   alternateUrls: {
@@ -465,8 +465,8 @@ export const CONTACT_SEO: SEOProps = {
         name: SITE_NAME,
         url: `${BASE}/contact`,
         telephone: "+1-312-555-0192",
-        email: "projects@buildforce.com",
-        description: "Reach out to BuildForce for construction project inquiries and free proposals.",
+        email: "projects@titanconstructions.co.ke",
+        description: "Reach out to Titan Construction for construction project inquiries and free proposals.",
         address: {
           "@type": "PostalAddress",
           streetAddress: "48 Industrial Blvd, Suite 200",
@@ -512,15 +512,15 @@ export function getBlogPostSEO(post: {
     title: post.title,
     description:
       post.excerpt ||
-      `Read the full article: ${post.title}. Expert construction insights and industry analysis from BuildForce Engineering.`,
+      `Read the full article: ${post.title}. Expert construction insights and industry analysis from Titan Construction Engineering.`,
     canonical: `${BASE}/blog/${slug}`,
     ogImage: post.image_url || DEFAULT_OG_IMAGE,
     ogType: "article",
-    keywords: `${post.title.toLowerCase()}, construction article, engineering insights, BuildForce blog`,
+    keywords: `${post.title.toLowerCase()}, construction article, engineering insights, Titan Construction blog`,
     robots: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
     articlePublishedTime: post.created_at,
     articleModifiedTime: post.updated_at || post.created_at,
-    articleAuthor: post.author || "BuildForce Editorial Team",
+    articleAuthor: post.author || "Titan Editorial Team",
     twitterCard: "summary_large_image",
     alternateUrls: {
       "en": `${BASE}/blog/${slug}`,
@@ -553,7 +553,7 @@ export function getBlogPostSEO(post: {
         {
           "@type": "Person",
           "@id": `${BASE}/blog/${slug}#author`,
-          name: post.author || "BuildForce Editorial Team",
+          name: post.author || "Titan Editorial Team",
           url: `${BASE}/team`
         },
         {
@@ -621,7 +621,7 @@ export function getTestimonialsSchema(testimonials: { name: string; rating?: num
       {
         "@type": "Product",
         "@id": `${SITE_URL}/#product`,
-        name: "BuildForce Construction Services",
+        name: "Titan Construction Services",
         image: `${SITE_URL}/logo.png`,
         aggregateRating: {
           "@type": "AggregateRating",

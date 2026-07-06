@@ -245,7 +245,7 @@ const DEFAULT_TESTIMONIALS = [
     id: 1,
     name: "Jonathan Bell",
     role: "CEO, BellTech Logistics",
-    text: "BuildForce delivered our 80,000 sq ft warehouse three weeks ahead of schedule and under budget. Their site management and safety record were exceptional throughout the entire build.",
+    text: "Titan Construction delivered our 80,000 sq ft warehouse three weeks ahead of schedule and under budget. Their site management and safety record were exceptional throughout the entire build.",
     rating: 5,
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&auto=format",
   },
@@ -253,7 +253,7 @@ const DEFAULT_TESTIMONIALS = [
     id: 2,
     name: "Catherine Mwangi",
     role: "Director, Veritas Property Group",
-    text: "We have partnered with BuildForce on four commercial developments. Their engineering team and on-site execution are consistently world-class. Trusted, reliable, and genuinely excellent.",
+    text: "We have partnered with Titan Construction on four commercial developments. Their engineering team and on-site execution are consistently world-class. Trusted, reliable, and genuinely excellent.",
     rating: 5,
     avatar: "https://images.unsplash.com/photo-1494790108755-2616b7ef95e4?w=80&h=80&fit=crop&auto=format",
   },
@@ -261,7 +261,7 @@ const DEFAULT_TESTIMONIALS = [
     id: 3,
     name: "Robert Hargrove",
     role: "Municipal Engineer, City of Portland",
-    text: "The Bridge Rd. infrastructure contract was complex and politically sensitive. BuildForce navigated every challenge professionally and delivered a project the community is proud of.",
+    text: "The Bridge Rd. infrastructure contract was complex and politically sensitive. Titan Construction navigated every challenge professionally and delivered a project the community is proud of.",
     rating: 5,
     avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&auto=format",
   },
@@ -333,13 +333,13 @@ export default function App() {
     newsletter: true
   });
   const [companySettings, setCompanySettings] = useState<any>({
-    companyName: "BUILDFORCE",
+    companyName: "TITAN CONSTRUCTION",
     openHours: "Mon – Fri: 7:00am – 5:00pm"
   });
   const [contactDetails, setContactDetails] = useState<any>({
     address: "48 Industrial Blvd, Suite 200, Chicago, IL 60601",
     phone: "+1 (312) 555-0192",
-    email: "projects@buildforce.com",
+    email: "projects@titanconstructions.co.ke",
     emergencyPhone: "+1 (312) 555-0911"
   });
   const [socials, setSocials] = useState<any>({
@@ -748,7 +748,7 @@ export default function App() {
                 <Link key={s.id} to={`/services/${slug}`} className="bg-card rounded-xl overflow-hidden shadow hover:shadow-xl transition-shadow group block no-underline text-foreground">
                   {/* Image */}
                   <div className="relative overflow-hidden h-48 sm:h-52 bg-muted">
-                    <img loading="lazy" src={s.image} alt={s.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <img loading="lazy" src={s.image_url || s.image} alt={s.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     <div className="absolute inset-0 bg-primary/20 group-hover:bg-primary/0 transition-colors" />
                     <span className="absolute top-4 left-4 bg-accent text-primary text-xs font-black px-3 py-1 rounded uppercase tracking-wide">
                       {s.tag}
@@ -765,7 +765,7 @@ export default function App() {
                         {s.title}
                       </h3>
                     </div>
-                    <p className="text-muted-foreground text-sm leading-relaxed mb-4">{s.desc}</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed mb-4">{s.description || s.desc}</p>
                     <div className="border-t border-border pt-3 sm:pt-4 grid grid-cols-3 gap-1 sm:gap-2 text-xs mb-3">
                       {[
                         { label: "Timeline", val: s.duration },
@@ -836,13 +836,13 @@ export default function App() {
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="w-6 h-0.5 bg-accent" />
-              <p className="text-accent text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "'Montserrat', sans-serif" }}>About BuildForce</p>
+              <p className="text-accent text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "'Montserrat', sans-serif" }}>About Titan Construction</p>
             </div>
             <h2 className="text-3xl md:text-4xl font-black text-primary mb-5 leading-tight" style={{ fontFamily: "'Montserrat', sans-serif" }}>
               Engineering the Structures <span className="text-accent">That Last a Century</span>
             </h2>
             <p className="text-muted-foreground mb-5 leading-relaxed text-sm">
-              Founded in 1996, BuildForce Construction & Engineering has grown from a regional contractor into one of the Midwest's most respected full-service builders. We operate across commercial, industrial, civil, and residential sectors with a combined delivered value exceeding KES 2.1 billion.
+              Founded in 1996, Titan Constructions Ltd has grown from a regional contractor into one of the Midwest's most respected full-service builders. We operate across commercial, industrial, civil, and residential sectors with a combined delivered value exceeding KES 2.1 billion.
             </p>
             <p className="text-muted-foreground mb-8 leading-relaxed text-sm">
               Our vertically integrated model — in-house architecture, structural engineering, procurement, and site management — gives clients a single point of accountability from groundbreaking to handover.
@@ -979,7 +979,7 @@ export default function App() {
               {team.map((m) => (
                 <div key={m.id} className="bg-card rounded-xl overflow-hidden shadow hover:shadow-xl transition-shadow group text-center">
                   <div className="relative overflow-hidden h-72 bg-muted">
-                    <img loading="lazy" src={m.image} alt={m.name} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" />
+                    <img loading="lazy" src={m.image_url || m.image} alt={m.name} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" />
                     <div className="absolute inset-0 bg-primary/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                       {[Linkedin, Twitter, Mail].map((Icon, i) => (
                         <a key={i} href="#" className="w-9 h-9 bg-white/15 hover:bg-accent rounded-full flex items-center justify-center text-white hover:text-primary transition-colors">
@@ -1221,7 +1221,7 @@ export default function App() {
         <div className="border-t border-white/10">
           <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row justify-between items-center gap-3">
             <p className="text-white/40 text-xs sm:text-sm text-center sm:text-left">
-              &copy; {new Date().getFullYear()} BuildForce Construction & Engineering LLC. All rights reserved.
+              &copy; {new Date().getFullYear()} Titan Constructions Ltd. All rights reserved.
             </p>
             <div className="flex flex-wrap justify-center sm:justify-end gap-3 sm:gap-5">
               {["Terms", "Privacy Policy", "Safety Policy", "Sitemap"].map((item) => (

@@ -37,14 +37,14 @@ export default function CommercialConstruction({ serviceData }: { serviceData?: 
       "@graph": [
         {
           "@type": "Service",
-          "@id": "https://buildforce.com/services/commercial-construction#service",
+          "@id": "https://titanconstructions.co.ke/services/commercial-construction#service",
           name: "Commercial Construction",
           serviceType: "Commercial Building",
           description: "End-to-end commercial construction services for office towers, retail complexes, and mixed-use developments, delivered on time and within budget.",
           provider: {
             "@type": "Organization",
-            name: "BuildForce Construction & Engineering",
-            url: "https://buildforce.com"
+            name: "Titan Constructions Ltd",
+            url: "https://titanconstructions.co.ke"
           },
           areaServed: "US"
         },
@@ -100,13 +100,13 @@ export default function CommercialConstruction({ serviceData }: { serviceData?: 
             </h2>
             <div className="prose prose-lg text-muted-foreground">
               <p>
-                In the fast-paced world of commercial real estate, time is money. BuildForce Construction & Engineering understands that delays are unacceptable and quality cannot be compromised. Our commercial construction division is tailored to meet the rigorous demands of developers, investors, and corporate clients who expect excellence at every phase of the build.
+                In the fast-paced world of commercial real estate, time is money. Titan Constructions Ltd understands that delays are unacceptable and quality cannot be compromised. Our commercial construction division is tailored to meet the rigorous demands of developers, investors, and corporate clients who expect excellence at every phase of the build.
               </p>
               <p>
                 Whether you are developing a state-of-the-art office tower, a sprawling retail complex, or a high-density mixed-use facility, our team brings decades of structural engineering expertise and site management acumen to the table. We don't just build structures; we build assets that appreciate in value and stand the test of time.
               </p>
               <p>
-                By employing a vertically integrated model, we maintain control over every variable. From the initial architectural blueprints and structural load calculations to procurement, permitting, and final finishing, BuildForce serves as your single point of accountability. This streamlined approach minimizes risk, accelerates project timelines, and ensures complete alignment with your strategic vision.
+                By employing a vertically integrated model, we maintain control over every variable. From the initial architectural blueprints and structural load calculations to procurement, permitting, and final finishing, Titan Construction serves as your single point of accountability. This streamlined approach minimizes risk, accelerates project timelines, and ensures complete alignment with your strategic vision.
               </p>
             </div>
           </div>
@@ -180,7 +180,7 @@ export default function CommercialConstruction({ serviceData }: { serviceData?: 
         </div>
       </section>
 
-      {/* The BuildForce Process */}
+      {/* The Titan Construction Process */}
       <section className="py-14 sm:py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="mb-16">

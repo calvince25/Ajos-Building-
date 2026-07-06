@@ -37,14 +37,14 @@ export default function InteriorExteriorFinishes({ serviceData }: { serviceData?
       "@graph": [
         {
           "@type": "Service",
-          "@id": "https://buildforce.com/services/interior-exterior-finishes#service",
+          "@id": "https://titanconstructions.co.ke/services/interior-exterior-finishes#service",
           name: "Interior & Exterior Finishes",
           serviceType: "Finishing Services",
           description: "Professional interior and exterior finishing services including floor tiling, wall tiling, interior and exterior painting, and waterproofing.",
           provider: {
             "@type": "Organization",
-            name: "BuildForce Construction & Engineering",
-            url: "https://buildforce.com"
+            name: "Titan Constructions Ltd",
+            url: "https://titanconstructions.co.ke"
           },
           areaServed: "US"
         },

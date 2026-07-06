@@ -6,11 +6,11 @@ import { ArrowRight, CheckCircle, Truck, Layers, ShieldCheck, TrendingUp, MapPin
 export default function CivilEarthworks({ serviceData }: { serviceData?: any }) {
   const faqs = [
     {
-      question: "What civil and earthworks services does BuildForce provide?",
+      question: "What civil and earthworks services does Titan Construction provide?",
       answer: "Our civil and earthworks division covers the complete range of site preparation and civil construction services, including site clearing and demolition, bulk earthworks and excavation, engineered fill and compaction, grading and surface drainage, stormwater management systems, underground utility installation, road base construction, and concrete flatwork. We operate our own fleet of heavy earthmoving equipment, giving us control over scheduling and cost."
     },
     {
-      question: "Can BuildForce act as the prime contractor for road construction?",
+      question: "Can Titan Construction act as the prime contractor for road construction?",
       answer: "Yes. We hold the necessary licenses and bonding to act as a prime contractor on state and municipal road construction projects. We have delivered intersection improvements, collector road extensions, access roads for industrial developments, and private estate roadway networks. Our civil engineers produce all required traffic engineering documentation and coordinate closely with DOT representatives throughout construction."
     },
     {
@@ -37,11 +37,11 @@ export default function CivilEarthworks({ serviceData }: { serviceData?: any }) 
       "@graph": [
         {
           "@type": "Service",
-          "@id": "https://buildforce.com/services/civil-earthworks#service",
+          "@id": "https://titanconstructions.co.ke/services/civil-earthworks#service",
           name: "Civil & Earthworks",
           serviceType: "Civil Construction and Earthworks",
           description: "Site preparation, bulk excavation, engineered grading, stormwater management, and road construction services for commercial, industrial, and residential development projects.",
-          provider: { "@type": "Organization", name: "BuildForce Construction & Engineering", url: "https://buildforce.com" },
+          provider: { "@type": "Organization", name: "Titan Constructions Ltd", url: "https://titanconstructions.co.ke" },
           areaServed: "US"
         },
         getFAQSchema(faqs)
@@ -108,7 +108,7 @@ export default function CivilEarthworks({ serviceData }: { serviceData?: any }) 
             </h2>
             <div className="space-y-5 text-muted-foreground leading-relaxed text-sm">
               <p>
-                Every successful construction project begins long before the structural frame goes up. The quality of site preparation, earthwork execution, and civil infrastructure installation determines whether the building above will perform as designed for its full service life — or become a source of chronic, costly problems. BuildForce's civil and earthworks division understands this fundamental truth, which is why we bring the same engineering rigor and quality discipline to site work as we do to the structures that sit on top of it.
+                Every successful construction project begins long before the structural frame goes up. The quality of site preparation, earthwork execution, and civil infrastructure installation determines whether the building above will perform as designed for its full service life — or become a source of chronic, costly problems. Titan Construction's civil and earthworks division understands this fundamental truth, which is why we bring the same engineering rigor and quality discipline to site work as we do to the structures that sit on top of it.
               </p>
               <p>
                 We operate our own fleet of modern heavy earthmoving equipment, including excavators, bulldozers, compaction equipment, scrapers, and graders. This self-perform capability gives us direct control over schedules, eliminates subcontractor delays, and allows us to respond rapidly to changing site conditions without disrupting the broader project program. Our civil engineers and equipment operators work as a coordinated team, executing GPS-guided earthworks programs to achieve specified grades and tolerances with exceptional accuracy.

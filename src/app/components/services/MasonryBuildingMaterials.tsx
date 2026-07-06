@@ -37,14 +37,14 @@ export default function MasonryBuildingMaterials({ serviceData }: { serviceData?
       "@graph": [
         {
           "@type": "Service",
-          "@id": "https://buildforce.com/services/masonry-building-materials#service",
+          "@id": "https://titanconstructions.co.ke/services/masonry-building-materials#service",
           name: "Masonry & Building Materials",
           serviceType: "Masonry Services",
           description: "Expert masonry construction and building materials supply including concrete block production, clay brick production, stone dressing, and masonry works.",
           provider: {
             "@type": "Organization",
-            name: "BuildForce Construction & Engineering",
-            url: "https://buildforce.com"
+            name: "Titan Constructions Ltd",
+            url: "https://titanconstructions.co.ke"
           },
           areaServed: "US"
         },

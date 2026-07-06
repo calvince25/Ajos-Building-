@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://buildforce.com/sitemap.xml
+Sitemap: https://titanconstructions.co.ke/sitemap.xml

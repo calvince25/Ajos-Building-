@@ -37,11 +37,11 @@ export default function ResidentialDevelopment({ serviceData }: { serviceData?: 
       "@graph": [
         {
           "@type": "Service",
-          "@id": "https://buildforce.com/services/residential-development#service",
+          "@id": "https://titanconstructions.co.ke/services/residential-development#service",
           name: "Residential Development",
           serviceType: "Residential Building Construction",
           description: "Custom homes, apartment buildings, and residential estate communities built with precision craftsmanship and transparent cost-certainty guarantees.",
-          provider: { "@type": "Organization", name: "BuildForce Construction & Engineering", url: "https://buildforce.com" },
+          provider: { "@type": "Organization", name: "Titan Constructions Ltd", url: "https://titanconstructions.co.ke" },
           areaServed: "US"
         },
         getFAQSchema(faqs)
@@ -50,8 +50,8 @@ export default function ResidentialDevelopment({ serviceData }: { serviceData?: 
   };
 
   const testimonials = [
-    { name: "James & Linda Forsythe", text: "BuildForce turned our dream home into reality. The attention to every structural detail, from the foundation through to the roofline, was extraordinary. Our forever home was delivered on time and on budget.", rating: 5 },
-    { name: "Northgate Communities LLC", text: "As a first-time residential developer, we relied heavily on BuildForce's expertise. They guided us through every phase of our 48-unit townhouse project with remarkable professionalism.", rating: 5 }
+    { name: "James & Linda Forsythe", text: "Titan Construction turned our dream home into reality. The attention to every structural detail, from the foundation through to the roofline, was extraordinary. Our forever home was delivered on time and on budget.", rating: 5 },
+    { name: "Northgate Communities LLC", text: "As a first-time residential developer, we relied heavily on Titan Construction's expertise. They guided us through every phase of our 48-unit townhouse project with remarkable professionalism.", rating: 5 }
   ];
 
   return (
@@ -104,13 +104,13 @@ export default function ResidentialDevelopment({ serviceData }: { serviceData?: 
             </h2>
             <div className="space-y-5 text-muted-foreground leading-relaxed text-sm">
               <p>
-                A home is the most personal structure a builder will ever create. At BuildForce, we understand that residential construction is not simply about erecting walls and rooflines — it is about crafting the environment where families build their lives, celebrate milestones, and create generational memories. Every decision, from the soil bearing capacity assessment to the direction a window faces, matters profoundly.
+                A home is the most personal structure a builder will ever create. At Titan Construction, we understand that residential construction is not simply about erecting walls and rooflines — it is about crafting the environment where families build their lives, celebrate milestones, and create generational memories. Every decision, from the soil bearing capacity assessment to the direction a window faces, matters profoundly.
               </p>
               <p>
-                Our residential division handles everything from single custom homes for private clients to large-scale residential developments of 50 to 200+ units for property developers. Whether you are a private homeowner with a clear architectural vision or a first-time developer seeking expert guidance to bring a community to life, BuildForce provides the experience, resources, and collaborative approach to make it happen.
+                Our residential division handles everything from single custom homes for private clients to large-scale residential developments of 50 to 200+ units for property developers. Whether you are a private homeowner with a clear architectural vision or a first-time developer seeking expert guidance to bring a community to life, Titan Construction provides the experience, resources, and collaborative approach to make it happen.
               </p>
               <p>
-                What separates BuildForce from volume builders is our unwillingness to compromise on the details that matter most. We use premium structural materials, employ licensed tradespeople across every discipline, and conduct rigorous independent quality inspections at each phase of construction. Our clients consistently report that they would not hesitate to build with us again.
+                What separates Titan Construction from volume builders is our unwillingness to compromise on the details that matter most. We use premium structural materials, employ licensed tradespeople across every discipline, and conduct rigorous independent quality inspections at each phase of construction. Our clients consistently report that they would not hesitate to build with us again.
               </p>
               <p>
                 From foundation engineering and framing to roofing systems, insulation, windows, and final finishing, our team integrates every building trade under a single, accountable project management structure. You receive transparent weekly progress reports, real-time budget tracking, and a dedicated project manager who answers your calls personally.

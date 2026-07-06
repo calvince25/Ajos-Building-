@@ -19,7 +19,7 @@ export default function ArchitecturalEngineering({ serviceData }: { serviceData?
     },
     {
       question: "Do you use Building Information Modeling (BIM)?",
-      answer: "BIM is standard practice on all BuildForce projects above KES 1M. Our Revit-proficient team produces integrated architectural, structural, and MEP models that coordinate all building systems in three dimensions before construction begins. This clash detection process eliminates costly field changes and improves construction accuracy."
+      answer: "BIM is standard practice on all Titan Construction projects above KES 1M. Our Revit-proficient team produces integrated architectural, structural, and MEP models that coordinate all building systems in three dimensions before construction begins. This clash detection process eliminates costly field changes and improves construction accuracy."
     },
     {
       question: "What is the cost of architectural and engineering services?",
@@ -37,11 +37,11 @@ export default function ArchitecturalEngineering({ serviceData }: { serviceData?
       "@graph": [
         {
           "@type": "Service",
-          "@id": "https://buildforce.com/services/architectural-engineering#service",
+          "@id": "https://titanconstructions.co.ke/services/architectural-engineering#service",
           name: "Architectural & Engineering Services",
           serviceType: "Architectural Design and Structural Engineering Consultancy",
           description: "Full-scope architectural design and structural engineering services from initial concept through permit-ready construction documentation, utilizing BIM and integrated design-build delivery.",
-          provider: { "@type": "Organization", name: "BuildForce Construction & Engineering", url: "https://buildforce.com" },
+          provider: { "@type": "Organization", name: "Titan Constructions Ltd", url: "https://titanconstructions.co.ke" },
           areaServed: "US"
         },
         getFAQSchema(faqs)
@@ -100,7 +100,7 @@ export default function ArchitecturalEngineering({ serviceData }: { serviceData?
                 Great buildings are the product of a deeply collaborative relationship between architectural vision and structural engineering pragmatism. When these disciplines operate in silos — passing drawings over the wall from architect to engineer — the result is often a design that is beautiful in concept but expensive or difficult to build, requiring costly redesigns before construction can begin.
               </p>
               <p>
-                BuildForce eliminates this inefficiency by housing our architectural and structural engineering teams under one roof, working collaboratively from the earliest concept sketches. Our principal architect and lead structural engineer sit in the same design sessions, debate structural systems in real time, and produce integrated documentation that reflects both aesthetic intent and engineering reality. The result is a set of construction documents that contractors can actually build to — on budget and on schedule.
+                Titan Construction eliminates this inefficiency by housing our architectural and structural engineering teams under one roof, working collaboratively from the earliest concept sketches. Our principal architect and lead structural engineer sit in the same design sessions, debate structural systems in real time, and produce integrated documentation that reflects both aesthetic intent and engineering reality. The result is a set of construction documents that contractors can actually build to — on budget and on schedule.
               </p>
               <p>
                 Our architectural capabilities span the full project lifecycle, from early feasibility and master planning through schematic design, design development, construction documentation, and construction administration. Our structural engineering team provides comprehensive analysis and design for concrete, steel, timber, and masonry structural systems, including complex long-span structures, high-rise lateral force systems, and specialized industrial structures.

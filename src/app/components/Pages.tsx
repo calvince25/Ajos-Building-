@@ -161,7 +161,7 @@ export function AboutPage() {
     <main id="about-page" className="bg-background pb-20">
       <SEO {...ABOUT_SEO} />
       <PageHero 
-        title="About BuildForce"
+        title="About Titan Construction"
         subtitle="Our Story & Vision"
         imageUrl="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2000&auto=format&fit=crop"
       />
@@ -176,13 +176,13 @@ export function AboutPage() {
               Decades of Engineering <span className="text-accent">Excellence</span>
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              Founded in 1996, BuildForce began as a small regional contractor specializing in civil earthworks. Over the past twenty-eight years, we have strategically evolved into one of the nation's premier vertically integrated construction and engineering firms. Our journey is defined by a relentless pursuit of quality, an unwavering commitment to safety, and a deep-seated passion for building structures that endure for generations.
+              Founded in 1996, Titan Construction began as a small regional contractor specializing in civil earthworks. Over the past twenty-eight years, we have strategically evolved into one of the nation's premier vertically integrated construction and engineering firms. Our journey is defined by a relentless pursuit of quality, an unwavering commitment to safety, and a deep-seated passion for building structures that endure for generations.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-6">
               From our earliest days, we recognized that the traditional construction model—often plagued by fragmented communication between architects, engineers, and general contractors—was inherently flawed. In response, we built a comprehensive, in-house team of structural engineers, master architects, procurement specialists, and seasoned project managers. This unified approach eliminates silos, accelerates project timelines, and ensures that every structural detail is meticulously planned and executed under a single point of accountability.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              Today, BuildForce boasts a delivered project portfolio exceeding KES 2.1 billion. We have successfully completed over 350 major developments across commercial, industrial, civil, and residential sectors. Whether we are constructing a state-of-the-art logistics hub, a towering corporate headquarters, or a complex municipal bridge, our core philosophy remains unchanged: to deliver absolute cost certainty, rigorous schedule adherence, and uncompromising structural integrity.
+              Today, Titan Construction boasts a delivered project portfolio exceeding KES 2.1 billion. We have successfully completed over 350 major developments across commercial, industrial, civil, and residential sectors. Whether we are constructing a state-of-the-art logistics hub, a towering corporate headquarters, or a complex municipal bridge, our core philosophy remains unchanged: to deliver absolute cost certainty, rigorous schedule adherence, and uncompromising structural integrity.
             </p>
           </div>
           <div className="relative">
@@ -276,7 +276,7 @@ export function AboutPage() {
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-black mb-6" style={{ fontFamily: "'Montserrat', sans-serif" }}>Commitment to Sustainability</h2>
             <p className="text-white/80 leading-relaxed mb-8">
-              As leaders in the built environment, we recognize our profound responsibility to minimize our ecological footprint. BuildForce is a proud proponent of sustainable construction practices and LEED (Leadership in Energy and Environmental Design) certified development. 
+              As leaders in the built environment, we recognize our profound responsibility to minimize our ecological footprint. Titan Construction is a proud proponent of sustainable construction practices and LEED (Leadership in Energy and Environmental Design) certified development. 
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 text-left">
               <div className="bg-white/10 p-6 rounded-xl border border-white/20">
@@ -299,7 +299,7 @@ export function AboutPage() {
           </div>
         </section>
 
-        {/* Section 5: The BuildForce Process */}
+        {/* Section 5: The Titan Construction Process */}
         <section className="mb-24">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-black text-primary mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Our Project Delivery Process</h2>
@@ -350,7 +350,7 @@ export function AboutPage() {
             <div>
               <h2 className="text-3xl font-black text-primary mb-6" style={{ fontFamily: "'Montserrat', sans-serif" }}>A Leadership Team Built on Experience</h2>
               <p className="text-muted-foreground leading-relaxed mb-6">
-                The success of BuildForce is directly attributable to the exceptional talent and steadfast dedication of our leadership team. Comprised of industry veterans—including licensed structural engineers, registered architects, and certified project management professionals—our executives bring decades of hands-on experience navigating the most complex construction challenges.
+                The success of Titan Construction is directly attributable to the exceptional talent and steadfast dedication of our leadership team. Comprised of industry veterans—including licensed structural engineers, registered architects, and certified project management professionals—our executives bring decades of hands-on experience navigating the most complex construction challenges.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-8">
                 We foster a culture of continuous learning and mentorship, ensuring that our technical expertise is passed down to the next generation of builders. When you partner with us, you are gaining the collective intellectual capital of a team that has successfully managed billions of shillings in critical infrastructure and commercial development.
@@ -611,7 +611,7 @@ interface CareersPageProps {
 export function CareersPage({ careers }: CareersPageProps) {
   return (
     <main id="careers-page" className="bg-background pb-16">
-      <SEO title="Careers | BuildForce" description="Join our team of dedicated professionals." keywords="careers, jobs, construction jobs" />
+      <SEO title="Careers | Titan Construction" description="Join our team of dedicated professionals." keywords="careers, jobs, construction jobs" />
       <PageHero
         title="Careers"
         subtitle="Join Our Team"

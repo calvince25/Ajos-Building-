@@ -83,14 +83,14 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
     newsletter: true
   });
   const [companySettings, setCompanySettings] = useState<any>({
-    companyName: "BuildForce",
+    companyName: "Titan Construction",
     openHours: "Mon – Fri: 7:00am – 5:00pm",
     logoUrl: ""
   });
   const [contactDetails, setContactDetails] = useState<any>({
     address: "48 Industrial Blvd, Suite 200, Chicago, IL 60601",
     phone: "+1 (312) 555-0192",
-    email: "projects@buildforce.com",
+    email: "projects@titanconstructions.co.ke",
     emergencyPhone: "+1 (312) 555-0911"
   });
   const [socials, setSocials] = useState<any>({
@@ -100,7 +100,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
     instagram: "#"
   });
   const [seo, setSeo] = useState<any>({
-    titleTemplate: "BUILDForce | Construction & Engineering",
+    titleTemplate: "Titan Construction | Construction & Engineering",
     metaDescription: "Commercial, industrial, and residential construction delivered with precision.",
     keywords: "construction, engineering, contractor, builder"
   });
@@ -650,7 +650,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
         <div className="flex items-center gap-4">
           <div className="font-bold flex items-center gap-1.5 cursor-pointer" onClick={onClose}>
             <HardHat size={13} className="text-[#f0c243]" />
-            BuildForce Site Administration
+            Titan Construction Site Administration
           </div>
           <span className="text-gray-500">|</span>
           <div className="text-gray-400 hover:text-white cursor-pointer flex items-center gap-1" onClick={onClose}>

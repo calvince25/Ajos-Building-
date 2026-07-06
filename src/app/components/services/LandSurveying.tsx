@@ -37,14 +37,14 @@ export default function LandSurveying({ serviceData }: { serviceData?: any }) {
       "@graph": [
         {
           "@type": "Service",
-          "@id": "https://buildforce.com/services/land-surveying#service",
+          "@id": "https://titanconstructions.co.ke/services/land-surveying#service",
           name: "Land Surveying",
           serviceType: "Surveying Services",
           description: "Professional land surveying services including site surveying, topographical surveys, boundary surveys, and construction setting out.",
           provider: {
             "@type": "Organization",
-            name: "BuildForce Construction & Engineering",
-            url: "https://buildforce.com"
+            name: "Titan Constructions Ltd",
+            url: "https://titanconstructions.co.ke"
           },
           areaServed: "US"
         },

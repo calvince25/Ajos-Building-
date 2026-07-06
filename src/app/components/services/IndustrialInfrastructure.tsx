@@ -6,8 +6,8 @@ import { ArrowRight, CheckCircle, HardHat, Truck, ShieldCheck, TrendingUp, Layer
 export default function IndustrialInfrastructure({ serviceData }: { serviceData?: any }) {
   const faqs = [
     {
-      question: "What kinds of industrial construction projects does BuildForce handle?",
-      answer: "BuildForce delivers a full spectrum of industrial projects including warehouses, distribution centers, manufacturing plants, logistics hubs, petrochemical facilities, cold-storage buildings, and heavy-industrial structures requiring specialized foundations and structural systems."
+      question: "What kinds of industrial construction projects does Titan Construction handle?",
+      answer: "Titan Construction delivers a full spectrum of industrial projects including warehouses, distribution centers, manufacturing plants, logistics hubs, petrochemical facilities, cold-storage buildings, and heavy-industrial structures requiring specialized foundations and structural systems."
     },
     {
       question: "Can you manage infrastructure and public works projects?",
@@ -37,11 +37,11 @@ export default function IndustrialInfrastructure({ serviceData }: { serviceData?
       "@graph": [
         {
           "@type": "Service",
-          "@id": "https://buildforce.com/services/industrial-infrastructure#service",
+          "@id": "https://titanconstructions.co.ke/services/industrial-infrastructure#service",
           name: "Industrial & Infrastructure Construction",
           serviceType: "Industrial Building & Civil Infrastructure",
           description: "Full-cycle industrial construction services encompassing warehouses, factories, bridges, and critical infrastructure, delivered on schedule with design-build efficiency.",
-          provider: { "@type": "Organization", name: "BuildForce Construction & Engineering", url: "https://buildforce.com" },
+          provider: { "@type": "Organization", name: "Titan Constructions Ltd", url: "https://titanconstructions.co.ke" },
           areaServed: "US"
         },
         getFAQSchema(faqs)
@@ -69,7 +69,7 @@ export default function IndustrialInfrastructure({ serviceData }: { serviceData?
               Heavy-Duty Construction for <span className="text-accent">Demanding Environments</span>
             </h1>
             <p className="text-white/80 text-lg md:text-xl mb-10 leading-relaxed">
-              From million-square-foot logistics hubs to complex bridge infrastructure, BuildForce delivers engineered solutions that power industry and connect communities.
+              From million-square-foot logistics hubs to complex bridge infrastructure, Titan Construction delivers engineered solutions that power industry and connect communities.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link to="/contact" className="bg-accent text-primary font-black px-6 sm:px-8 py-3.5 sm:py-4 rounded hover:bg-yellow-400 transition-colors inline-flex items-center gap-2 min-h-0">
@@ -100,7 +100,7 @@ export default function IndustrialInfrastructure({ serviceData }: { serviceData?
               </h2>
               <div className="space-y-5 text-muted-foreground leading-relaxed">
                 <p>
-                  Modern industrial facilities are not simply buildings — they are highly engineered machines. The structural integrity of a distribution center's floor slab must withstand thousands of forklift passes daily. A manufacturing plant's roof must accommodate heavy crane rails. A water treatment facility must resist chemical corrosion for decades. BuildForce brings the engineering depth to get these details right, every single time.
+                  Modern industrial facilities are not simply buildings — they are highly engineered machines. The structural integrity of a distribution center's floor slab must withstand thousands of forklift passes daily. A manufacturing plant's roof must accommodate heavy crane rails. A water treatment facility must resist chemical corrosion for decades. Titan Construction brings the engineering depth to get these details right, every single time.
                 </p>
                 <p>
                   Our industrial construction division has delivered over 80 warehouse and logistics projects, 15 manufacturing facilities, and more than 25 public infrastructure contracts. We work with fortune 500 logistics companies, heavy manufacturers, government agencies, and private developers who demand precision and cannot afford costly construction errors.

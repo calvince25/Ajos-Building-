@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Routes, Route, Link, useNavigate, useLocation } from "react-router";
+import { Routes, Route, Link, useNavigate, useLocation, Navigate } from "react-router";
 import { supabase } from "./supabaseClient";
 import AdminDashboard from "./components/AdminDashboard";
 import { ServicesPage, ProjectsPage, AboutPage, TeamPage, CareersPage, BlogPage, ContactPage } from "./components/Pages";
@@ -351,6 +351,10 @@ export default function App() {
   const [blogs, setBlogs] = useState<any[]>([]);
   const [careers, setCareers] = useState<any[]>([]);
 
+  const visibleNavLinks = NAV_LINKS.filter(
+    (link) => link !== "Careers" || careers.length > 0
+  );
+
   // Scroll to top on page change
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -523,7 +527,7 @@ export default function App() {
 
           {/* Desktop Nav */}
           <ul className="header-nav hidden lg:flex">
-            {NAV_LINKS.map((link) => (
+            {visibleNavLinks.map((link) => (
               <li key={link}>
                 <Link
                   to={link.toLowerCase() === "home" ? "/" : `/${link.toLowerCase()}`}
@@ -562,7 +566,7 @@ export default function App() {
         {menuOpen && (
           <div className="lg:hidden bg-white border-t border-border px-6 py-4">
             <ul className="flex flex-col gap-1 list-none m-0 p-0 mb-4">
-              {NAV_LINKS.map((link) => (
+              {visibleNavLinks.map((link) => (
                 <li key={link}>
                   <Link
                     to={link.toLowerCase() === "home" ? "/" : `/${link.toLowerCase()}`}
@@ -616,7 +620,7 @@ export default function App() {
         <Route path="/projects" element={<ProjectsPage projects={projects} />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/team" element={<TeamPage team={team} />} />
-        <Route path="/careers" element={<CareersPage careers={careers} />} />
+        <Route path="/careers" element={careers.length > 0 ? <CareersPage careers={careers} /> : <Navigate to="/" replace />} />
         <Route path="/blog" element={<BlogPage blogs={blogs} />} />
         <Route path="/contact" element={<ContactPage contactDetails={contactDetails} companySettings={companySettings} />} />
         <Route path="/" element={<>

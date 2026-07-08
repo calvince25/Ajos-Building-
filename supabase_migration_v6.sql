@@ -1,22 +1,24 @@
 -- MIGRATION V6: Fix Row-Level Security (RLS) Policy issues
--- Fixes context-switching / null auth.uid() issue in SECURITY DEFINER functions
--- and enum type casting issues inside RLS.
+-- Fixes context-switching / null auth.uid() issue in SECURITY DEFINER functions.
+-- This version preserves the original 'user_role' return type to prevent PostgreSQL 42P13 errors
+-- ("cannot change return type of existing function") and avoids dropping dependent policies.
 
--- 1. Redefine get_user_role to take an optional user_id argument and return text (to avoid enum casting issues)
+-- 1. Create the new overloaded function get_user_role(uuid) returning the enum user_role
 CREATE OR REPLACE FUNCTION public.get_user_role(user_id uuid)
-RETURNS text AS $$
-  SELECT role::text FROM public.profiles
+RETURNS user_role AS $$
+  SELECT role FROM public.profiles
   WHERE id = user_id
     AND account_status = 'approved';
 $$ LANGUAGE sql SECURITY DEFINER SET search_path = public;
 
--- 2. Define a zero-argument overload of get_user_role for backward compatibility
+-- 2. Replace the body of the existing zero-argument get_user_role() function, keeping its return type as user_role
 CREATE OR REPLACE FUNCTION public.get_user_role()
-RETURNS text AS $$
+RETURNS user_role AS $$
   SELECT public.get_user_role(auth.uid());
 $$ LANGUAGE sql SECURITY DEFINER SET search_path = public;
 
 -- 3. Recreate RLS write policy for careers table to pass auth.uid() directly
+-- This ensures auth.uid() is evaluated in the RLS context before calling the SECURITY DEFINER function.
 DROP POLICY IF EXISTS "Editors/Admins/SuperAdmins can write careers" ON public.careers;
 CREATE POLICY "Editors/Admins/SuperAdmins can write careers" ON public.careers FOR ALL 
   USING (public.get_user_role(auth.uid()) IN ('editor', 'admin', 'super_admin'))

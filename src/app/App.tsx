@@ -1109,9 +1109,7 @@ export default function App() {
             {/* Brand */}
             <div>
               <div className="flex items-center gap-2.5 mb-5">
-                <div className="w-10 h-10 bg-accent flex items-center justify-center rounded">
-                  <HardHat size={20} className="text-primary" />
-                </div>
+                <img src="/logo.png" alt="Titan Constructions Ltd Logo" className="w-10 h-10 object-contain" />
                 <span className="text-xl font-black" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                   {companySettings.companyName.toUpperCase().startsWith("BUILD") ? (
                     <>

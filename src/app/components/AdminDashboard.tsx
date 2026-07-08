@@ -324,10 +324,19 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
   const handleSave = async (table: string, id?: any) => {
     try {
       const payload = { ...formData };
-      // Auto-generate slug if missing but title is present
-      if (!payload.slug && payload.title) {
-        payload.slug = slugify(payload.title) + "-" + Math.floor(Math.random() * 10000);
+      
+      // Only handle slug for tables that actually have a slug column
+      const tablesWithSlug = ["services", "projects", "blog_posts"];
+      if (tablesWithSlug.includes(table)) {
+        // Auto-generate slug if missing but title is present
+        if (!payload.slug && payload.title) {
+          payload.slug = slugify(payload.title) + "-" + Math.floor(Math.random() * 10000);
+        }
+      } else {
+        // Remove slug from payload for tables that do not have it
+        delete payload.slug;
       }
+
       if (id) {
         const { error } = await supabase.from(table).update(payload).eq("id", id);
         if (error) throw error;

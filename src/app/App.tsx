@@ -400,8 +400,8 @@ export default function App() {
           }));
           setServices(mappedServices);
         }
-        if (pRes.data && pRes.data.length > 0) setProjects(pRes.data);
-        if (tRes.data && tRes.data.length > 0) setTeam(tRes.data);
+        if (pRes.data) setProjects(pRes.data);
+        if (tRes.data) setTeam(tRes.data);
         if (testRes.data && testRes.data.length > 0) setTestimonials(testRes.data);
         if (fRes.data && fRes.data.length > 0) setFaqs(fRes.data);
         if (bRes.data) setBlogs(bRes.data);

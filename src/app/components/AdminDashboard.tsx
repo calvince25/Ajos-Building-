@@ -1114,11 +1114,20 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                               value={formData.slug || ""} onChange={e => setFormData({...formData, slug: e.target.value})} />
                           </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-3 gap-4">
                           <div>
                             <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Location</label>
                             <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
                               value={formData.location || ""} onChange={e => setFormData({...formData, location: e.target.value})} />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Category</label>
+                            <select className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
+                              value={formData.category || "Commercial"} onChange={e => setFormData({...formData, category: e.target.value})}>
+                              <option value="Commercial">Commercial</option>
+                              <option value="Industrial">Industrial</option>
+                              <option value="Residential">Residential</option>
+                            </select>
                           </div>
                           <div>
                             <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Status</label>

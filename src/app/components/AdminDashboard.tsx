@@ -418,6 +418,13 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
     }
   };
 
+  const handleDeleteApplication = async (appId: any) => {
+    await handleDelete("job_applications", appId);
+    if (appSelectedDetails && appSelectedDetails.id === appId) {
+      setAppSelectedDetails(null);
+    }
+  };
+
   const handleSaveSettings = async (key: string, value: any) => {
     try {
       const { error } = await supabase.from("website_settings").upsert({ key, value });
@@ -2102,12 +2109,19 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                                     app.status === "Hired" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
                                   }`}>{app.status}</span>
                                 </td>
-                                <td className="p-3 text-right">
+                                <td className="p-3 text-right flex justify-end gap-2 items-center">
                                   <button 
                                     onClick={() => setAppSelectedDetails(app)} 
                                     className="text-xs bg-[#2271b1] hover:bg-[#135e96] text-white px-2.5 py-1 rounded"
                                   >
                                     View Details
+                                  </button>
+                                  <button 
+                                    onClick={() => handleDeleteApplication(app.id)} 
+                                    className="text-xs bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded"
+                                    title="Delete Application"
+                                  >
+                                    <Trash2 size={12} />
                                   </button>
                                 </td>
                               </tr>
@@ -2263,6 +2277,12 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                                 className="text-xs bg-[#2271b1] hover:bg-[#135e96] text-white font-semibold px-3 py-1.5 rounded"
                               >
                                 Print Record
+                              </button>
+                              <button 
+                                onClick={() => handleDeleteApplication(appSelectedDetails.id)}
+                                className="text-xs bg-red-600 hover:bg-red-700 text-white font-semibold px-3 py-1.5 rounded"
+                              >
+                                Delete Application
                               </button>
                             </div>
                           </div>

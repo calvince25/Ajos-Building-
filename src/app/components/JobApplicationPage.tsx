@@ -121,7 +121,9 @@ export function JobApplicationPage({ careers }: JobApplicationPageProps) {
 
   const uploadFileToStorage = async (file: File, folder: string): Promise<string> => {
     const fileExt = file.name.split(".").pop();
-    const uniqueId = crypto.randomUUID();
+    const uniqueId = (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function")
+      ? crypto.randomUUID()
+      : Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     const filePath = `applications/${folder}/${uniqueId}.${fileExt}`;
 
     const { error: uploadError } = await supabase.storage

@@ -37,7 +37,8 @@ import {
   Share2,
   Phone,
   Ruler,
-  AlertCircle
+  AlertCircle,
+  ClipboardList
 } from "lucide-react";
 
 interface AdminDashboardProps {

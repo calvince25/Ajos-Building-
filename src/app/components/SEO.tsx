@@ -7,7 +7,7 @@ export interface SEOProps {
   /** Meta description (max 160 chars) */
   description: string;
   /** Canonical URL — must be unique per page */
-  canonical: string;
+  canonical?: string;
   /** Open Graph image URL (1200×630 recommended) */
   ogImage?: string;
   /** Page type for Open Graph */
@@ -59,7 +59,8 @@ export default function SEO({
   structuredData,
 }: SEOProps) {
   const fullTitle = `${title} | ${SITE_NAME}`;
-  const canonicalFull = canonical.startsWith("http") ? canonical : `${SITE_URL}${canonical}`;
+  const path = canonical || (typeof window !== "undefined" ? window.location.pathname : "/");
+  const canonicalFull = path.startsWith("http") ? path : `${SITE_URL}${path}`;
 
   return (
     <Helmet>

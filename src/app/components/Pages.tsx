@@ -621,7 +621,7 @@ interface CareersPageProps {
 export function CareersPage({ careers }: CareersPageProps) {
   return (
     <main id="careers-page" className="bg-background pb-16">
-      <SEO title="Careers | Titan Construction" description="Join our team of dedicated professionals." keywords="careers, jobs, construction jobs" />
+      <SEO title="Careers | Titan Construction" description="Join our team of dedicated professionals." keywords="careers, jobs, construction jobs" canonical="/careers" />
       <PageHero
         title="Careers"
         subtitle="Join Our Team"

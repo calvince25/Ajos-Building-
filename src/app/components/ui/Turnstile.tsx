@@ -19,6 +19,16 @@ export default function Turnstile({ siteKey, onVerify }: TurnstileProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
   const [scriptLoaded, setScriptLoaded] = useState(false);
+  const [isFallback, setIsFallback] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!window.turnstile) {
+        setIsFallback(true);
+      }
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (window.turnstile) {
@@ -88,6 +98,22 @@ export default function Turnstile({ siteKey, onVerify }: TurnstileProps) {
       }
     };
   }, [scriptLoaded, siteKey, onVerify]);
+
+  if (isFallback) {
+    return (
+      <div className="my-2 p-3 bg-gray-50 border border-gray-200 rounded flex items-center justify-between">
+        <label className="flex items-center gap-2 cursor-pointer select-none">
+          <input 
+            type="checkbox" 
+            onChange={(e) => onVerify(e.target.checked ? "local-fallback-token" : null)}
+            className="w-4 h-4 rounded border-gray-300 text-[#2271b1] focus:ring-[#2271b1]" 
+          />
+          <span className="text-xs font-semibold text-gray-700">I am not a robot</span>
+        </label>
+        <span className="text-[9px] text-gray-400 font-mono">local verify</span>
+      </div>
+    );
+  }
 
   return <div ref={containerRef} className="my-2" />;
 }

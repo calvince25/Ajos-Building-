@@ -507,6 +507,7 @@ interface ContactPageProps {
 export function ContactPage({ contactDetails, companySettings }: ContactPageProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
@@ -524,12 +525,13 @@ export function ContactPage({ contactDetails, companySettings }: ContactPageProp
     }
     try {
       const { error } = await supabase.from("contact_messages").insert([
-        { name, email, subject, message }
+        { name, email, phone: phone || null, subject, message, is_read: false }
       ]);
       if (error) throw error;
       alert("Your message has been sent successfully!");
       setName("");
       setEmail("");
+      setPhone("");
       setSubject("");
       setMessage("");
       setCaptchaToken(null);
@@ -594,9 +596,15 @@ export function ContactPage({ contactDetails, companySettings }: ContactPageProp
               <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="w-full px-3 py-2 border border-border rounded text-sm bg-background focus:outline-none focus:border-accent" />
             </div>
           </div>
-          <div>
-            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Subject</label>
-            <input type="text" value={subject} onChange={e => setSubject(e.target.value)} className="w-full px-3 py-2 border border-border rounded text-sm bg-background focus:outline-none focus:border-accent" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Phone Number <span className="text-gray-400 font-normal normal-case">(optional)</span></label>
+              <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="e.g. +254 712 345 678" className="w-full px-3 py-2 border border-border rounded text-sm bg-background focus:outline-none focus:border-accent" />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Subject</label>
+              <input type="text" value={subject} onChange={e => setSubject(e.target.value)} className="w-full px-3 py-2 border border-border rounded text-sm bg-background focus:outline-none focus:border-accent" />
+            </div>
           </div>
           <div>
             <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Message</label>
@@ -621,6 +629,20 @@ interface CareersPageProps {
 export function CareersPage({ careers }: CareersPageProps) {
   return (
     <main id="careers-page" className="bg-background pb-16">
+      <style>{`
+        .career-prose h1 { font-size: 1.6rem; font-weight: 800; margin: 0.75rem 0 0.5rem; line-height: 1.2; color: var(--color-primary, #1d2327); }
+        .career-prose h2 { font-size: 1.25rem; font-weight: 700; margin: 0.65rem 0 0.4rem; line-height: 1.25; color: var(--color-primary, #1d2327); }
+        .career-prose h3 { font-size: 1.05rem; font-weight: 700; margin: 0.55rem 0 0.35rem; line-height: 1.3; color: var(--color-primary, #1d2327); }
+        .career-prose p { margin: 0.4rem 0; line-height: 1.65; color: inherit; }
+        .career-prose ul { list-style: disc; padding-left: 1.4rem; margin: 0.5rem 0; }
+        .career-prose ol { list-style: decimal; padding-left: 1.4rem; margin: 0.5rem 0; }
+        .career-prose li { margin: 0.25rem 0; line-height: 1.6; }
+        .career-prose a { color: var(--color-accent, #f0c243); text-decoration: underline; }
+        .career-prose blockquote { border-left: 4px solid var(--color-accent, #f0c243); padding: 0.5rem 1rem; margin: 0.75rem 0; background: rgba(0,0,0,0.04); color: inherit; font-style: italic; border-radius: 0 4px 4px 0; }
+        .career-prose hr { border: none; border-top: 1px solid #d1d5db; margin: 1rem 0; }
+        .career-prose strong, .career-prose b { font-weight: 700; }
+        .career-prose em, .career-prose i { font-style: italic; }
+      `}</style>
       <SEO title="Careers | Titan Construction" description="Join our team of dedicated professionals." keywords="careers, jobs, construction jobs" canonical="/careers" />
       <PageHero
         title="Careers"
@@ -661,9 +683,17 @@ export function CareersPage({ careers }: CareersPageProps) {
                     </Link>
                   )}
                 </div>
-                {career.description && (
+
+                {/* Description: prefer rich HTML, fallback to plain text */}
+                {career.description_html ? (
+                  <div
+                    className="career-prose text-sm text-muted-foreground mb-4"
+                    dangerouslySetInnerHTML={{ __html: career.description_html }}
+                  />
+                ) : career.description ? (
                   <p className="text-sm text-muted-foreground mb-4 whitespace-pre-line">{career.description}</p>
-                )}
+                ) : null}
+
                 {(() => {
                   const reqs = Array.isArray(career.requirements) 
                     ? career.requirements 

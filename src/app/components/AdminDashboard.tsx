@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
+import RichTextEditor from "./ui/RichTextEditor";
 import {
   LayoutDashboard,
   ConciergeBell,
@@ -20,6 +21,7 @@ import {
   X,
   Lock,
   Mail,
+  Inbox,
   User,
   HardHat,
   Search,
@@ -72,6 +74,11 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
   const [media, setMedia] = useState<any[]>([]);
   const [jobApplications, setJobApplications] = useState<any[]>([]);
   const [users, setUsers] = useState<any[]>([]);
+
+  // Inquiries / Messages state
+  const [msgSearch, setMsgSearch] = useState("");
+  const [msgReadFilter, setMsgReadFilter] = useState("all"); // all, unread, read
+  const [selectedMsg, setSelectedMsg] = useState<any>(null);
   
   // Settings structures
   const [homepageSections, setHomepageSections] = useState<any>({
@@ -425,6 +432,40 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
     }
   };
 
+  // ── Contact Messages / Inquiries handlers ──
+  const handleMarkRead = async (id: any, isRead: boolean) => {
+    try {
+      const { error } = await supabase.from("contact_messages").update({ is_read: isRead }).eq("id", id);
+      if (error) throw error;
+      setContactMessages(prev => prev.map(m => m.id === id ? { ...m, is_read: isRead } : m));
+      if (selectedMsg && selectedMsg.id === id) {
+        setSelectedMsg((prev: any) => ({ ...prev, is_read: isRead }));
+      }
+    } catch (err: any) {
+      alert("Error updating message: " + err.message);
+    }
+  };
+
+  const handleDeleteMsg = async (id: any) => {
+    if (!confirm("Delete this message permanently? This cannot be undone.")) return;
+    try {
+      const { error } = await supabase.from("contact_messages").delete().eq("id", id);
+      if (error) throw error;
+      setContactMessages(prev => prev.filter(m => m.id !== id));
+      if (selectedMsg && selectedMsg.id === id) setSelectedMsg(null);
+    } catch (err: any) {
+      alert("Error deleting message: " + err.message);
+    }
+  };
+
+  // Auto-mark a message as read when it is opened in the modal
+  const openMsg = async (msg: any) => {
+    setSelectedMsg(msg);
+    if (!msg.is_read) {
+      await handleMarkRead(msg.id, true);
+    }
+  };
+
   const handleSaveSettings = async (key: string, value: any) => {
     try {
       const { error } = await supabase.from("website_settings").upsert({ key, value });
@@ -715,42 +756,52 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
         {/* LEFT SIDEBAR (WordPress Admin Nav) */}
         <aside className="w-full md:w-56 bg-[#1d2327] text-gray-300 select-none flex flex-row md:flex-col overflow-x-auto md:overflow-x-visible flex-shrink-0 border-b border-gray-800 md:border-b-0 scrollbar-thin">
           <nav className="flex flex-row md:flex-col pt-0 md:pt-3 text-[13px] w-full">
-            {[
-              { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-              { id: "homepage_sections", label: "Homepage Sections", icon: Globe },
-              { id: "services", label: "Services", icon: ConciergeBell },
-              { id: "projects", label: "Projects", icon: Briefcase },
-              { id: "team", label: "Team Members", icon: Users },
-              { id: "testimonials", label: "Testimonials", icon: MessageSquare },
-              { id: "blogs", label: "Blog Posts", icon: FileText },
-              { id: "faqs", label: "FAQs Manager", icon: HelpCircle },
-              { id: "careers", label: "Careers", icon: Bookmark },
-              { id: "applications", label: "Applications", icon: ClipboardList },
-              { id: "media", label: "Media Library", icon: ImageIcon },
-              { id: "settings", label: "Settings", icon: Settings },
-              ...(userRole === "super_admin" ? [{ id: "users", label: "User Management", icon: User }] : []),
-            ].map(item => (
-              <button
-                key={item.id}
-                onClick={() => {
-                  setActiveTab(item.id);
-                  setIsAdding(false);
-                  setEditingItem(null);
-                  setFormData({});
-                  setStatusFilter("all");
-                }}
-                className={`flex-shrink-0 px-4 py-2.5 md:py-2 flex items-center justify-center md:justify-between border-b-2 md:border-b-0 md:border-l-4 transition-colors whitespace-nowrap ${
-                  activeTab === item.id 
-                    ? "bg-[#2271b1] text-white border-b-[#f0c243] md:border-b-transparent md:border-l-[#f0c243]" 
-                    : "border-b-transparent md:border-l-transparent hover:bg-[#2c3338] hover:text-[#72aee6]"
-                }`}
-              >
-                <span className="flex items-center gap-2.5">
-                  <item.icon size={15} />
-                  {item.label}
-                </span>
-              </button>
-            ))}
+{(() => {
+              const unreadCount = contactMessages.filter(m => !m.is_read).length;
+              const navItems = [
+                { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+                { id: "homepage_sections", label: "Homepage Sections", icon: Globe },
+                { id: "services", label: "Services", icon: ConciergeBell },
+                { id: "projects", label: "Projects", icon: Briefcase },
+                { id: "team", label: "Team Members", icon: Users },
+                { id: "testimonials", label: "Testimonials", icon: MessageSquare },
+                { id: "blogs", label: "Blog Posts", icon: FileText },
+                { id: "faqs", label: "FAQs Manager", icon: HelpCircle },
+                { id: "careers", label: "Careers", icon: Bookmark },
+                { id: "applications", label: "Applications", icon: ClipboardList },
+                { id: "inquiries", label: "Inquiries", icon: Inbox, badge: unreadCount },
+                { id: "media", label: "Media Library", icon: ImageIcon },
+                { id: "settings", label: "Settings", icon: Settings },
+                ...(userRole === "super_admin" ? [{ id: "users", label: "User Management", icon: User, badge: 0 }] : []),
+              ];
+              return navItems.map((item: any) => (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    setIsAdding(false);
+                    setEditingItem(null);
+                    setFormData({});
+                    setStatusFilter("all");
+                  }}
+                  className={`flex-shrink-0 px-4 py-2.5 md:py-2 flex items-center justify-center md:justify-between border-b-2 md:border-b-0 md:border-l-4 transition-colors whitespace-nowrap ${
+                    activeTab === item.id 
+                      ? "bg-[#2271b1] text-white border-b-[#f0c243] md:border-b-transparent md:border-l-[#f0c243]" 
+                      : "border-b-transparent md:border-l-transparent hover:bg-[#2c3338] hover:text-[#72aee6]"
+                  }`}
+                >
+                  <span className="flex items-center gap-2.5">
+                    <item.icon size={15} />
+                    {item.label}
+                    {item.badge > 0 && (
+                      <span className="ml-auto bg-red-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full leading-none min-w-[16px] text-center">
+                        {item.badge}
+                      </span>
+                    )}
+                  </span>
+                </button>
+              ));
+            })()}
           </nav>
         </aside>
 
@@ -1295,6 +1346,265 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                 </div>
               )}
 
+              {/* TAB: INQUIRIES / CONTACT MESSAGES */}
+              {activeTab === "inquiries" && (() => {
+                const unread = contactMessages.filter(m => !m.is_read).length;
+
+                const filtered = contactMessages.filter(m => {
+                  const q = msgSearch.toLowerCase();
+                  const matchSearch =
+                    !q ||
+                    (m.name || "").toLowerCase().includes(q) ||
+                    (m.email || "").toLowerCase().includes(q) ||
+                    (m.subject || "").toLowerCase().includes(q) ||
+                    (m.message || "").toLowerCase().includes(q);
+                  const matchRead =
+                    msgReadFilter === "all" ||
+                    (msgReadFilter === "unread" && !m.is_read) ||
+                    (msgReadFilter === "read" && m.is_read);
+                  return matchSearch && matchRead;
+                });
+
+                return (
+                  <div>
+                    {/* Header */}
+                    <div className="flex justify-between items-center mb-4">
+                      <div>
+                        <h1 className="text-2xl font-normal">Contact Inquiries</h1>
+                        <p className="text-xs text-gray-500 mt-0.5">
+                          {contactMessages.length} total &nbsp;·&nbsp;
+                          <span className={unread > 0 ? "text-red-600 font-bold" : "text-gray-400"}>
+                            {unread} unread
+                          </span>
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => fetchAllData()}
+                        className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded flex items-center gap-1.5 font-semibold"
+                      >
+                        ↻ Refresh
+                      </button>
+                    </div>
+
+                    {/* Search + Filter bar */}
+                    <div className="bg-white p-4 border border-gray-200 shadow-sm mb-4 rounded flex flex-col sm:flex-row gap-3">
+                      <div className="flex-1 relative">
+                        <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                        <input
+                          type="text"
+                          placeholder="Search by name, email, subject or message..."
+                          value={msgSearch}
+                          onChange={e => setMsgSearch(e.target.value)}
+                          className="w-full pl-8 pr-3 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]"
+                        />
+                      </div>
+                      <div className="flex gap-1 text-xs">
+                        {["all", "unread", "read"].map(f => (
+                          <button
+                            key={f}
+                            onClick={() => setMsgReadFilter(f)}
+                            className={`px-3 py-1.5 rounded font-semibold capitalize transition-colors ${
+                              msgReadFilter === f
+                                ? f === "unread" ? "bg-red-600 text-white" : "bg-[#2271b1] text-white"
+                                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                            }`}
+                          >
+                            {f}{f === "unread" && unread > 0 && ` (${unread})`}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Messages Table */}
+                    <div className="bg-white border border-gray-200 shadow-sm overflow-x-auto rounded">
+                      <table className="w-full text-left text-xs border-collapse">
+                        <thead>
+                          <tr className="bg-gray-50 border-b text-gray-700">
+                            <th className="p-3 font-semibold w-3"></th>
+                            <th className="p-3 font-semibold">Name</th>
+                            <th className="p-3 font-semibold">Email</th>
+                            <th className="p-3 font-semibold hidden sm:table-cell">Phone</th>
+                            <th className="p-3 font-semibold hidden md:table-cell">Subject</th>
+                            <th className="p-3 font-semibold hidden lg:table-cell">Date & Time</th>
+                            <th className="p-3 font-semibold">Status</th>
+                            <th className="p-3 font-semibold text-right">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {filtered.length === 0 && (
+                            <tr>
+                              <td colSpan={8} className="p-8 text-center text-gray-400 italic">
+                                {msgSearch || msgReadFilter !== "all" ? "No messages match your filter." : "No messages yet. They will appear here when visitors submit the contact form."}
+                              </td>
+                            </tr>
+                          )}
+                          {filtered.map(msg => (
+                            <tr
+                              key={msg.id}
+                              className={`border-b cursor-pointer transition-colors ${
+                                !msg.is_read ? "bg-blue-50 hover:bg-blue-100" : "hover:bg-gray-50"
+                              }`}
+                              onClick={() => openMsg(msg)}
+                            >
+                              {/* Unread indicator dot */}
+                              <td className="p-3" onClick={e => e.stopPropagation()}>
+                                <span className={`inline-block w-2 h-2 rounded-full flex-shrink-0 ${
+                                  msg.is_read ? "bg-transparent" : "bg-blue-500"
+                                }`} />
+                              </td>
+                              <td className={`p-3 ${!msg.is_read ? "font-bold text-gray-900" : "font-medium text-gray-700"}`}>
+                                {msg.name || "—"}
+                              </td>
+                              <td className="p-3 text-gray-600">{msg.email || "—"}</td>
+                              <td className="p-3 text-gray-500 hidden sm:table-cell">{msg.phone || "—"}</td>
+                              <td className="p-3 text-gray-600 hidden md:table-cell max-w-[160px] truncate">
+                                {msg.subject || <span className="italic text-gray-400">(no subject)</span>}
+                              </td>
+                              <td className="p-3 text-gray-400 hidden lg:table-cell whitespace-nowrap">
+                                {new Date(msg.created_at).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" })}
+                                <span className="block text-[10px]">{new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
+                              </td>
+                              <td className="p-3" onClick={e => e.stopPropagation()}>
+                                <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase ${
+                                  msg.is_read ? "bg-gray-100 text-gray-500" : "bg-blue-100 text-blue-700"
+                                }`}>
+                                  {msg.is_read ? "Read" : "Unread"}
+                                </span>
+                              </td>
+                              <td className="p-3 text-right" onClick={e => e.stopPropagation()}>
+                                <div className="flex justify-end gap-2 items-center">
+                                  <button
+                                    onClick={() => openMsg(msg)}
+                                    className="text-[#2271b1] hover:text-[#135e96] text-xs font-semibold"
+                                  >
+                                    View
+                                  </button>
+                                  <button
+                                    onClick={() => handleMarkRead(msg.id, !msg.is_read)}
+                                    className="text-gray-500 hover:text-gray-800 text-xs font-semibold whitespace-nowrap hidden sm:inline"
+                                  >
+                                    {msg.is_read ? "Unread" : "Read"}
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeleteMsg(msg.id)}
+                                    className="text-[#d63638] hover:text-[#a01c1e]"
+                                    title="Delete Message"
+                                  >
+                                    <Trash2 size={13} />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* ── Message Detail Modal ── */}
+                    {selectedMsg && (
+                      <div
+                        className="fixed inset-0 bg-black/50 z-[1000] flex justify-center items-center p-4"
+                        onClick={() => setSelectedMsg(null)}
+                      >
+                        <div
+                          className="bg-white rounded-lg shadow-2xl border w-full max-w-2xl max-h-[90vh] flex flex-col"
+                          onClick={e => e.stopPropagation()}
+                        >
+                          {/* Modal Header */}
+                          <div className="flex justify-between items-start px-6 py-4 border-b border-gray-200 bg-gray-50 rounded-t-lg">
+                            <div className="flex-1 min-w-0 pr-4">
+                              <h2 className="text-lg font-bold text-gray-800 truncate">
+                                {selectedMsg.subject || "(No Subject)"}
+                              </h2>
+                              <p className="text-xs text-gray-500 mt-0.5">
+                                From <span className="font-semibold text-gray-700">{selectedMsg.name}</span>
+                                {" "}&lt;<a href={`mailto:${selectedMsg.email}`} className="text-[#2271b1] hover:underline">{selectedMsg.email}</a>&gt;
+                              </p>
+                              <p className="text-xs text-gray-400 mt-0.5">
+                                {new Date(selectedMsg.created_at).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}
+                              </p>
+                            </div>
+                            <button
+                              onClick={() => setSelectedMsg(null)}
+                              className="text-gray-400 hover:text-gray-700 text-2xl font-light leading-none mt-1 flex-shrink-0"
+                            >
+                              ×
+                            </button>
+                          </div>
+
+                          {/* Modal Body */}
+                          <div className="p-6 overflow-y-auto space-y-5 flex-1 text-sm">
+                            {/* Contact info grid */}
+                            <div className="grid grid-cols-2 gap-4">
+                              <div className="bg-gray-50 border rounded p-3">
+                                <p className="text-[10px] font-bold uppercase text-gray-400 mb-1">Full Name</p>
+                                <p className="font-semibold text-gray-800">{selectedMsg.name || "—"}</p>
+                              </div>
+                              <div className="bg-gray-50 border rounded p-3">
+                                <p className="text-[10px] font-bold uppercase text-gray-400 mb-1">Email Address</p>
+                                <a href={`mailto:${selectedMsg.email}`} className="text-[#2271b1] hover:underline font-medium">{selectedMsg.email || "—"}</a>
+                              </div>
+                              <div className="bg-gray-50 border rounded p-3">
+                                <p className="text-[10px] font-bold uppercase text-gray-400 mb-1">Phone Number</p>
+                                <p className="font-medium text-gray-700">
+                                  {selectedMsg.phone || <span className="italic text-gray-400 font-normal">Not provided</span>}
+                                </p>
+                              </div>
+                              <div className="bg-gray-50 border rounded p-3">
+                                <p className="text-[10px] font-bold uppercase text-gray-400 mb-1">Subject</p>
+                                <p className="font-medium text-gray-700">
+                                  {selectedMsg.subject || <span className="italic text-gray-400 font-normal">No subject</span>}
+                                </p>
+                              </div>
+                            </div>
+
+                            {/* Message body */}
+                            <div>
+                              <p className="text-[10px] font-bold uppercase text-gray-400 mb-2">Message</p>
+                              <div className="bg-gray-50 border rounded p-4 whitespace-pre-wrap leading-relaxed text-gray-700 min-h-[80px]">
+                                {selectedMsg.message || <span className="italic text-gray-400">(empty message)</span>}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Modal Footer */}
+                          <div className="px-6 py-4 border-t border-gray-200 flex justify-between items-center gap-3 bg-gray-50 rounded-b-lg flex-wrap">
+                            <div className="flex gap-2 flex-wrap">
+                              <a
+                                href={`mailto:${selectedMsg.email}?subject=Re: ${encodeURIComponent(selectedMsg.subject || "Your inquiry")}`}
+                                className="text-xs bg-[#2271b1] hover:bg-[#135e96] text-white font-semibold px-4 py-2 rounded flex items-center gap-1.5 no-underline"
+                              >
+                                <Mail size={12} /> Reply via Email
+                              </a>
+                              <button
+                                onClick={() => handleMarkRead(selectedMsg.id, !selectedMsg.is_read)}
+                                className="text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold px-3 py-2 rounded"
+                              >
+                                {selectedMsg.is_read ? "Mark as Unread" : "Mark as Read"}
+                              </button>
+                            </div>
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => handleDeleteMsg(selectedMsg.id)}
+                                className="text-xs bg-red-100 hover:bg-red-200 text-red-700 font-semibold px-3 py-2 rounded flex items-center gap-1"
+                              >
+                                <Trash2 size={12} /> Delete
+                              </button>
+                              <button
+                                onClick={() => setSelectedMsg(null)}
+                                className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold px-4 py-2 rounded"
+                              >
+                                Close
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+
               {/* TAB: SYSTEM SETTINGS */}
               {activeTab === "settings" && (
                 <div className="space-y-8 max-w-2xl">
@@ -1785,10 +2095,15 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                             value={formData.excerpt || ""} onChange={e => setFormData({...formData, excerpt: e.target.value})} />
                         </div>
                         <div>
-                          <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Full Content</label>
-                          <textarea rows={10} className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1] font-mono"
-                            value={formData.content || ""} onChange={e => setFormData({...formData, content: e.target.value})} placeholder="Write your full blog post content here..." />
-                        </div>
+                           <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Full Content</label>
+                           <p className="text-[11px] text-gray-400 mb-1.5">Use the toolbar for headings, bold, lists, links, and more. Content will render exactly as formatted on the public site.</p>
+                           <RichTextEditor
+                             value={formData.content || ""}
+                             onChange={(html) => setFormData({ ...formData, content: html })}
+                             placeholder="Write your full blog post content here..."
+                             minHeight={300}
+                           />
+                         </div>
                         <div className="flex gap-2">
                           <button onClick={() => handleSave("blog_posts", editingItem?.id)} className="bg-[#2271b1] hover:bg-[#135e96] text-white text-xs font-semibold px-4 py-2 rounded">Save Post</button>
                           <button onClick={() => { setIsAdding(false); setEditingItem(null); }} className="bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-semibold px-4 py-2 rounded">Cancel</button>

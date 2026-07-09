@@ -69,6 +69,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
   const [contactMessages, setContactMessages] = useState<any[]>([]);
   const [quoteRequests, setQuoteRequests] = useState<any[]>([]);
   const [media, setMedia] = useState<any[]>([]);
+  const [jobApplications, setJobApplications] = useState<any[]>([]);
   const [users, setUsers] = useState<any[]>([]);
   
   // Settings structures
@@ -108,6 +109,12 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
 
   // Table filter state
   const [statusFilter, setStatusFilter] = useState("all"); // all, published, draft, archived
+
+  // Recruitment Applications states
+  const [appSearchQuery, setAppSearchQuery] = useState("");
+  const [appStatusFilter, setAppStatusFilter] = useState("All");
+  const [appJobFilter, setAppJobFilter] = useState("All");
+  const [appSelectedDetails, setAppSelectedDetails] = useState<any>(null);
 
   // Preview / Edit modal states
   const [editingItem, setEditingItem] = useState<any>(null);
@@ -156,7 +163,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
     setLoading(true);
     try {
       const [
-        sRes, pRes, tRes, testRes, bRes, cRes, eRes, fRes, mRes, qRes, mediaRes, settingsRes
+        sRes, pRes, tRes, testRes, bRes, cRes, eRes, fRes, mRes, qRes, mediaRes, settingsRes, appsRes
       ] = await Promise.all([
         supabase.from("services").select("*").order("id"),
         supabase.from("projects").select("*").order("id"),
@@ -169,7 +176,8 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
         supabase.from("contact_messages").select("*").order("created_at", { ascending: false }),
         supabase.from("quote_requests").select("*").order("created_at", { ascending: false }),
         supabase.from("media_library").select("*").order("created_at", { ascending: false }),
-        supabase.from("website_settings").select("*")
+        supabase.from("website_settings").select("*"),
+        supabase.from("job_applications").select("*").order("created_at", { ascending: false })
       ]);
 
       if (sRes.data) setServices(sRes.data);
@@ -183,6 +191,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
       if (mRes.data) setContactMessages(mRes.data);
       if (qRes.data) setQuoteRequests(qRes.data);
       if (mediaRes.data) setMedia(mediaRes.data);
+      if (appsRes.data) setJobApplications(appsRes.data);
 
       if (settingsRes.data) {
         settingsRes.data.forEach(item => {
@@ -327,7 +336,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
       const payload = { ...formData };
       
       // Only handle slug for tables that actually have a slug column
-      const tablesWithSlug = ["services", "projects", "blog_posts"];
+      const tablesWithSlug = ["services", "projects", "blog_posts", "careers"];
       if (tablesWithSlug.includes(table)) {
         // Auto-generate slug if missing but title is present
         if (!payload.slug && payload.title) {
@@ -360,6 +369,19 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
       const { error } = await supabase.from(table).update({ status: newStatus }).eq("id", id);
       if (error) throw error;
       fetchAllData();
+    } catch (err: any) {
+      alert("Error updating status: " + err.message);
+    }
+  };
+
+  const handleUpdateAppStatus = async (appId: any, newStatus: string) => {
+    try {
+      const { error } = await supabase.from("job_applications").update({ status: newStatus }).eq("id", appId);
+      if (error) throw error;
+      setJobApplications(prev => prev.map(a => a.id === appId ? { ...a, status: newStatus } : a));
+      if (appSelectedDetails && appSelectedDetails.id === appId) {
+        setAppSelectedDetails((prev: any) => ({ ...prev, status: newStatus }));
+      }
     } catch (err: any) {
       alert("Error updating status: " + err.message);
     }
@@ -695,6 +717,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
               { id: "blogs", label: "Blog Posts", icon: FileText },
               { id: "faqs", label: "FAQs Manager", icon: HelpCircle },
               { id: "careers", label: "Careers", icon: Bookmark },
+              { id: "applications", label: "Applications", icon: ClipboardList },
               { id: "media", label: "Media Library", icon: ImageIcon },
               { id: "settings", label: "Settings", icon: Settings },
               ...(userRole === "super_admin" ? [{ id: "users", label: "User Management", icon: User }] : []),
@@ -811,6 +834,16 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                         <span className="text-2xl font-bold text-gray-800">{careers.length}</span>
                       </div>
                       <Bookmark size={32} className="text-[#2271b1] opacity-40" />
+                    </div>
+                    <div
+                      className="bg-white p-4 shadow-sm border border-gray-200 flex justify-between items-center cursor-pointer hover:border-[#2271b1] hover:shadow-md transition-all"
+                      onClick={() => setActiveTab("applications")}
+                    >
+                      <div>
+                        <span className="text-gray-500 text-xs block uppercase font-semibold">Applications</span>
+                        <span className="text-2xl font-bold text-gray-800">{jobApplications.length}</span>
+                      </div>
+                      <ClipboardList size={32} className="text-[#2271b1] opacity-40" />
                     </div>
                   </div>
 
@@ -1855,6 +1888,23 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                             </select>
                           </div>
                         </div>
+                        <div className="grid grid-cols-3 gap-4">
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Salary (Optional)</label>
+                            <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
+                              value={formData.salary || ""} onChange={e => setFormData({...formData, salary: e.target.value})} placeholder="e.g. Ksh 150k" />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Number of Vacancies</label>
+                            <input type="number" min="1" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
+                              value={formData.vacancies || 1} onChange={e => setFormData({...formData, vacancies: parseInt(e.target.value) || 1})} />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Application Deadline</label>
+                            <input type="date" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
+                              value={formData.deadline ? formData.deadline.substring(0, 10) : ""} onChange={e => setFormData({...formData, deadline: e.target.value})} />
+                          </div>
+                        </div>
                         <div>
                           <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Description</label>
                           <textarea rows={4} className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
@@ -1933,6 +1983,379 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                             ))}
                           </tbody>
                         </table>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* TAB: APPLICATIONS */}
+              {activeTab === "applications" && (
+                <div>
+                  <div className="flex justify-between items-center mb-6">
+                    <h1 className="text-2xl font-normal">Job Applications</h1>
+                    <div className="text-xs text-gray-500">
+                      Total Submissions: <strong className="text-gray-800">{jobApplications.length}</strong>
+                    </div>
+                  </div>
+
+                  {/* Filter & Search Controls */}
+                  <div className="bg-white p-4 border border-gray-200 shadow-sm mb-6 rounded text-sm grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Search Applicant</label>
+                      <input 
+                        type="text" 
+                        placeholder="Search by name, email, or phone..." 
+                        value={appSearchQuery} 
+                        onChange={e => setAppSearchQuery(e.target.value)}
+                        className="w-full px-3 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#2271b1]" 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Filter by Job Position</label>
+                      <select 
+                        value={appJobFilter} 
+                        onChange={e => setAppJobFilter(e.target.value)}
+                        className="w-full px-3 py-1.5 border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#2271b1]"
+                      >
+                        <option value="All">All Positions</option>
+                        {careers.map(c => (
+                          <option key={c.id} value={String(c.id)}>{c.title}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Filter by Status</label>
+                      <select 
+                        value={appStatusFilter} 
+                        onChange={e => setAppStatusFilter(e.target.value)}
+                        className="w-full px-3 py-1.5 border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#2271b1]"
+                      >
+                        <option value="All">All Statuses</option>
+                        <option value="New">New</option>
+                        <option value="Under Review">Under Review</option>
+                        <option value="Shortlisted">Shortlisted</option>
+                        <option value="Interview Scheduled">Interview Scheduled</option>
+                        <option value="Hired">Hired</option>
+                        <option value="Rejected">Rejected</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Applications List Table */}
+                  <div className="bg-white border border-gray-200 shadow-sm overflow-hidden text-sm rounded">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-gray-50 border-b text-gray-700">
+                          <th className="p-3 font-semibold">Applicant Name</th>
+                          <th className="p-3 font-semibold">Job Position</th>
+                          <th className="p-3 font-semibold">Contact Info</th>
+                          <th className="p-3 font-semibold">Date Applied</th>
+                          <th className="p-3 font-semibold">Status</th>
+                          <th className="p-3 font-semibold text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(() => {
+                          const filtered = jobApplications.filter(app => {
+                            const fullName = `${app.first_name} ${app.last_name}`.toLowerCase();
+                            const matchesSearch = 
+                              fullName.includes(appSearchQuery.toLowerCase()) || 
+                              app.email.toLowerCase().includes(appSearchQuery.toLowerCase()) ||
+                              app.phone.includes(appSearchQuery);
+                            const matchesStatus = appStatusFilter === "All" || app.status === appStatusFilter;
+                            const matchesJob = appJobFilter === "All" || String(app.career_id) === appJobFilter;
+                            return matchesSearch && matchesStatus && matchesJob;
+                          });
+
+                          if (filtered.length === 0) {
+                            return <tr><td colSpan={6} className="p-6 text-center text-gray-400 italic">No applications found matching criteria.</td></tr>;
+                          }
+
+                          return filtered.map(app => {
+                            const jobTitle = careers.find(c => c.id === app.career_id)?.title || "Unknown position";
+                            
+                            return (
+                              <tr key={app.id} className="border-b hover:bg-gray-50">
+                                <td className="p-3 font-semibold text-[#2271b1]">
+                                  {app.first_name} {app.last_name}
+                                </td>
+                                <td className="p-3 text-gray-700 font-medium">
+                                  {jobTitle}
+                                </td>
+                                <td className="p-3 text-gray-600 text-xs">
+                                  <span className="block">{app.email}</span>
+                                  <span className="block text-gray-400">{app.phone}</span>
+                                </td>
+                                <td className="p-3 text-gray-500">
+                                  {new Date(app.created_at).toLocaleDateString()}
+                                </td>
+                                <td className="p-3">
+                                  <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase ${
+                                    app.status === "New" ? "bg-blue-100 text-blue-800" :
+                                    app.status === "Under Review" ? "bg-yellow-100 text-yellow-800" :
+                                    app.status === "Shortlisted" ? "bg-purple-100 text-purple-800" :
+                                    app.status === "Interview Scheduled" ? "bg-orange-100 text-orange-800" :
+                                    app.status === "Hired" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                                  }`}>{app.status}</span>
+                                </td>
+                                <td className="p-3 text-right">
+                                  <button 
+                                    onClick={() => setAppSelectedDetails(app)} 
+                                    className="text-xs bg-[#2271b1] hover:bg-[#135e96] text-white px-2.5 py-1 rounded"
+                                  >
+                                    View Details
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          });
+                        })()}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Applicant Details Modal Overlay */}
+                  {appSelectedDetails && (
+                    <div className="fixed inset-0 bg-black/50 z-[1000] flex justify-center items-center p-4 overflow-y-auto">
+                      <div className="bg-white rounded-lg shadow-xl border w-full max-w-4xl max-h-[90vh] flex flex-col">
+                        
+                        {/* Modal Header */}
+                        <div className="flex justify-between items-center px-6 py-4 border-b border-gray-200">
+                          <div>
+                            <h2 className="text-xl font-bold text-gray-800">
+                              Applicant Record: {appSelectedDetails.first_name} {appSelectedDetails.last_name}
+                            </h2>
+                            <p className="text-xs text-gray-500">
+                              Applied for <strong className="text-gray-700">
+                                {careers.find(c => c.id === appSelectedDetails.career_id)?.title || "Unknown position"}
+                              </strong> on {new Date(appSelectedDetails.created_at).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <button 
+                            onClick={() => setAppSelectedDetails(null)} 
+                            className="text-gray-400 hover:text-gray-600 text-2xl font-semibold focus:outline-none"
+                          >
+                            &times;
+                          </button>
+                        </div>
+
+                        {/* Modal Scrollable Body */}
+                        <div className="p-6 overflow-y-auto space-y-6 text-sm">
+                          
+                          {/* Top Status & Controls Bar */}
+                          <div className="bg-gray-50 border p-4 rounded flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                            <div className="flex items-center gap-2">
+                              <span className="font-bold text-gray-700 text-xs uppercase">Application Status:</span>
+                              <select 
+                                value={appSelectedDetails.status} 
+                                onChange={e => handleUpdateAppStatus(appSelectedDetails.id, e.target.value)}
+                                className="px-3 py-1 border border-gray-300 rounded text-xs bg-white focus:outline-none"
+                              >
+                                <option value="New">New</option>
+                                <option value="Under Review">Under Review</option>
+                                <option value="Shortlisted">Shortlisted</option>
+                                <option value="Interview Scheduled">Interview Scheduled</option>
+                                <option value="Hired">Hired</option>
+                                <option value="Rejected">Rejected</option>
+                              </select>
+                            </div>
+                            
+                            {/* Action Buttons */}
+                            <div className="flex flex-wrap gap-2">
+                              {appSelectedDetails.cv_url && (
+                                <a 
+                                  href={appSelectedDetails.cv_url} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-xs bg-green-600 hover:bg-green-700 text-white font-semibold px-3 py-1.5 rounded flex items-center gap-1 no-underline"
+                                >
+                                  Download CV
+                                </a>
+                              )}
+                              <button 
+                                onClick={() => {
+                                  const docs = [
+                                    appSelectedDetails.cv_url, 
+                                    appSelectedDetails.cover_letter_url, 
+                                    appSelectedDetails.certificates_url, 
+                                    appSelectedDetails.portfolio_url, 
+                                    appSelectedDetails.id_url
+                                  ].filter(Boolean);
+                                  docs.forEach(d => window.open(d, "_blank"));
+                                }}
+                                className="text-xs bg-gray-600 hover:bg-gray-700 text-white font-semibold px-3 py-1.5 rounded flex items-center gap-1"
+                              >
+                                Download All Docs
+                              </button>
+                              <button 
+                                onClick={() => {
+                                  const jobTitle = careers.find(c => c.id === appSelectedDetails.career_id)?.title || "Unknown Position";
+                                  const printWindow = window.open("", "_blank");
+                                  if (!printWindow) return;
+                                  printWindow.document.write(`
+                                    <html>
+                                      <head>
+                                        <title>Application: ${appSelectedDetails.first_name} ${appSelectedDetails.last_name}</title>
+                                        <style>
+                                          body { font-family: sans-serif; padding: 40px; color: #333; line-height: 1.6; }
+                                          h1 { border-bottom: 2px solid #2271b1; padding-bottom: 10px; color: #2271b1; }
+                                          h2 { margin-top: 30px; border-bottom: 1px solid #ddd; padding-bottom: 5px; font-size: 18px; }
+                                          .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+                                          .field { margin-bottom: 10px; }
+                                          .label { font-weight: bold; font-size: 12px; color: #666; text-transform: uppercase; }
+                                          .value { font-size: 14px; margin-top: 2px; }
+                                          .question { background: #f9f9f9; padding: 15px; border-left: 4px solid #2271b1; margin-top: 10px; white-space: pre-wrap; }
+                                        </style>
+                                      </head>
+                                      <body>
+                                        <h1>Job Application Record</h1>
+                                        <div class="grid">
+                                          <div class="field"><div class="label">Job Applied For</div><div class="value">${jobTitle}</div></div>
+                                          <div class="field"><div class="label">Date Applied</div><div class="value">${new Date(appSelectedDetails.created_at).toLocaleDateString()}</div></div>
+                                          <div class="field"><div class="label">Application Status</div><div class="value">${appSelectedDetails.status}</div></div>
+                                        </div>
+                                        
+                                        <h2>Personal Information</h2>
+                                        <div class="grid">
+                                          <div class="field"><div class="label">First Name</div><div class="value">${appSelectedDetails.first_name}</div></div>
+                                          <div class="field"><div class="label">Last Name</div><div class="value">${appSelectedDetails.last_name}</div></div>
+                                          <div class="field"><div class="label">Email Address</div><div class="value">${appSelectedDetails.email}</div></div>
+                                          <div class="field"><div class="label">Phone Number</div><div class="value">${appSelectedDetails.phone}</div></div>
+                                          <div class="field"><div class="label">Nationality</div><div class="value">${appSelectedDetails.nationality}</div></div>
+                                          <div class="field"><div class="label">County/City</div><div class="value">${appSelectedDetails.city}</div></div>
+                                        </div>
+                                        
+                                        <h2>Professional Information</h2>
+                                        <div class="grid">
+                                          <div class="field"><div class="label">Highest Education</div><div class="value">${appSelectedDetails.education_level}</div></div>
+                                          <div class="field"><div class="label">Years of Experience</div><div class="value">${appSelectedDetails.years_experience} years</div></div>
+                                          <div class="field"><div class="label">Current Employer</div><div class="value">${appSelectedDetails.current_employer || "N/A"}</div></div>
+                                          <div class="field"><div class="label">Current Position</div><div class="value">${appSelectedDetails.current_position || "N/A"}</div></div>
+                                          <div class="field"><div class="label">Expected Salary</div><div class="value">${appSelectedDetails.expected_salary || "N/A"}</div></div>
+                                          <div class="field"><div class="label">Available Start Date</div><div class="value">${appSelectedDetails.start_date ? new Date(appSelectedDetails.start_date).toLocaleDateString() : "N/A"}</div></div>
+                                        </div>
+                                        
+                                        <h2>Application Questions</h2>
+                                        <div class="field">
+                                          <div class="label">Why are you interested in this position?</div>
+                                          <div class="question">${appSelectedDetails.interest_reason}</div>
+                                        </div>
+                                        <div class="field" style="margin-top: 20px;">
+                                          <div class="label">Brief summary of your relevant experience</div>
+                                          <div class="question">${appSelectedDetails.experience_summary}</div>
+                                        </div>
+                                        
+                                        <script>
+                                          window.onload = function() {
+                                            window.print();
+                                            window.close();
+                                          };
+                                        </script>
+                                      </body>
+                                    </html>
+                                  `);
+                                  printWindow.document.close();
+                                }}
+                                className="text-xs bg-[#2271b1] hover:bg-[#135e96] text-white font-semibold px-3 py-1.5 rounded"
+                              >
+                                Print Record
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Personal & Professional Grids */}
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            
+                            {/* Personal Details */}
+                            <div className="bg-white p-4 border rounded shadow-sm">
+                              <h4 className="font-bold text-gray-800 border-b pb-2 mb-3">Personal Information</h4>
+                              <table className="w-full text-xs space-y-1.5">
+                                <tbody>
+                                  <tr><td className="w-28 font-semibold text-gray-500 uppercase py-1">Nationality:</td><td className="py-1">{appSelectedDetails.nationality}</td></tr>
+                                  <tr><td className="w-28 font-semibold text-gray-500 uppercase py-1">Location:</td><td className="py-1">{appSelectedDetails.city}</td></tr>
+                                  <tr><td className="w-28 font-semibold text-gray-500 uppercase py-1">Email:</td><td className="py-1">{appSelectedDetails.email}</td></tr>
+                                  <tr><td className="w-28 font-semibold text-gray-500 uppercase py-1">Phone:</td><td className="py-1">{appSelectedDetails.phone}</td></tr>
+                                </tbody>
+                              </table>
+                            </div>
+
+                            {/* Professional Details */}
+                            <div className="bg-white p-4 border rounded shadow-sm">
+                              <h4 className="font-bold text-gray-800 border-b pb-2 mb-3">Professional Qualifications</h4>
+                              <table className="w-full text-xs space-y-1.5">
+                                <tbody>
+                                  <tr><td className="w-32 font-semibold text-gray-500 uppercase py-1">Highest Education:</td><td className="py-1">{appSelectedDetails.education_level}</td></tr>
+                                  <tr><td className="w-32 font-semibold text-gray-500 uppercase py-1">Experience:</td><td className="py-1">{appSelectedDetails.years_experience} years</td></tr>
+                                  <tr><td className="w-32 font-semibold text-gray-500 uppercase py-1">Expected Salary:</td><td className="py-1">{appSelectedDetails.expected_salary || "N/A"}</td></tr>
+                                  <tr><td className="w-32 font-semibold text-gray-500 uppercase py-1">Start Date:</td><td className="py-1">{appSelectedDetails.start_date ? new Date(appSelectedDetails.start_date).toLocaleDateString() : "Immediate / N/A"}</td></tr>
+                                  <tr><td className="w-32 font-semibold text-gray-500 uppercase py-1">Current Employer:</td><td className="py-1">{appSelectedDetails.current_employer || "N/A"} ({appSelectedDetails.current_position || "N/A"})</td></tr>
+                                </tbody>
+                              </table>
+                            </div>
+
+                          </div>
+
+                          {/* Questions Section */}
+                          <div className="space-y-4">
+                            <div className="bg-white p-4 border rounded shadow-sm">
+                              <h4 className="font-bold text-gray-800 mb-2">Why are you interested in this position?</h4>
+                              <p className="text-gray-600 bg-gray-50 p-3 border-l-4 border-[#2271b1] rounded text-xs whitespace-pre-wrap leading-relaxed">
+                                {appSelectedDetails.interest_reason}
+                              </p>
+                            </div>
+                            <div className="bg-white p-4 border rounded shadow-sm">
+                              <h4 className="font-bold text-gray-800 mb-2">Summary of relevant experience</h4>
+                              <p className="text-gray-600 bg-gray-50 p-3 border-l-4 border-[#2271b1] rounded text-xs whitespace-pre-wrap leading-relaxed">
+                                {appSelectedDetails.experience_summary}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Uploaded Documents List */}
+                          <div className="bg-white p-4 border rounded shadow-sm">
+                            <h4 className="font-bold text-gray-800 border-b pb-2 mb-3">Submitted Documents</h4>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                              {appSelectedDetails.cv_url && (
+                                <a href={appSelectedDetails.cv_url} target="_blank" rel="noopener noreferrer" className="p-3 border rounded hover:bg-gray-50 text-xs font-semibold text-[#2271b1] no-underline block truncate">
+                                  📄 CV / Resume (Required)
+                                </a>
+                              )}
+                              {appSelectedDetails.cover_letter_url && (
+                                <a href={appSelectedDetails.cover_letter_url} target="_blank" rel="noopener noreferrer" className="p-3 border rounded hover:bg-gray-50 text-xs font-semibold text-[#2271b1] no-underline block truncate">
+                                  📄 Cover Letter
+                                </a>
+                              )}
+                              {appSelectedDetails.certificates_url && (
+                                <a href={appSelectedDetails.certificates_url} target="_blank" rel="noopener noreferrer" className="p-3 border rounded hover:bg-gray-50 text-xs font-semibold text-[#2271b1] no-underline block truncate">
+                                  📄 Certificates
+                                </a>
+                              )}
+                              {appSelectedDetails.portfolio_url && (
+                                <a href={appSelectedDetails.portfolio_url} target="_blank" rel="noopener noreferrer" className="p-3 border rounded hover:bg-gray-50 text-xs font-semibold text-[#2271b1] no-underline block truncate">
+                                  📄 Work Portfolio
+                                </a>
+                              )}
+                              {appSelectedDetails.id_url && (
+                                <a href={appSelectedDetails.id_url} target="_blank" rel="noopener noreferrer" className="p-3 border rounded hover:bg-gray-50 text-xs font-semibold text-[#2271b1] no-underline block truncate">
+                                  📄 National ID / Passport
+                                </a>
+                              )}
+                            </div>
+                          </div>
+
+                        </div>
+
+                        {/* Modal Footer */}
+                        <div className="px-6 py-4 border-t border-gray-200 flex justify-end">
+                          <button 
+                            onClick={() => setAppSelectedDetails(null)} 
+                            className="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold px-4 py-2 rounded focus:outline-none"
+                          >
+                            Close Details
+                          </button>
+                        </div>
+
                       </div>
                     </div>
                   )}

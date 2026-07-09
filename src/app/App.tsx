@@ -4,6 +4,7 @@ import { supabase } from "./supabaseClient";
 import AdminDashboard from "./components/AdminDashboard";
 import Turnstile from "./components/ui/Turnstile";
 import { ServicesPage, ProjectsPage, AboutPage, TeamPage, CareersPage, BlogPage, ContactPage } from "./components/Pages";
+import { JobApplicationPage } from "./components/JobApplicationPage";
 import CommercialConstruction from "./components/services/CommercialConstruction";
 import IndustrialInfrastructure from "./components/services/IndustrialInfrastructure";
 import ResidentialDevelopment from "./components/services/ResidentialDevelopment";
@@ -653,6 +654,7 @@ export default function App() {
             <Navigate to="/" replace />
           )
         } />
+        <Route path="/careers/:slug/apply" element={<JobApplicationPage careers={careers} />} />
         <Route path="/blog" element={<BlogPage blogs={blogs} />} />
         <Route path="/contact" element={<ContactPage contactDetails={contactDetails} companySettings={companySettings} />} />
         <Route path="/" element={<>

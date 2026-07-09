@@ -651,9 +651,15 @@ export function CareersPage({ careers }: CareersPageProps) {
                       {career.type && <span className="flex items-center gap-1"><Clock size={14} className="text-accent"/> {career.type}</span>}
                     </div>
                   </div>
-                  <Link to="/contact" className="bg-primary text-white text-xs font-bold px-4 py-2 rounded hover:bg-primary/90 transition-colors whitespace-nowrap self-start">
-                    Apply Now
-                  </Link>
+                  {career.deadline && new Date(career.deadline) < new Date() ? (
+                    <button disabled className="bg-gray-200 text-gray-400 text-xs font-bold px-4 py-2 rounded cursor-not-allowed whitespace-nowrap self-start">
+                      Applications Closed
+                    </button>
+                  ) : (
+                    <Link to={`/careers/${career.slug || career.id}/apply`} className="bg-primary text-white text-xs font-bold px-4 py-2 rounded hover:bg-primary/90 transition-colors whitespace-nowrap self-start no-underline">
+                      Apply Now
+                    </Link>
+                  )}
                 </div>
                 {career.description && (
                   <p className="text-sm text-muted-foreground mb-4 whitespace-pre-line">{career.description}</p>

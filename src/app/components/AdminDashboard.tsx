@@ -1975,7 +1975,9 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                                 <td className="p-3 text-right flex justify-end gap-3 items-center">
                                   <button onClick={() => { setEditingItem(c); setFormData(c); }} className="text-[#2271b1] hover:text-[#135e96] flex items-center gap-0.5"><Edit3 size={13} /> Edit</button>
                                   <button onClick={() => handleDuplicate("careers", c)} className="text-gray-600 hover:text-gray-800 flex items-center gap-0.5"><Copy size={13} /> Clone</button>
-                                  {c.status !== "archived" && (
+                                  {c.status === "archived" ? (
+                                    <button onClick={() => handleStatusUpdate("careers", c.id, "draft")} className="text-green-600 hover:text-green-800 flex items-center gap-0.5"><Archive size={13} /> Unarchive</button>
+                                  ) : (
                                     <button onClick={() => handleStatusUpdate("careers", c.id, "archived")} className="text-red-500 hover:text-red-700 flex items-center gap-0.5"><Archive size={13} /> Archive</button>
                                   )}
                                   <button onClick={() => handleDelete("careers", c.id)} className="text-[#d63638] hover:text-[#a01c1e]"><Trash2 size={13} /></button>

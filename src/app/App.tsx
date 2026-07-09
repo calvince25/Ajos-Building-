@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Routes, Route, Link, useNavigate, useLocation, Navigate } from "react-router";
 import { supabase } from "./supabaseClient";
 import AdminDashboard from "./components/AdminDashboard";
+import Turnstile from "./components/ui/Turnstile";
 import { ServicesPage, ProjectsPage, AboutPage, TeamPage, CareersPage, BlogPage, ContactPage } from "./components/Pages";
 import CommercialConstruction from "./components/services/CommercialConstruction";
 import IndustrialInfrastructure from "./components/services/IndustrialInfrastructure";
@@ -312,6 +313,8 @@ export default function App() {
   const [projectType, setProjectType] = useState("");
   const [budget, setBudget] = useState("");
   const [email, setEmail] = useState("");
+  const [quoteCaptchaToken, setQuoteCaptchaToken] = useState<string | null>(null);
+  const [quoteSubmitCount, setQuoteSubmitCount] = useState(0);
 
   // Dynamic content states loaded from Supabase
   const [services, setServices] = useState<any[]>(DEFAULT_SERVICES);
@@ -419,6 +422,10 @@ export default function App() {
       alert("Please provide an email address.");
       return;
     }
+    if (!quoteCaptchaToken) {
+      alert("Please complete the captcha verification.");
+      return;
+    }
     try {
       const { error } = await supabase.from("quote_requests").insert([
         { service_type: projectType, budget: budget, email: email }
@@ -428,6 +435,8 @@ export default function App() {
       setProjectType("");
       setBudget("");
       setEmail("");
+      setQuoteCaptchaToken(null);
+      setQuoteSubmitCount(prev => prev + 1);
     } catch (err: any) {
       alert("Failed to submit request: " + err.message);
     }
@@ -714,6 +723,9 @@ export default function App() {
               <button type="submit" className="bg-accent hover:bg-yellow-400 text-primary font-black py-2.5 px-6 rounded flex items-center justify-center gap-2 transition-colors text-sm cursor-pointer min-h-0 w-full" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                 <ArrowRight size={16} /> Get Free Quote
               </button>
+            </div>
+            <div className="mt-3 flex justify-start">
+              <Turnstile key={quoteSubmitCount} siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY || "0x4AAAAAADygoJzEpw83-uEG"} onVerify={setQuoteCaptchaToken} />
             </div>
           </div>
         </form>

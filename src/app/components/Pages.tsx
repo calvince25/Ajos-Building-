@@ -5,6 +5,7 @@ import FactList from "./FactList";
 import StructuredFAQ from "./StructuredFAQ";
 import { PageHero } from "./ui/PageHero";
 import { supabase } from "../supabaseClient";
+import Turnstile from "./ui/Turnstile";
 import {
   MapPin,
   Phone,
@@ -508,11 +509,17 @@ export function ContactPage({ contactDetails, companySettings }: ContactPageProp
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [submitCount, setSubmitCount] = useState(0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !email || !message) {
       alert("Please fill in name, email and message fields.");
+      return;
+    }
+    if (!captchaToken) {
+      alert("Please complete the captcha verification.");
       return;
     }
     try {
@@ -525,6 +532,8 @@ export function ContactPage({ contactDetails, companySettings }: ContactPageProp
       setEmail("");
       setSubject("");
       setMessage("");
+      setCaptchaToken(null);
+      setSubmitCount(prev => prev + 1);
     } catch (err: any) {
       alert("Failed to send message: " + err.message);
     }
@@ -593,6 +602,7 @@ export function ContactPage({ contactDetails, companySettings }: ContactPageProp
             <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Message</label>
             <textarea required rows={4} value={message} onChange={e => setMessage(e.target.value)} className="w-full px-3 py-2 border border-border rounded text-sm bg-background focus:outline-none focus:border-accent" />
           </div>
+          <Turnstile key={submitCount} siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY || "0x4AAAAAADygoJzEpw83-uEG"} onVerify={setCaptchaToken} />
           <button type="submit" className="bg-accent text-primary font-black py-2.5 px-6 rounded flex items-center justify-center gap-2 text-sm cursor-pointer w-full" style={{ fontFamily: "'Montserrat', sans-serif" }}>
             Send Message &rarr;
           </button>

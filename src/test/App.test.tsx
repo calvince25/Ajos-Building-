@@ -47,4 +47,15 @@ describe('App Routing', () => {
     expect(screen.getAllByText('Projects').length).toBeGreaterThan(0);
     expect(screen.getAllByText('About').length).toBeGreaterThan(0);
   });
+
+  it('renders careers page loader or content without crashing', () => {
+    const { container } = render(
+      <HelmetProvider>
+        <MemoryRouter initialEntries={['/careers']}>
+          <App />
+        </MemoryRouter>
+      </HelmetProvider>
+    );
+    expect(container).toBeTruthy();
+  });
 });

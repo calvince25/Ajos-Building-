@@ -658,26 +658,36 @@ export function CareersPage({ careers }: CareersPageProps) {
                 {career.description && (
                   <p className="text-sm text-muted-foreground mb-4 whitespace-pre-line">{career.description}</p>
                 )}
-                {career.requirements && career.requirements.length > 0 && (
-                  <div className="mb-4">
-                    <h4 className="text-sm font-bold text-primary mb-2 uppercase tracking-wider">Requirements</h4>
-                    <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
-                      {career.requirements.map((req: string, i: number) => (
-                        <li key={i}>{req}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                {career.benefits && career.benefits.length > 0 && (
-                  <div>
-                    <h4 className="text-sm font-bold text-primary mb-2 uppercase tracking-wider">Benefits</h4>
-                    <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
-                      {career.benefits.map((ben: string, i: number) => (
-                        <li key={i}>{ben}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                {(() => {
+                  const reqs = Array.isArray(career.requirements) 
+                    ? career.requirements 
+                    : (typeof career.requirements === 'string' ? career.requirements.split('\n').filter(Boolean) : []);
+                  return reqs.length > 0 && (
+                    <div className="mb-4">
+                      <h4 className="text-sm font-bold text-primary mb-2 uppercase tracking-wider">Requirements</h4>
+                      <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
+                        {reqs.map((req: string, i: number) => (
+                          <li key={i}>{req}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                })()}
+                {(() => {
+                  const bens = Array.isArray(career.benefits) 
+                    ? career.benefits 
+                    : (typeof career.benefits === 'string' ? career.benefits.split('\n').filter(Boolean) : []);
+                  return bens.length > 0 && (
+                    <div>
+                      <h4 className="text-sm font-bold text-primary mb-2 uppercase tracking-wider">Benefits</h4>
+                      <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
+                        {bens.map((ben: string, i: number) => (
+                          <li key={i}>{ben}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                })()}
               </div>
             ))}
           </div>

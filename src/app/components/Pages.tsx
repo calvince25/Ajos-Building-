@@ -625,7 +625,7 @@ export function CareersPage({ careers }: CareersPageProps) {
       <PageHero
         title="Careers"
         subtitle="Join Our Team"
-        imageUrl="https://images.unsplash.com/photo-1541888086425-d81bb19240f5?q=80&w=2000&auto=format&fit=crop"
+        imageUrl="/careers_hero.jpg"
       />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 mt-12 sm:mt-16">
         <p className="text-muted-foreground text-center mb-10 max-w-2xl mx-auto text-sm">

@@ -12,5 +12,5 @@
 UPDATE storage.buckets 
 SET 
   allowed_mime_types = NULL, -- Lift all MIME type restrictions (PDF, DOCX, etc. allowed)
-  max_file_size = 52428800    -- Increase maximum file size limit to 50MB
+  file_size_limit = 52428800    -- Increase maximum file size limit to 50MB (52,428,800 bytes)
 WHERE id = 'media';

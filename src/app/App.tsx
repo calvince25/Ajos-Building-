@@ -50,6 +50,12 @@ import {
   Zap,
 } from "lucide-react";
 
+const TiktokIcon = ({ size = 16, className = "" }: { size?: number; className?: string }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} fill="currentColor" viewBox="0 0 16 16" className={className}>
+    <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z"/>
+  </svg>
+);
+
 const NAV_LINKS = ["Home", "Services", "Projects", "About", "Team", "Careers", "Blog", "Contact"];
 
 const DEFAULT_SERVICES = [
@@ -346,16 +352,17 @@ export default function App() {
     emergencyPhone: "+1 (312) 555-0911"
   });
   const [socials, setSocials] = useState<any>({
-    facebook: "#",
+    facebook: "https://www.facebook.com/profile.php?id=61591546598393",
     twitter: "#",
     linkedin: "#",
-    instagram: "#"
+    instagram: "#",
+    tiktok: "https://vm.tiktok.com/ZSCceUaN2/"
   });
   const [blogs, setBlogs] = useState<any[]>([]);
-  const [careers, setCareers] = useState<any[]>([]);
+  const [careers, setCareers] = useState<any[] | null>(null);
 
   const visibleNavLinks = NAV_LINKS.filter(
-    (link) => link !== "Careers" || careers.length > 0
+    (link) => link !== "Careers" || (careers && careers.length > 0)
   );
 
   // Scroll to top on page change
@@ -397,7 +404,11 @@ export default function App() {
         if (testRes.data && testRes.data.length > 0) setTestimonials(testRes.data);
         if (fRes.data && fRes.data.length > 0) setFaqs(fRes.data);
         if (bRes.data) setBlogs(bRes.data);
-        if (cRes.data) setCareers(cRes.data.filter((c: any) => c.status === "published"));
+        if (cRes.data) {
+          setCareers(cRes.data.filter((c: any) => c.status === "published"));
+        } else {
+          setCareers([]);
+        }
 
 
         if (settingsRes.data) {
@@ -410,6 +421,7 @@ export default function App() {
         }
       } catch (err) {
         console.error("Failed to load Supabase content, using defaults:", err);
+        setCareers([]);
       }
     }
     loadDynamicContent();
@@ -514,9 +526,10 @@ export default function App() {
                 { icon: Facebook, link: socials.facebook },
                 { icon: Twitter, link: socials.twitter },
                 { icon: Linkedin, link: socials.linkedin },
-                { icon: Instagram, link: socials.instagram }
+                { icon: Instagram, link: socials.instagram },
+                { icon: TiktokIcon, link: socials.tiktok }
               ].map(({ icon: Icon, link }, i) => (
-                <a key={i} href={link || "#"} className="w-6 h-6 flex items-center justify-center rounded-full bg-white/10 hover:bg-accent hover:text-primary transition-colors">
+                <a key={i} href={link || "#"} target="_blank" rel="noopener noreferrer" className="w-6 h-6 flex items-center justify-center rounded-full bg-white/10 hover:bg-accent hover:text-primary transition-colors">
                   <Icon size={11} />
                 </a>
               ))}
@@ -629,7 +642,17 @@ export default function App() {
         <Route path="/projects" element={<ProjectsPage projects={projects} />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/team" element={<TeamPage team={team} />} />
-        <Route path="/careers" element={careers.length > 0 ? <CareersPage careers={careers} /> : <Navigate to="/" replace />} />
+        <Route path="/careers" element={
+          careers === null ? (
+            <div className="min-h-screen flex items-center justify-center bg-background">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#2271b1]"></div>
+            </div>
+          ) : careers.length > 0 ? (
+            <CareersPage careers={careers} />
+          ) : (
+            <Navigate to="/" replace />
+          )
+        } />
         <Route path="/blog" element={<BlogPage blogs={blogs} />} />
         <Route path="/contact" element={<ContactPage contactDetails={contactDetails} companySettings={companySettings} />} />
         <Route path="/" element={<>
@@ -1140,9 +1163,10 @@ export default function App() {
                   { icon: Facebook, link: socials.facebook },
                   { icon: Twitter, link: socials.twitter },
                   { icon: Linkedin, link: socials.linkedin },
-                  { icon: Instagram, link: socials.instagram }
+                  { icon: Instagram, link: socials.instagram },
+                  { icon: TiktokIcon, link: socials.tiktok }
                 ].map(({ icon: Icon, link }, i) => (
-                  <a key={i} href={link || "#"} className="w-9 h-9 bg-white/10 hover:bg-accent rounded-full flex items-center justify-center transition-colors hover:text-primary">
+                  <a key={i} href={link || "#"} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-white/10 hover:bg-accent rounded-full flex items-center justify-center transition-colors hover:text-primary">
                     <Icon size={15} />
                   </a>
                 ))}

@@ -94,10 +94,11 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
     emergencyPhone: "+1 (312) 555-0911"
   });
   const [socials, setSocials] = useState<any>({
-    facebook: "#",
+    facebook: "https://www.facebook.com/profile.php?id=61591546598393",
     twitter: "#",
     linkedin: "#",
-    instagram: "#"
+    instagram: "#",
+    tiktok: "https://vm.tiktok.com/ZSCceUaN2/"
   });
   const [seo, setSeo] = useState<any>({
     titleTemplate: "Titan Construction | Construction & Engineering",
@@ -1311,7 +1312,7 @@ export default function AdminDashboard({ onClose }: AdminDashboardProps) {
                   <div className="bg-white p-6 shadow-sm border border-gray-200 rounded">
                     <h2 className="text-base font-semibold mb-4 border-b pb-2">Social Media Settings</h2>
                     <div className="space-y-4">
-                      {["facebook", "twitter", "linkedin", "instagram"].map(key => (
+                      {["facebook", "twitter", "linkedin", "instagram", "tiktok"].map(key => (
                         <div key={key}>
                           <label className="block text-xs font-bold text-gray-700 uppercase mb-1 capitalize">{key} Link</label>
                           <input type="text" className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none" 

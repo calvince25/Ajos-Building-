@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { Link } from "react-router";
 import SEO, { SEOProps, getFAQSchema } from "../SEO";
 import { ArrowRight, CheckCircle, MapPin, Layers, Play, HardHat, Building2, ShieldCheck, TrendingUp } from "lucide-react";
@@ -113,7 +113,7 @@ export default function CommercialConstruction({ serviceData }: { serviceData?: 
           <div className="relative">
             <img 
               loading="lazy" 
-              src={serviceData?.content_image_url || "https://images.unsplash.com/photo-1541888081-344400e26b1c?w=800&h=1000&fit=crop&auto=format"} 
+              src={serviceData?.content_image_url || "https://images.unsplash.com/photo-1599707254554-027aeb4deacd?w=800&h=1000&fit=crop&auto=format"} 
               alt="Engineers reviewing commercial building plans" 
               className="rounded-2xl shadow-2xl object-cover w-full h-[350px] sm:h-[500px] lg:h-[600px]"
             />

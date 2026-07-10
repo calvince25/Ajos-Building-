@@ -230,7 +230,7 @@ export function AboutPage() {
         <section className="mb-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1 relative">
-              <img loading="lazy" src="https://images.unsplash.com/photo-1541888086425-d81bb19240f5?w=600&h=800&fit=crop&auto=format" alt="Architectural blueprints and engineering tools" className="rounded-xl shadow-2xl object-cover w-full h-[600px]" />
+              <img loading="lazy" src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&h=800&fit=crop&auto=format" alt="Architectural blueprints and engineering tools" className="rounded-xl shadow-2xl object-cover w-full h-[600px]" />
             </div>
             <div className="order-1 lg:order-2">
               <h2 className="text-3xl font-black text-primary mb-6" style={{ fontFamily: "'Montserrat', sans-serif" }}>

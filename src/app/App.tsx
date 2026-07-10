@@ -162,7 +162,7 @@ const DEFAULT_SERVICES = [
   {
     id: 10,
     icon: Ruler,
-    image: "https://images.unsplash.com/photo-1582621404618-fc4b2e4dfc9d?w=600&h=400&fit=crop&auto=format",
+    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=400&fit=crop&auto=format",
     title: "Land Surveying",
     tag: "Surveying",
     desc: "Site surveying, topographical surveys, boundary surveys, and setting out.",
@@ -263,7 +263,7 @@ const DEFAULT_TESTIMONIALS = [
     role: "Director, Veritas Property Group",
     text: "We have partnered with Titan Construction on four commercial developments. Their engineering team and on-site execution are consistently world-class. Trusted, reliable, and genuinely excellent.",
     rating: 5,
-    avatar: "https://images.unsplash.com/photo-1494790108755-2616b7ef95e4?w=80&h=80&fit=crop&auto=format",
+    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&auto=format",
   },
   {
     id: 3,

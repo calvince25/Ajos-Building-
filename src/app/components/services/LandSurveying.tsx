@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { Link } from "react-router";
 import SEO, { SEOProps, getFAQSchema } from "../SEO";
 import { ArrowRight, Ruler } from "lucide-react";
@@ -60,7 +60,7 @@ export default function LandSurveying({ serviceData }: { serviceData?: any }) {
       {/* Hero */}
       <section className="relative pt-20 pb-16 sm:pt-28 sm:pb-20 lg:pt-40 lg:pb-28 bg-primary overflow-hidden">
         <div className="absolute inset-0">
-          <img loading="lazy" src={serviceData?.hero_image_url || "https://images.unsplash.com/photo-1582621404618-fc4b2e4dfc9d?w=1600&h=800&fit=crop&auto=format"} alt="Land surveyor using total station equipment on a construction site" className="w-full h-full object-cover opacity-25" />
+          <img loading="lazy" src={serviceData?.hero_image_url || "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&h=800&fit=crop&auto=format"} alt="Land surveyor using total station equipment on a construction site" className="w-full h-full object-cover opacity-25" />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/70" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
